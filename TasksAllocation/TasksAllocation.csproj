@@ -64,12 +64,17 @@
     <Compile Include="Forms\TaskAllocationForm.Designer.cs">
       <DependentUpon>TaskAllocationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Items\Allocation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Operations\Configuration.cs" />
-    <Compile Include="Operations\TaskAllocation.cs" />
+    <Compile Include="Files\Configuration.cs" />
+    <Compile Include="Files\TaskAllocation.cs" />
+    <Compile Include="Utils\Map.cs" />
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ErrorsForm.resx">
+      <DependentUpon>ErrorsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\TaskAllocationForm.resx">
       <DependentUpon>TaskAllocationForm.cs</DependentUpon>
@@ -98,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="TestFiles\" />
-    <Folder Include="Utils\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

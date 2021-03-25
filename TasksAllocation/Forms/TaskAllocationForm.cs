@@ -7,13 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TasksAllocation.Operations;
+using TasksAllocation.Files;
 using TasksAllocation.Forms;
 
 namespace TasksAllocation
 {
     public partial class TaskAllocationForm : Form
     {
+        ErrorsForm errorsForm = new ErrorsForm();
+        TaskAllocation taskAllocation = new TaskAllocation();
+        Configuration configuration = new Configuration();
+
         public TaskAllocationForm()
         {
             InitializeComponent();
@@ -26,22 +30,29 @@ namespace TasksAllocation
             if (dialogResult == DialogResult.OK)
             {
                 string taffFileName = openFileDialog.FileName;
-                TaskAllocation taskAllocation = new TaskAllocation();
-                Configuration configuration = new Configuration();
+                bool cffFileNameExits = taskAllocation.GetCffFilename(taffFileName);
 
-                if (taskAllocation.GetCffFilename(taffFileName))
-                {
-                    if (taskAllocation.Validate(taffFileName) && configuration.Validate(taskAllocation.CffFilename))
-                    {
+                if (!cffFileNameExits) return;
 
-                    }
-                }
+                // Validate task allocation file
+                bool validTaskAllocation = taskAllocation.Validate(taffFileName);
+
+                if (!validTaskAllocation) return;
+
+                // Validate configuration file by 
+                string cffFilename = taskAllocation.CffFilename;
+                bool validaConfiguration = configuration.Validate(cffFilename);
+
+                if (!validaConfiguration) return;
+
+                // Display the files
+
             }
         }
 
         private void ExitToolStripMenuItemClick(object sender, EventArgs e)
         {
-            this.Dispose();
+            Dispose();
         }
 
         private void AboutToolStripMenuItemClick(object sender, EventArgs e)
@@ -49,6 +60,12 @@ namespace TasksAllocation
             AboutBoxForm aboutBox = new AboutBoxForm();
 
             aboutBox.ShowDialog();
+        }
+
+        private void errorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            errorsForm.Show();
         }
     }
 }
