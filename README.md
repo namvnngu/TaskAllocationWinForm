@@ -6,4 +6,4 @@ __Unit__: SIT323 - Cloud Application Development
 
 __University__: Deakin Unversity
 
-__Technology__: Window Forms App (.NET Framework)
+__Technology__: Window Forms App (.NET Framework 4.8)
