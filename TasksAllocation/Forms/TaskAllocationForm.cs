@@ -64,7 +64,6 @@ namespace TasksAllocation
 
         private void errorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             errorsForm.Show();
         }
     }

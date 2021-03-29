@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TasksAllocation.Utils;
+using TasksAllocation.Utils.DataStructure;
 
-namespace TasksAllocation.Items
+namespace TasksAllocation.Components
 {
     class Allocation
     {
