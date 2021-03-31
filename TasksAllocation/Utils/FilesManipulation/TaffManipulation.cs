@@ -59,7 +59,6 @@ namespace TasksAllocation.Utils.FilesManipulation
 
                                         if (!File.Exists(cffFilename))
                                         {
-                                            // TODO: Error
                                             string[] error = new string[3];
                                             error[0] = "CFF file does not exist";
                                             error[1] = cffFilename;
@@ -69,7 +68,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                                     }
                                     else
                                     {
-                                        // TODO: Error
                                         string[] error = new string[3];
                                         error[0] = "CFF file's path contains invalid characters";
                                         error[1] = cffFilename;
@@ -79,7 +77,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                                 }
                                 else
                                 {
-                                    // TODO: Error
                                     string[] error = new string[3];
                                     error[0] = "Filename has invalid file extension";
                                     error[1] = filenameData[1];
@@ -89,7 +86,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                             }
                             else
                             {
-                                // TODO: Error
                                 string[] error = new string[3];
                                 error[0] = "File extension cannot be found";
                                 error[1] = filenameData.Length.ToString();
@@ -99,7 +95,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                         }
                         else
                         {
-                            // TODO: Error
                             string[] error = new string[3];
                             error[0] = "No valid file can be found";
                             error[1] = cffFilename;
@@ -109,7 +104,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                     }
                     else
                     {
-                        // TODO: Error
                         string[] error = new string[3];
                         error[0] = $"No value for {TaffKeywords.CONFIG_FILENAME} can be found";
                         error[1] = "0";
@@ -135,11 +129,10 @@ namespace TasksAllocation.Utils.FilesManipulation
             if (cffFilename == null)
             {
                 string[] error = new string[3];
-                error[0] = $"There is no {TaffKeywords.CONFIG_FILENAME} keyword";
+                error[0] = $"There is no cff file";
                 error[1] = "null";
-                error[2] = TaffKeywords.CONFIG_FILENAME;
+                error[2] = "*.cff (pattern)";
                 errorManager.Errors.Add(error);
-                // error[2] = $"The section starts with {TaffKeywords.OPENING_CONFIG_DATA} and end with {TaffKeywords.CLOSING_CONFIG_DATA}";
             }
             return cffFilename;
         }

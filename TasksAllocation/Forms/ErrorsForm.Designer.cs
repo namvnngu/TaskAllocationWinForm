@@ -29,13 +29,25 @@ namespace TasksAllocation.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            this.errorWebBrowser = new System.Windows.Forms.WebBrowser();
             this.SuspendLayout();
+            // 
+            // errorWebBrowser
+            // 
+            this.errorWebBrowser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.errorWebBrowser.Location = new System.Drawing.Point(0, 0);
+            this.errorWebBrowser.MinimumSize = new System.Drawing.Size(20, 20);
+            this.errorWebBrowser.Name = "errorWebBrowser";
+            this.errorWebBrowser.Size = new System.Drawing.Size(1600, 865);
+            this.errorWebBrowser.TabIndex = 0;
             // 
             // ErrorsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1600, 865);
+            this.Controls.Add(this.errorWebBrowser);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "ErrorsForm";
             this.Text = "Errors";
             this.ResumeLayout(false);
@@ -43,5 +55,7 @@ namespace TasksAllocation.Forms
         }
 
         #endregion
+
+        public System.Windows.Forms.WebBrowser errorWebBrowser;
     }
 }

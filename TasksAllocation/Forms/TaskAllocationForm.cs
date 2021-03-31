@@ -10,15 +10,17 @@ using System.Windows.Forms;
 using TasksAllocation.Files;
 using TasksAllocation.Forms;
 using TasksAllocation.Utils.Validation;
+using TasksAllocation.Utils.Display;
 
 namespace TasksAllocation
 {
     public partial class TaskAllocationForm : Form
     {
-        ErrorsForm errorsForm = new ErrorsForm();
+        ErrorsForm errorsForm;
         TaskAllocation taskAllocation = new TaskAllocation();
         Configuration configuration = new Configuration();
         ErrorManager errorManager = new ErrorManager();
+        string errorText;
 
         public TaskAllocationForm()
         {
@@ -32,35 +34,40 @@ namespace TasksAllocation
             if (dialogResult == DialogResult.OK)
             {
                 string taffFileName = openFileDialog.FileName;
+                string cffFilename;
                 bool cffFileNameExits = taskAllocation.GetCffFilename(taffFileName, ref errorManager);
+                bool validTaskAllocation, validaConfiguration;
+                bool allValidFiles = false;
 
                 if (cffFileNameExits)
                 {
-                    // Validate task allocation file
-                    bool validTaskAllocation = taskAllocation.Validate(taffFileName, ref errorManager);
+                    // Validate task allocation file and configuration file
+                    validTaskAllocation = taskAllocation.Validate(taffFileName, ref errorManager);
+                    cffFilename = taskAllocation.CffFilename;
+                    validaConfiguration = configuration.Validate(cffFilename);
 
-                    if (validTaskAllocation)
+                    if (validTaskAllocation && validaConfiguration)
                     {
-                        // Validate configuration file
-                        string cffFilename = taskAllocation.CffFilename;
-                        bool validaConfiguration = configuration.Validate(cffFilename);
-
-                        if (validaConfiguration) {
-                            // Display files
-                        };
+                        allValidFiles = true;
                     }
                 }
 
                 // Display Error
-                foreach (string[] error in errorManager.Errors)
-                {
-                    Console.WriteLine($"Message: {error[0]}");
-                    Console.WriteLine($"Error: {error[1]}");
-                    Console.WriteLine($"Expected: {error[2]}");
-                }
+
 
                 // Display the allocations
+                if (allValidFiles)
+                {
 
+                }
+                else
+                {
+                    errorsForm = new ErrorsForm();
+                    errorText = ErrorDisplay.DisplayText(errorManager.Errors);
+                    errorsForm.errorWebBrowser.DocumentText = errorText;
+                    errorsForm.Show();
+                }
+                errorManager.Errors = new List<string[]>();
             }
         }
 
@@ -78,6 +85,8 @@ namespace TasksAllocation
 
         private void errorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            errorsForm = new ErrorsForm();
+            errorsForm.errorWebBrowser.DocumentText = errorText;
             errorsForm.Show();
         }
     }
