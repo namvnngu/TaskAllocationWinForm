@@ -20,8 +20,8 @@ namespace TasksAllocation.Utils.Display
 
                 renderedText += $"<div class=\"text-danger\">Error {errorNumber + 1}</div>";
                 renderedText += $"<div>Message: {error[0]}</div>";
-                renderedText += $"<div>Error: {error[1]}</div>";
-                renderedText += $"<div>Expected: {error[2]}</div><br/>";
+                renderedText += $"<div>Actual value: {error[1]}</div>";
+                renderedText += $"<div>Expected value: {error[2]}</div><br/>";
             }
 
             return renderedText;

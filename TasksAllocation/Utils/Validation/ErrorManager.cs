@@ -12,7 +12,7 @@ namespace TasksAllocation.Utils.Validation
 
         public ErrorManager()
         {
-            // [[message, error, expected]]
+            // [[message, actual, expected]]
             Errors = new List<string[]>();
         }
     }
