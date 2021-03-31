@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using TasksAllocation.Components;
+using TasksAllocation.Utils.Validation;
+using TasksAllocation.Utils.FilesManipulation;
 
 namespace TasksAllocation.Files
 {
@@ -15,71 +17,22 @@ namespace TasksAllocation.Files
         public int NumberOfTasks { get; set; }
         public int NumberOfProcessors { get; set; }
         public List<Allocation> Allocations { get; set; }
-        List<string> Errors { get; set; }
 
-        public bool GetCffFilename(string taffFilename)
+        public bool GetCffFilename(string taffFilename, ref ErrorManager errorManager)
         {
-            CffFilename = null;
-            Errors = new List<string>();
-            string line;
-            StreamReader streamReader = new StreamReader(taffFilename);
+            int beforeNumOfError, afterNumOfError;
+            beforeNumOfError = errorManager.Errors.Count;
 
-            while (!streamReader.EndOfStream)
-            {
-                line = streamReader.ReadLine();
-                line = line.Trim();
+            CffFilename = TaffManipulation.ExtractCff(taffFilename, ref errorManager);
 
-                if (line.StartsWith("FILENAME"))
-                {
-                    string[] lineData = line.Split('=');
+            afterNumOfError = errorManager.Errors.Count;
 
-                    if (lineData.Length == 2)
-                    {
-                        CffFilename = lineData[1].Trim('"');
-
-                        if (CffFilename.Length > 0)
-                        {
-                            if (CffFilename.IndexOfAny(Path.GetInvalidFileNameChars()) == -1)
-                            {
-                                string filePath = Path.GetDirectoryName(taffFilename);
-                                CffFilename = filePath + Path.DirectorySeparatorChar + CffFilename;
-
-                                if (!File.Exists(CffFilename))
-                                {
-                                    // TODO: Error
-                                    Errors.Add("CFF Filename Not Exist");
-                                }
-                            }
-                            else
-                            {
-                                // TODO: Error
-                                Errors.Add("Invalid Characters");
-                            }
-                        }
-                        else
-                        {
-                            // TODO: Error
-                            Errors.Add("No File Found");
-                        }
-                    }
-                    else
-                    {
-                        // TODO: Error
-                        Errors.Add("No Value for Keyword");
-                    }
-                }
-            }
-
-            streamReader.Close();
-
-            return (Errors.Count == 0);
+            return (beforeNumOfError == afterNumOfError);
         }
 
-        public bool Validate(string taffFilename)
+        public bool Validate(string taffFilename, ref ErrorManager errorManager)
         {
-            Errors = new List<string>();
-
-            return (Errors.Count == 0);
+            return (errorManager.Errors.Count == 0);
         }
     }
 }

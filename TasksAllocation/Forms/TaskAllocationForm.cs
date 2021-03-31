@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TasksAllocation.Files;
 using TasksAllocation.Forms;
+using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation
 {
@@ -17,6 +18,7 @@ namespace TasksAllocation
         ErrorsForm errorsForm = new ErrorsForm();
         TaskAllocation taskAllocation = new TaskAllocation();
         Configuration configuration = new Configuration();
+        ErrorManager errorManager = new ErrorManager();
 
         public TaskAllocationForm()
         {
@@ -30,22 +32,34 @@ namespace TasksAllocation
             if (dialogResult == DialogResult.OK)
             {
                 string taffFileName = openFileDialog.FileName;
-                bool cffFileNameExits = taskAllocation.GetCffFilename(taffFileName);
+                bool cffFileNameExits = taskAllocation.GetCffFilename(taffFileName, ref errorManager);
 
-                if (!cffFileNameExits) return;
+                if (cffFileNameExits)
+                {
+                    // Validate task allocation file
+                    bool validTaskAllocation = taskAllocation.Validate(taffFileName, ref errorManager);
 
-                // Validate task allocation file
-                bool validTaskAllocation = taskAllocation.Validate(taffFileName);
+                    if (validTaskAllocation)
+                    {
+                        // Validate configuration file
+                        string cffFilename = taskAllocation.CffFilename;
+                        bool validaConfiguration = configuration.Validate(cffFilename);
 
-                if (!validTaskAllocation) return;
+                        if (validaConfiguration) {
+                            // Display files
+                        };
+                    }
+                }
 
-                // Validate configuration file by 
-                string cffFilename = taskAllocation.CffFilename;
-                bool validaConfiguration = configuration.Validate(cffFilename);
+                // Display Error
+                foreach (string[] error in errorManager.Errors)
+                {
+                    Console.WriteLine($"Message: {error[0]}");
+                    Console.WriteLine($"Error: {error[1]}");
+                    Console.WriteLine($"Expected: {error[2]}");
+                }
 
-                if (!validaConfiguration) return;
-
-                // Display the files
+                // Display the allocations
 
             }
         }
