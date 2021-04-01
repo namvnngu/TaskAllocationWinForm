@@ -46,6 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Limits.cs" />
+    <Compile Include="Components\LocalCommunication.cs" />
+    <Compile Include="Components\Processor.cs" />
+    <Compile Include="Components\ProcessorType.cs" />
+    <Compile Include="Components\Program.cs" />
+    <Compile Include="Components\RemoteCommunication.cs" />
+    <Compile Include="Components\Task.cs" />
     <Compile Include="Forms\AboutBoxForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,10 +82,13 @@
     <Compile Include="Utils\DataStructure\Map.cs" />
     <Compile Include="Utils\Display\Display.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
+    <Compile Include="Utils\FilesManipulation\Files.cs" />
     <Compile Include="Utils\FilesManipulation\TaffManipulation.cs" />
     <Compile Include="Utils\Validation\CffKeywordTable.cs" />
+    <Compile Include="Utils\Validation\PairSection.cs" />
     <Compile Include="Utils\Validation\ErrorManager.cs" />
     <Compile Include="Utils\Validation\TaffKeywordTable.cs" />
+    <Compile Include="Utils\Validation\Validations.cs" />
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>
     </EmbeddedResource>

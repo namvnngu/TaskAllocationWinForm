@@ -14,23 +14,21 @@ namespace TasksAllocation.Utils.FilesManipulation
         public static string ExtractCff(string taffFilename, ref ErrorManager errorManager)
         {
             string cffFilename = null;
-            string line, expectedCffFilename = "*.cff";
+            string line, expectedCffFilename = null;
             StreamReader streamReader = new StreamReader(taffFilename);
-            bool[] validOpenClosingSection = { false, false };
+            PairSection openClosingConfigData = new PairSection(TaffKeywords.OPENING_CONFIG_DATA, TaffKeywords.CLOSING_CONFIG_DATA);
 
-            if (Path.GetExtension(taffFilename) == $".{TaffKeywords.FILE_EXTENSION}")
+            // Check whether taffFilename has .taff extension
+            if (Validations.CheckExtension(
+                taffFilename,
+                TaffKeywords.FILE_EXTENSION,
+                ref errorManager
+            ))
             {
-                expectedCffFilename = Path.GetFileName(taffFilename);
-                expectedCffFilename = expectedCffFilename.Replace(TaffKeywords.FILE_EXTENSION, CffKeywords.FILE_EXTENSION);
+                expectedCffFilename = Files.ReplaceExtension(taffFilename, CffKeywords.FILE_EXTENSION);
             }
             else
             {
-                string[] error = new string[3];
-                error[0] = "The file extension is invalid";
-                error[1] = Path.GetExtension(taffFilename);
-                error[2] = $".{TaffKeywords.FILE_EXTENSION}";
-                errorManager.Errors.Add(error);
-
                 return null;
             }
 
@@ -40,117 +38,53 @@ namespace TasksAllocation.Utils.FilesManipulation
                 line = streamReader.ReadLine();
                 line = line.Trim();
 
-                if (line.StartsWith(TaffKeywords.OPENING_CONFIG_DATA))
-                {
-                    validOpenClosingSection[0] = true;
-                }
+                // Check whether the line starts Opening Configuration Data section 
+                // If yes, mark it exist
+                openClosingConfigData.StartWithOpeningSection(line);
 
-                if (line.StartsWith(TaffKeywords.CLOSING_CONFIG_DATA))
+                // Check whether the line starts Opening Configuration Data section 
+                // If yes, mark it exist, and stop the loop
+                if (openClosingConfigData.StartWithClosingSection(line))
                 {
-                    validOpenClosingSection[1] = true;
                     break;
                 }
 
-                if (validOpenClosingSection[0] && line.StartsWith(TaffKeywords.CONFIG_FILENAME))
+                // Check whether Opening Configuration Data section exists and
+                // whether line start with the expected keyword, "FILENAME"
+                if (openClosingConfigData.ValidSectionPair[0] && line.StartsWith(TaffKeywords.CONFIG_FILENAME))
                 {
-                    string[] lineData = line.Split(Symbols.EQUALITY);
-                    const int N_LINE_DATA = 2;
+                    // Check whether the pair of key-value exists 
+                    string[] lineData = Validations.CheckPairKeyValue(line, TaffKeywords.CONFIG_FILENAME, expectedCffFilename, ref errorManager);
 
-                    if (lineData.Length == N_LINE_DATA)
+                    if (lineData != null)
                     {
-                        cffFilename = lineData[1].Trim(Symbols.DOUBLE_QUOTE);
-
-                        if (cffFilename.Length > 0)
-                        {
-                            string[] filenameData = cffFilename.Split(Symbols.DOT);
-                            const int N_FILENAME_DATA = 2;
-
-                            if (filenameData.Length == N_FILENAME_DATA)
-                            {
-                                if (filenameData[1] == CffKeywords.FILE_EXTENSION)
-                                {
-                                    if (cffFilename.IndexOfAny(Path.GetInvalidFileNameChars()) == -1)
-                                    {
-                                        string filePath = Path.GetDirectoryName(taffFilename);
-                                        cffFilename = $"{filePath}{Path.DirectorySeparatorChar}{cffFilename}";
-
-                                        if (!File.Exists(cffFilename))
-                                        {
-                                            string[] error = new string[3];
-                                            error[0] = "CFF file does not exist";
-                                            error[1] = cffFilename;
-                                            error[2] = "Please provide valid file path";
-                                            errorManager.Errors.Add(error);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        string[] error = new string[3];
-                                        error[0] = "CFF file's path contains invalid characters";
-                                        error[1] = cffFilename;
-                                        error[2] = "Path must not contain <, >, :, \", /, \\, |, ?, *";
-                                        errorManager.Errors.Add(error);
-                                    }
-                                }
-                                else
-                                {
-                                    string[] error = new string[3];
-                                    error[0] = "Filename has invalid file extension";
-                                    error[1] = filenameData[1];
-                                    error[2] = CffKeywords.FILE_EXTENSION;
-                                    errorManager.Errors.Add(error);
-                                }
-                            }
-                            else
-                            {
-                                string[] error = new string[3];
-                                error[0] = "File extension cannot be found";
-                                error[1] = "null";
-                                error[2] = expectedCffFilename;
-                                errorManager.Errors.Add(error);
-                            }
-                        }
-                        else
-                        {
-                            string[] error = new string[3];
-                            error[0] = "No valid file can be found";
-                            error[1] = cffFilename;
-                            error[2] = expectedCffFilename;
-                            errorManager.Errors.Add(error);
-                        }
+                        // Check whether the value in the above pair is valid
+                        cffFilename = Validations.CheckTextValueExist(lineData[1], cffFilename, expectedCffFilename, ref errorManager);
                     }
-                    else
+
+                    // Check whether the value in the above pair has the valid extension (.cff),
+                    // and check the filename has no invalia file character 
+                    bool cffExtensionValid = cffFilename != null && Validations.CheckExtension(cffFilename, CffKeywords.FILE_EXTENSION, ref errorManager);
+                    bool noInvalidaFilenameChars = cffExtensionValid && Validations.CheckInvalidFileNameChars(cffFilename, ref errorManager);
+                    
+                    if (noInvalidaFilenameChars)
                     {
-                        string[] error = new string[3];
-                        error[0] = $"No value for {TaffKeywords.CONFIG_FILENAME} can be found";
-                        error[1] = "null";
-                        error[2] = $"{TaffKeywords.CONFIG_FILENAME}=\"{expectedCffFilename}\"";
-                        errorManager.Errors.Add(error);
+                        string filePath = Path.GetDirectoryName(taffFilename);
+                        cffFilename = $"{filePath}{Path.DirectorySeparatorChar}{cffFilename}";
+
+                        Validations.CheckFileExists(cffFilename, ref errorManager);
                     }
                 }
             }
 
             streamReader.Close();
 
-            if (!validOpenClosingSection[0] || !validOpenClosingSection[1])
-            {
-                string[] error = new string[3];
-                error[0] = $"There is no configration data section";
-                error[1] = "null";
-                error[2] = $"The section starts with {TaffKeywords.OPENING_CONFIG_DATA} and end with {TaffKeywords.CLOSING_CONFIG_DATA}";
-                errorManager.Errors.Add(error);
+            // Checking whether the configuration data section exists
+            openClosingConfigData.CheckValidPair(ref errorManager);
 
-                return null;
-            }
+            // Check whether the cffFilename has been assigned a value or not
+            Validations.CheckProcessedFileExists(cffFilename, expectedCffFilename, ref errorManager);
 
-            if (cffFilename == null)
-            {
-                string[] error = new string[3];
-                error[0] = $"There is no cff file";
-                error[1] = "null";
-                error[2] = expectedCffFilename;
-                errorManager.Errors.Add(error);
-            }
             return cffFilename;
         }
     }

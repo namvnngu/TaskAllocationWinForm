@@ -41,6 +41,8 @@ namespace TasksAllocation
 
                 if (cffFileNameExits)
                 {
+                    urlTextBox.Text = taffFileName;
+
                     // Validate task allocation file and configuration file
                     validTaskAllocation = taskAllocation.Validate(taffFileName, ref errorManager);
                     cffFilename = taskAllocation.CffFilename;
@@ -83,11 +85,21 @@ namespace TasksAllocation
             aboutBox.ShowDialog();
         }
 
-        private void errorsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ErrorsToolStripMenuItemClick(object sender, EventArgs e)
         {
             errorsForm = new ErrorsForm();
             errorsForm.errorWebBrowser.DocumentText = errorText;
             errorsForm.Show();
+        }
+
+        private void MainWebBrowserDocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+
+        }
+
+        private void ValidateButtonClick(object sender, EventArgs e)
+        {
+
         }
     }
 }
