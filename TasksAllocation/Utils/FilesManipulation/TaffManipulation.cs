@@ -30,6 +30,8 @@ namespace TasksAllocation.Utils.FilesManipulation
                 error[1] = Path.GetExtension(taffFilename);
                 error[2] = $".{TaffKeywords.FILE_EXTENSION}";
                 errorManager.Errors.Add(error);
+
+                return null;
             }
 
 
