@@ -14,9 +14,24 @@ namespace TasksAllocation.Utils.FilesManipulation
         public static string ExtractCff(string taffFilename, ref ErrorManager errorManager)
         {
             string cffFilename = null;
-            string line = "";
+            string line, expectedCffFilename = "*.cff";
             StreamReader streamReader = new StreamReader(taffFilename);
             bool[] validOpenClosingSection = { false, false };
+
+            if (Path.GetExtension(taffFilename) == $".{TaffKeywords.FILE_EXTENSION}")
+            {
+                expectedCffFilename = Path.GetFileName(taffFilename);
+                expectedCffFilename = expectedCffFilename.Replace(TaffKeywords.FILE_EXTENSION, CffKeywords.FILE_EXTENSION);
+            }
+            else
+            {
+                string[] error = new string[3];
+                error[0] = "The file extension is invalid";
+                error[1] = Path.GetExtension(taffFilename);
+                error[2] = $".{TaffKeywords.FILE_EXTENSION}";
+                errorManager.Errors.Add(error);
+            }
+
 
             while (!streamReader.EndOfStream)
             {
@@ -88,8 +103,8 @@ namespace TasksAllocation.Utils.FilesManipulation
                             {
                                 string[] error = new string[3];
                                 error[0] = "File extension cannot be found";
-                                error[1] = filenameData.Length.ToString();
-                                error[2] = N_FILENAME_DATA.ToString();
+                                error[1] = "null";
+                                error[2] = expectedCffFilename;
                                 errorManager.Errors.Add(error);
                             }
                         }
@@ -98,7 +113,7 @@ namespace TasksAllocation.Utils.FilesManipulation
                             string[] error = new string[3];
                             error[0] = "No valid file can be found";
                             error[1] = cffFilename;
-                            error[2] = "*.cff (pattern)";
+                            error[2] = expectedCffFilename;
                             errorManager.Errors.Add(error);
                         }
                     }
@@ -106,8 +121,8 @@ namespace TasksAllocation.Utils.FilesManipulation
                     {
                         string[] error = new string[3];
                         error[0] = $"No value for {TaffKeywords.CONFIG_FILENAME} can be found";
-                        error[1] = "0";
-                        error[2] = $"{TaffKeywords.CONFIG_FILENAME}=\"*.cff\"";
+                        error[1] = "null";
+                        error[2] = $"{TaffKeywords.CONFIG_FILENAME}=\"{expectedCffFilename}\"";
                         errorManager.Errors.Add(error);
                     }
                 }
@@ -131,7 +146,7 @@ namespace TasksAllocation.Utils.FilesManipulation
                 string[] error = new string[3];
                 error[0] = $"There is no cff file";
                 error[1] = "null";
-                error[2] = "*.cff (pattern)";
+                error[2] = expectedCffFilename;
                 errorManager.Errors.Add(error);
             }
             return cffFilename;
