@@ -11,5 +11,7 @@ namespace TasksAllocation.Utils.Constants
         public static char EQUALITY = '=';
         public static char DOUBLE_QUOTE = '"';
         public static char DOT = '.';
+        public static char COMMA = ',';
+        public static char SEMI_COLON = ';';
     }
 }

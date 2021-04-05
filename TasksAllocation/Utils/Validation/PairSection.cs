@@ -28,10 +28,11 @@ namespace TasksAllocation.Utils.Validation
                 return true;
             }
 
-            string[] error = new string[3];
-            error[0] = $"There is no configration data section";
-            error[1] = "null";
-            error[2] = $"The section starts with {OpeningSection} and end with {ClosingSection}";
+            string message = $"There is no configration data section";
+            string actualValue = "null";
+            string expectedValue = $"The section starts with {OpeningSection} and end with {ClosingSection}";
+            Error error = new Error(message, actualValue, message);
+            
             errorManager.Errors.Add(error);
 
             return false;

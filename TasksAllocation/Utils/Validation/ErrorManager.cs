@@ -8,12 +8,12 @@ namespace TasksAllocation.Utils.Validation
 {
     class ErrorManager
     {
-        public List<string[]> Errors { get; set; }
+        public List<Error> Errors { get; set; }
 
         public ErrorManager()
         {
             // [[message, actual, expected]]
-            Errors = new List<string[]>();
+            Errors = new List<Error>();
         }
     }
 }

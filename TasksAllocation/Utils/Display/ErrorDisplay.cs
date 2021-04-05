@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.Display
 {
     class ErrorDisplay
     {
-        public static string DisplayText(List<string[]> errors)
+        public static string DisplayText(List<Error> errors)
         {
             string renderedText = Display.BOOTSTRAP_LINK;
             
@@ -16,12 +17,12 @@ namespace TasksAllocation.Utils.Display
             
             for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
             {
-                string[] error = errors[errorNumber];
+                Error error = errors[errorNumber];
 
                 renderedText += $"<div class=\"text-danger\">Error {errorNumber + 1}</div>";
-                renderedText += $"<div>Message: {error[0]}</div>";
-                renderedText += $"<div>Actual value: {error[1]}</div>";
-                renderedText += $"<div>Expected value: {error[2]}</div><br/>";
+                renderedText += $"<div>Message: {error.Message}</div>";
+                renderedText += $"<div>Actual value: {error.ActualValue}</div>";
+                renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br/>";
             }
 
             return renderedText;

@@ -69,7 +69,7 @@ namespace TasksAllocation
                     errorsForm.errorWebBrowser.DocumentText = errorText;
                     errorsForm.Show();
                 }
-                errorManager.Errors = new List<string[]>();
+                errorManager.Errors = new List<Error>();
             }
         }
 

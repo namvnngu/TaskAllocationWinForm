@@ -13,13 +13,15 @@ namespace TasksAllocation.Utils.Validation
         public static bool CheckExtension(string filePath, string expectedExtension, ref ErrorManager errorManager)
         {
             string extractedExtension = Path.GetExtension(filePath);
-            string[] error = new string[3];
+            Error error = new Error();
 
             if (extractedExtension == "")
             {
-                error[0] = "File extension cannot be found";
-                error[1] = "null";
-                error[2] = $".{expectedExtension}";
+
+                error.Message = "File extension cannot be found";
+                error.ActualValue = "null";
+                error.ExpectedValue = $".{expectedExtension}";
+
                 errorManager.Errors.Add(error);
 
                 return false;
@@ -30,9 +32,10 @@ namespace TasksAllocation.Utils.Validation
                 return true;
             }
 
-            error[0] = "The file extension is invalid";
-            error[1] = extractedExtension;
-            error[2] = $".{expectedExtension}";
+            error.Message = "The file extension is invalid";
+            error.ActualValue = extractedExtension;
+            error.ExpectedValue = $".{expectedExtension}";
+
             errorManager.Errors.Add(error);
 
             return false;
@@ -42,10 +45,11 @@ namespace TasksAllocation.Utils.Validation
         {
             if (filename == null)
             {
-                string[] error = new string[3];
-                error[0] = $"There is no expected file";
-                error[1] = "null";
-                error[2] = expectedFilename;
+                string message = $"There is no expected file";
+                string actualValue = "null";
+                string expectedValue = expectedFilename;
+                Error error = new Error(message, actualValue, expectedValue);
+
                 errorManager.Errors.Add(error);
 
                 return false;
@@ -64,10 +68,11 @@ namespace TasksAllocation.Utils.Validation
                 return lineData;
             }
 
-            string[] error = new string[3];
-            error[0] = $"No value for {key} can be found";
-            error[1] = "null";
-            error[2] = $"{key}=\"{value}\"";
+            string message = $"No value for {key} can be found";
+            string actualValue = "null";
+            string expectedValue = $"{key}=\"{value}\"";
+            Error error = new Error(message, actualValue, expectedValue);
+
             errorManager.Errors.Add(error);
 
             return null;
@@ -82,10 +87,9 @@ namespace TasksAllocation.Utils.Validation
                 return value;
             }
 
-            string[] error = new string[3];
-            error[0] = "No valid file/text/value can be found";
-            error[1] = actualValue;
-            error[2] = expectedValue;
+            string message = "No valid file/text/value can be found";
+            Error error = new Error(message, actualValue, expectedValue);
+
             errorManager.Errors.Add(error);
 
             return null;
@@ -98,10 +102,11 @@ namespace TasksAllocation.Utils.Validation
                 return true;
             }
 
-            string[] error = new string[3];
-            error[0] = "File path contains invalid characters";
-            error[1] = filePath;
-            error[2] = "Path must not contain <, >, :, \", /, \\, |, ?, *";
+            string message = "File path contains invalid characters";
+            string actualValue = filePath;
+            string expectedValue = "Path must not contain <, >, :, \", /, \\, |, ?, *";
+            Error error = new Error(message, actualValue, expectedValue);
+
             errorManager.Errors.Add(error);
 
             return false;
@@ -114,10 +119,11 @@ namespace TasksAllocation.Utils.Validation
                 return true;
             }
 
-            string[] error = new string[3];
-            error[0] = "File does not exist";
-            error[1] = filePath;
-            error[2] = "Please provide valid file path";
+            string message = "File does not exist";
+            string actualValue = filePath;
+            string expectedValue = "Please provide valid file path";
+            Error error = new Error(message, actualValue, expectedValue);
+
             errorManager.Errors.Add(error);
 
             return false;
