@@ -86,6 +86,7 @@
     <Compile Include="Utils\FilesManipulation\TaffManipulation.cs" />
     <Compile Include="Utils\Validation\CffKeywordTable.cs" />
     <Compile Include="Utils\Validation\Error.cs" />
+    <Compile Include="Utils\Validation\ErrorCode.cs" />
     <Compile Include="Utils\Validation\PairSection.cs" />
     <Compile Include="Utils\Validation\ErrorManager.cs" />
     <Compile Include="Utils\Validation\TaffKeywordTable.cs" />

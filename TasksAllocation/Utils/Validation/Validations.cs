@@ -23,6 +23,7 @@ namespace TasksAllocation.Utils.Validation
                 error.ExpectedValue = $".{expectedExtension}";
                 error.Filename = fileName;
                 error.LineNumber = lineNumber;
+                error.ErrorCode = ErrorCode.INVALID_EXTENSION;
 
                 errorManager.Errors.Add(error);
 
@@ -39,6 +40,7 @@ namespace TasksAllocation.Utils.Validation
             error.ExpectedValue = $".{expectedExtension}";
             error.Filename = fileName;
             error.LineNumber = lineNumber;
+            error.ErrorCode = ErrorCode.INVALID_EXTENSION;
 
             errorManager.Errors.Add(error);
 
@@ -52,7 +54,7 @@ namespace TasksAllocation.Utils.Validation
                 string message = $"There is no expected file";
                 string actualValue = "null";
                 string expectedValue = expectedFilename;
-                Error error = new Error(message, actualValue, expectedValue, fileName);
+                Error error = new Error(message, actualValue, expectedValue, fileName, "", ErrorCode.MISSING_FILE);
 
                 errorManager.Errors.Add(error);
 
@@ -75,7 +77,7 @@ namespace TasksAllocation.Utils.Validation
             string message = $"No value for {key} can be found";
             string actualValue = "null";
             string expectedValue = $"{key}=\"{value}\"";
-            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber, ErrorCode.MISSING_VALUE);
 
             errorManager.Errors.Add(error);
 
@@ -92,7 +94,7 @@ namespace TasksAllocation.Utils.Validation
             }
 
             string message = "No valid file/text/value can be found";
-            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber, ErrorCode.MISSING_VALUE);
 
             errorManager.Errors.Add(error);
 
@@ -109,7 +111,7 @@ namespace TasksAllocation.Utils.Validation
             string message = "File path contains invalid characters";
             string actualValue = filePath;
             string expectedValue = "Path must not contain <, >, :, \", /, \\, |, ?, *";
-            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber, ErrorCode.INVALID_FORMAT);
 
             errorManager.Errors.Add(error);
 
@@ -126,7 +128,7 @@ namespace TasksAllocation.Utils.Validation
             string message = "File does not exist";
             string actualValue = filePath;
             string expectedValue = "Please provide valid file path";
-            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber, ErrorCode.NOT_FOUND);
 
             errorManager.Errors.Add(error);
 

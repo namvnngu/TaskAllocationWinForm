@@ -18,9 +18,11 @@ namespace TasksAllocation.Utils.Display
             for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
             {
                 Error error = errors[errorNumber];
-                string lineNumberText = error.LineNumber != "" ? $", line {error.LineNumber}" : "";
-                
-                renderedText += $"<div class=\"text-danger\">Error {errorNumber + 1}: {error.Filename}{lineNumberText}</div>";
+                string lineNumberText = error.LineNumber != "" ? $"Line {error.LineNumber}:" : "File:";
+                string errorCodeDescription = ErrorCode.ErrorCodeDescription[error.ErrorCode];
+
+                renderedText += $"<div class=\"text-danger\">Error {error.ErrorCode}: {errorCodeDescription}</div>";
+                renderedText += $"<div class=\"text-danger\">{lineNumberText} {error.Filename}</div>";
                 renderedText += $"<div>Message: {error.Message}</div>";
                 renderedText += $"<div>Actual value: {error.ActualValue}</div>";
                 renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br/>";

@@ -31,7 +31,7 @@ namespace TasksAllocation.Utils.Validation
             string message = $"There is no configration data section";
             string actualValue = "null";
             string expectedValue = $"The section starts with {OpeningSection} and end with {ClosingSection}";
-            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber, ErrorCode.MISSING_SECTION);
             
             errorManager.Errors.Add(error);
 

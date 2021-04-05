@@ -13,6 +13,7 @@ namespace TasksAllocation.Utils.Validation
         public string ExpectedValue { get; set; }
         public string Filename { get; set; }
         public string LineNumber { get; set; }
+        public int ErrorCode { get; set; }
 
         public Error()
         {
@@ -44,6 +45,16 @@ namespace TasksAllocation.Utils.Validation
             ExpectedValue = expectedValue;
             Filename = filename;
             LineNumber = lineNumber;
+        }
+
+        public Error(string message, string actualValue, string expectedValue, string filename, string lineNumber, int errorCode)
+        {
+            Message = message;
+            ActualValue = actualValue;
+            ExpectedValue = expectedValue;
+            Filename = filename;
+            LineNumber = lineNumber;
+            ErrorCode = errorCode;
         }
     }
 }
