@@ -10,24 +10,45 @@ namespace TasksAllocation.Utils.DataStructure
     class Map
     {
         public string Data { get; set; }
+        public string ErrorMessage { get; set; }
 
         public Map(string data)
         {
             Data = data;
+            ErrorMessage = null;
         }
 
         public string[,] ConvertToMatrix(int nRow, int nCol)
         {
-            string[,] matrix = new string[nRow, nCol];
+            string[,] matrixData = new string[nRow, nCol];
             string[] rows = Data.Split(Symbols.SEMI_COLON);
 
-            if (nRow != rows.Length)
+            if (rows.Length != nRow)
             {
-                
-                throw new Exception("The number of processor is invalid");
+                ErrorMessage = "The number of processor is invalid";
+
+                return null;
             }
 
-            return matrix;
+            for (int rowNumber = 0; rowNumber < rows.Length; rowNumber++)
+            {
+                string row = rows[rowNumber];
+                string[] cols = row.Split(Symbols.COMMA);
+
+                if (cols.Length != nCol)
+                {
+                    ErrorMessage = "The number of available task allocations per processor is insufficient";
+
+                    return null;
+                }
+
+                for (int colNumber = 0; colNumber < cols.Length; colNumber++)
+                {
+                    matrixData[rowNumber, colNumber] = cols[colNumber];
+                }
+            }
+
+            return matrixData;
         }
     }
 }
