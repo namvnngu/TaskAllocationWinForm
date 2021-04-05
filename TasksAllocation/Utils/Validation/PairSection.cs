@@ -21,7 +21,7 @@ namespace TasksAllocation.Utils.Validation
             ClosingSection = closingSection;
         }
 
-        public bool CheckValidPair(ref ErrorManager errorManager)
+        public bool CheckValidPair(ref ErrorManager errorManager, string fileName, string lineNumber)
         {
             if(ValidSectionPair[0] && ValidSectionPair[1])
             {
@@ -31,7 +31,7 @@ namespace TasksAllocation.Utils.Validation
             string message = $"There is no configration data section";
             string actualValue = "null";
             string expectedValue = $"The section starts with {OpeningSection} and end with {ClosingSection}";
-            Error error = new Error(message, actualValue, message);
+            Error error = new Error(message, actualValue, expectedValue, fileName, lineNumber);
             
             errorManager.Errors.Add(error);
 
