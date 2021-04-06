@@ -14,7 +14,8 @@ namespace TasksAllocation.Utils.Display
         {
             string renderedText = Display.BOOTSTRAP_LINK;
             
-            renderedText += $"<h3 class=\"font-weight-bold\">There are <span class=\"badge badge-primary badge-pill\">{errors.Count}</span> errors</h3>";
+            renderedText += $"<h3 class=\"font-weight-bold\">There are " +
+                $"<span class=\"badge badge-primary badge-pill\">{errors.Count}</span> errors</h3>";
             
             for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
             {

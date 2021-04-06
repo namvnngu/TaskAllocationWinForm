@@ -21,7 +21,9 @@ namespace TasksAllocation.Components
             ID = id;
             MapData = mapData;
             MapMatrix = null;
-            OpeningClosingSection = new PairSection(TaffKeywords.OPENING_ALLOCATION, TaffKeywords.CLOSING_ALLOCATION);
+            OpeningClosingSection = new PairSection(
+                TaffKeywords.OPENING_ALLOCATION, 
+                TaffKeywords.CLOSING_ALLOCATION);
         }
     }
 }

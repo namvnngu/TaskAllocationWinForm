@@ -32,7 +32,9 @@ namespace TasksAllocation.Components
             RAM = ram;
             Download = download;
             Upload = upload;
-            OpeningClosingSection = new PairSection(CffKeywords.OPENING_PROCESSOR, CffKeywords.CLOSING_PROCESSOR);
+            OpeningClosingSection = new PairSection(
+                CffKeywords.OPENING_PROCESSOR, 
+                CffKeywords.CLOSING_PROCESSOR);
         }
     }
 }

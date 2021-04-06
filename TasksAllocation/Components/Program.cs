@@ -20,7 +20,9 @@ namespace TasksAllocation.Components
             Duration = duration;
             Tasks = tasks;
             Processors = processors;
-            OpeningClosingSection = new PairSection(CffKeywords.OPENING_PROGRAM, CffKeywords.CLOSING_PROGRAM);
+            OpeningClosingSection = new PairSection(
+                CffKeywords.OPENING_PROGRAM, 
+                CffKeywords.CLOSING_PROGRAM);
         }
     }
 }

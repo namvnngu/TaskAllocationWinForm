@@ -18,7 +18,9 @@ namespace TasksAllocation.Components
         public LocalCommunication(Map mapData)
         {
             MapData = mapData;
-            OpeningClosingSection = new PairSection(CffKeywords.OPENING_LOCAL_COMMUNICATION, CffKeywords.CLOSING_LOCAL_COMMUNICATION);
+            OpeningClosingSection = new PairSection(
+                CffKeywords.OPENING_LOCAL_COMMUNICATION, 
+                CffKeywords.CLOSING_LOCAL_COMMUNICATION);
             MapMatrix = null;
         }
     }

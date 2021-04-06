@@ -50,7 +50,9 @@ namespace TasksAllocation.Components
             MaximumDownload = maximumDownload;
             MinimumUpload = minimumUpload;
             MaximumUpload = maximumUpload;
-            OpeningClosingSection = new PairSection(CffKeywords.OPENING_LIMITS, CffKeywords.CLOSING_LIMITS);
+            OpeningClosingSection = new PairSection(
+                CffKeywords.OPENING_LIMITS, 
+                CffKeywords.CLOSING_LIMITS);
         }
     }
 }

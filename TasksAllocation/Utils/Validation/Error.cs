@@ -29,7 +29,11 @@ namespace TasksAllocation.Utils.Validation
             LineNumber = "";
         }
 
-        public Error(string message, string actualValue, string expectedValue, string fileName)
+        public Error(
+            string message, 
+            string actualValue, 
+            string expectedValue, 
+            string fileName)
         {
             Message = message;
             ActualValue = actualValue;
@@ -38,7 +42,12 @@ namespace TasksAllocation.Utils.Validation
             LineNumber = "";
         }
 
-        public Error(string message, string actualValue, string expectedValue, string filename, string lineNumber)
+        public Error(
+            string message, 
+            string actualValue, 
+            string expectedValue, 
+            string filename, 
+            string lineNumber)
         {
             Message = message;
             ActualValue = actualValue;
@@ -47,7 +56,13 @@ namespace TasksAllocation.Utils.Validation
             LineNumber = lineNumber;
         }
 
-        public Error(string message, string actualValue, string expectedValue, string filename, string lineNumber, int errorCode)
+        public Error(
+            string message, 
+            string actualValue, 
+            string expectedValue, 
+            string filename, 
+            string lineNumber, 
+            int errorCode)
         {
             Message = message;
             ActualValue = actualValue;

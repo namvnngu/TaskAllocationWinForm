@@ -18,7 +18,9 @@ namespace TasksAllocation.Components
         public RemoteCommunication(Map mapData)
         {
             MapData = mapData;
-            OpeningClosingSection = new PairSection(CffKeywords.OPENING_REMOTE_COMMUNICATION, CffKeywords.CLOSING_REMOTE_COMMUNICATION);
+            OpeningClosingSection = new PairSection(
+                CffKeywords.OPENING_REMOTE_COMMUNICATION,
+                CffKeywords.CLOSING_REMOTE_COMMUNICATION);
             MapMatrix = null;
         }
     }
