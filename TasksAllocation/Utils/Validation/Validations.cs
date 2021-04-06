@@ -196,6 +196,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static int CheckInteger(
             string number, 
+            string keyword,
             ref ErrorManager errorManager,
             string fileName, 
             string lineNumber)
@@ -208,7 +209,7 @@ namespace TasksAllocation.Utils.Validation
 
             string message = "Cannot be parsed to an integer";
             string actualValue = number;
-            string expectedValue = "A interger";
+            string expectedValue = $"A interger for \"{keyword}\"";
             Error error = new Error(
                 message, 
                 actualValue, 
@@ -255,7 +256,8 @@ namespace TasksAllocation.Utils.Validation
             if (count != null)
             {
                 returnedCount = CheckInteger(
-                    count, 
+                    count,
+                    keyword,
                     ref errorManager,
                     fileName, 
                     lineNumber.ToString());
