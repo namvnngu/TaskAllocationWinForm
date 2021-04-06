@@ -34,13 +34,11 @@ namespace TasksAllocation.Files
 
         public bool Validate(string taffFilename, ref ErrorManager errorManager)
         {
-            int beforeNumOfError, afterNumOfError, lineNumber = 1;
+            int beforeNumOfError, afterNumOfError, lineNumber = 1, allocationCount = -1;
             PairSection openClosingAllocations = new PairSection(
                 TaffKeywords.OPENING_ALLOCATIONS,
                 TaffKeywords.CLOSING_ALLOCATIONS);
-            PairSection openClosingAllocation = new PairSection(
-                TaffKeywords.OPENING_ALLOCATION,
-                TaffKeywords.CLOSING_ALLOCATION);
+            PairSection openClosingAllocation;
             string line;
             StreamReader streamReader = new StreamReader(taffFilename);
 
@@ -71,44 +69,60 @@ namespace TasksAllocation.Files
                         ref errorManager,
                         taffFilename,
                         lineNumber.ToString());
+                    allocationCount = Count;
                 }
 
-                if (NumberOfTasks < 0 && 
-                    openClosingAllocations.ValidSectionPair[0] && 
+                if (NumberOfTasks < 0 &&
+                    openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.ALLOCATIONS_TASKS))
                 {
                     NumberOfTasks = Validations.ValidateIntegerPair(
-                        line, 
-                        TaffKeywords.ALLOCATIONS_TASKS, 
-                        ref errorManager, 
-                        taffFilename, 
+                        line,
+                        TaffKeywords.ALLOCATIONS_TASKS,
+                        ref errorManager,
+                        taffFilename,
                         lineNumber.ToString());
                 }
 
-                if (NumberOfProcessors < 0 && 
-                    openClosingAllocations.ValidSectionPair[0] && 
+                if (NumberOfProcessors < 0 &&
+                    openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.ALLOCATIONS_PROCESSORS))
                 {
                     NumberOfProcessors = Validations.ValidateIntegerPair(
-                        line, 
+                        line,
                         TaffKeywords.ALLOCATIONS_PROCESSORS,
-                        ref errorManager, 
-                        taffFilename, 
+                        ref errorManager,
+                        taffFilename,
                         lineNumber.ToString());
                 }
 
-                // Check whether the line starts Opening/Closing Allocation section 
-                // If yes, mark it exist
-                openClosingAllocation.MarkSection(line, lineNumber);
+                // According to Count, extract the relevant allocation data
+                
+                if (allocationCount > 0 &&
+                    openClosingAllocations.ValidSectionPair[0] &&
+                    line.StartsWith(TaffKeywords.OPENING_ALLOCATION))
+                {
+                    Allocations = new List<Allocation>();
+                    string id = null;
+                    string mapData = null;
+                    openClosingAllocation = new PairSection(
+                        TaffKeywords.OPENING_ALLOCATION,
+                        TaffKeywords.CLOSING_ALLOCATION);
 
+                    // Check whether the line starts Opening/Closing Allocation section 
+                    // If yes, mark it exist
+                    openClosingAllocation.MarkSection(line, lineNumber);
+
+                    // Checking whether the Allocation section exists
+                    openClosingAllocation.CheckValidPair(ref errorManager, taffFilename);
+
+                    allocationCount--;
+                }
                 lineNumber++;
             }
 
             // Checking whether the Allocations section exists
             openClosingAllocations.CheckValidPair(ref errorManager, taffFilename);
-
-            // Checking whether the Allocation section exists
-            openClosingAllocation.CheckValidPair(ref errorManager, taffFilename);
 
             streamReader.Close();
 
