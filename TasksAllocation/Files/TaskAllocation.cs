@@ -186,19 +186,34 @@ namespace TasksAllocation.Files
             // Checking whether the Allocations section exists
             openClosingAllocations.CheckValidPair(validations, taffFilename);
 
-            // Checking whether the number of allocation is the same as the defined COUNT
-            validations.CheckValidQuantity(
-                Allocations.Count.ToString(),
+            // Check TASKS, COUNT and PROCESSORS
+            bool countExists = validations.CheckRequiredValueExist(
                 Count.ToString(),
-                TaffKeywords.OPENING_ALLOCATION,
-                ErrorCode.MISSING_SECTION);
+                TaffKeywords.ALLOCATIONS_COUNT);
+            bool taskExists = validations.CheckRequiredValueExist(
+                NumberOfTasks.ToString(),
+                TaffKeywords.ALLOCATIONS_TASKS);
+            bool processorsExists = validations.CheckRequiredValueExist(
+                NumberOfProcessors.ToString(),
+                TaffKeywords.ALLOCATIONS_PROCESSORS);
 
-            // Check whether the Allocation sections exist
-            foreach (PairSection pairSection in allocationSectionList)
+            // Checking whether the number of allocation is the same as the defined COUNT
+            if (countExists && taskExists && processorsExists)
             {
-                Console.WriteLine($"{pairSection.ValidSectionPair[0]} | {pairSection.ValidSectionPair[0]}");
-                pairSection.CheckValidPair(validations, taffFilename);
+                validations.CheckValidQuantity(
+                   Allocations.Count.ToString(),
+                   Count.ToString(),
+                   TaffKeywords.OPENING_ALLOCATION,
+                   ErrorCode.MISSING_SECTION);
+
+                // Check whether the Allocation sections exist
+                foreach (PairSection pairSection in allocationSectionList)
+                {
+                    Console.WriteLine($"{pairSection.ValidSectionPair[0]} | {pairSection.ValidSectionPair[0]}");
+                    pairSection.CheckValidPair(validations, taffFilename);
+                }
             }
+
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

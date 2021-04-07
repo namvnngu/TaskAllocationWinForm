@@ -130,6 +130,27 @@ namespace TasksAllocation.Utils.Validation
             return null;
         }
 
+        public bool CheckRequiredValueExist(string value, string keyword)
+        {
+            if (value == null || value == "-1")
+            {
+                string message = $"No valid {keyword} can be found";
+                Error error = new Error(
+                    message,
+                    value,
+                    "A value is different from null or -1",
+                    Filename,
+                    LineNumber,
+                    ErrorCode.MISSING_VALUE);
+
+                ErrorValidationManager.Errors.Add(error);
+
+                return false;
+            }
+
+            return true;
+        }
+
         public bool CheckInvalidFileNameChars(string filePath)
         {
             if (filePath.IndexOfAny(Path.GetInvalidFileNameChars()) == -1)
