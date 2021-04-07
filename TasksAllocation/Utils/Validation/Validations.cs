@@ -176,6 +176,27 @@ namespace TasksAllocation.Utils.Validation
             return false;
         }
 
+        public bool CheckValidQuantity(int actualValue, int expectedValue, string field)
+        {
+            if(actualValue != expectedValue)
+            {
+                string message = $"The number of {field} is not equal to the predefined value";
+                Error error = new Error(
+                    message,
+                    actualValue.ToString(),
+                    expectedValue.ToString(),
+                    Filename,
+                    LineNumber,
+                    ErrorCode.MISSING_SECTION);
+
+                ErrorValidationManager.Errors.Add(error);
+
+                return false;
+            }
+
+            return true;
+        } 
+
         public int CheckInteger(string number, string keyword)
         {
             int parsedInt = -1;
@@ -202,26 +223,44 @@ namespace TasksAllocation.Utils.Validation
 
         public int ValidateIntegerPair(string line, string keyword)
         {
-            string count = null;
-            int returnedCount = -1;
+            string integer = null;
+            int returnedInteger = -1;
             // Check whether the pair of key-value exists
             string[] lineCountData = CheckPairKeyValue(line, keyword, "(an integer)");
 
             if (lineCountData != null)
             {
-                count = CheckTextValueExist(
+                integer = CheckTextValueExist(
                     lineCountData[1],
                     "null",
                     "A string has one or more than one characters");
             }
 
             // Check whether the value is an integer
-            if (count != null)
+            if (integer != null)
             {
-                returnedCount = CheckInteger(count, keyword);
+                returnedInteger = CheckInteger(integer, keyword);
             }
 
-            return returnedCount;
+            return returnedInteger;
+        }
+
+        public string ValidateStringPair(string line, string keyword)
+        {
+            // Check whether the pair of key-value exists 
+            string[] lineData = CheckPairKeyValue(line, keyword, "\"(a string)\"");
+            string data = null;
+
+            if (lineData != null)
+            {
+                // Check whether the value in the above pair is valid
+                data = CheckTextValueExist(
+                    lineData[1],
+                    "null",
+                    "A string has one or more than one characters");
+            }
+
+            return data;
         }
     }
 }

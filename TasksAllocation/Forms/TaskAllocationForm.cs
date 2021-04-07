@@ -67,7 +67,6 @@ namespace TasksAllocation
                     errorsForm.errorWebBrowser.DocumentText = errorText;
                     errorsForm.Show();
                 }
-                Console.WriteLine(validations.ErrorValidationManager.Errors.Count);
 
                 // Reset
                 validations = new Validations();

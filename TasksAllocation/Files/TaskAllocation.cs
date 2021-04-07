@@ -8,6 +8,7 @@ using TasksAllocation.Components;
 using TasksAllocation.Utils.Validation;
 using TasksAllocation.Utils.FilesManipulation;
 using TasksAllocation.Utils.Constants;
+using TasksAllocation.Utils.DataStructure;
 
 namespace TasksAllocation.Files
 {
@@ -52,15 +53,18 @@ namespace TasksAllocation.Files
             GetCffFilename(taffFilename, validations);
 
             // Validate the rest of the taff file
-            int beforeNumOfError, afterNumOfError, lineNumber = 1, allocationCount = -1;
             PairSection openClosingAllocations = new PairSection(
                 TaffKeywords.OPENING_ALLOCATIONS,
                 TaffKeywords.CLOSING_ALLOCATIONS);
             PairSection openClosingAllocation;
-            string line;
+            List<PairSection> allocationSectionList = new List<PairSection>();
             StreamReader streamReader = new StreamReader(taffFilename);
-            validations.Filename = taffFilename;
+            int beforeNumOfError, afterNumOfError, lineNumber = 1;
+            int id = -1, allocationCount = -1;
+            string line, mapData = null;
+            bool insideAllocationData = false;
 
+            validations.Filename = taffFilename;
             beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             while (!streamReader.EndOfStream)
@@ -84,6 +88,15 @@ namespace TasksAllocation.Files
                         line,
                         TaffKeywords.ALLOCATIONS_COUNT);
                     allocationCount = Count;
+
+                    for(int countNum = 0; countNum < Count; countNum++)
+                    {
+                        openClosingAllocation = new PairSection(
+                            TaffKeywords.OPENING_ALLOCATION,
+                            TaffKeywords.CLOSING_ALLOCATION);
+                        allocationSectionList.Add(openClosingAllocation);
+                    }
+                    
                 }
 
                 if (NumberOfTasks < 0 &&
@@ -105,34 +118,69 @@ namespace TasksAllocation.Files
                 }
 
                 // According to Count, extract the relevant allocation data
-                /*
                 if (allocationCount > 0 &&
                     openClosingAllocations.ValidSectionPair[0] &&
-                    line.StartsWith(TaffKeywords.OPENING_ALLOCATION))
+                    allocationSectionList[allocationCount - 1].StartWithOpeningSection(line, lineNumber))
                 {
-                    string id = null;
-                    string mapData = null;
-                    openClosingAllocation = new PairSection(
-                        TaffKeywords.OPENING_ALLOCATION,
-                        TaffKeywords.CLOSING_ALLOCATION);
-
-                    // Check whether the line starts Opening/Closing Allocation section 
-                    // If yes, mark it exist
-                    openClosingAllocation.MarkSection(line, lineNumber);
-
-                    // Checking whether the Allocation section exists
-                    openClosingAllocation.CheckValidPair(validations, taffFilename);
-
-                    allocationCount--;
+                    insideAllocationData = true;
                 }
-                */
+
+                if (allocationCount > 0 &&
+                    openClosingAllocations.ValidSectionPair[0] &&
+                    allocationSectionList[allocationCount - 1].StartWithClosingSection(line, lineNumber))
+                {
+                    // Reset value and decrement the number of allocation
+                    insideAllocationData = false;
+                    allocationCount--;
+                    id = -1;
+                    mapData = null;
+                }
+
+                if (insideAllocationData)
+                {
+                    if (id < 0 && line.StartsWith(TaffKeywords.ALLOCATION_ID))
+                    {
+                        id = validations.ValidateIntegerPair(
+                            line,
+                            TaffKeywords.ALLOCATION_ID);
+                    }
+
+                    if (mapData == null && line.StartsWith(TaffKeywords.ALLOCATION_MAP))
+                    {
+                        mapData = validations.ValidateStringPair(
+                            line,
+                            TaffKeywords.ALLOCATION_MAP);
+                    }
+
+                    if (mapData != null && id >= 0)
+                    {
+                        Map newMapData = new Map(mapData);
+                        Allocation newAllocation = new Allocation(id, newMapData);
+
+                        Allocations.Add(newAllocation);
+                    }
+                }
+
                 lineNumber++;
             }
+
+            streamReader.Close();
 
             // Checking whether the Allocations section exists
             openClosingAllocations.CheckValidPair(validations, taffFilename);
 
-            streamReader.Close();
+            // Checking whether the number of allocation is the same as the defined COUNT
+            validations.CheckValidQuantity(
+                Allocations.Count,
+                Count, 
+                TaffKeywords.OPENING_ALLOCATION);
+
+            // Check whether the Allocation sections exist
+            foreach(PairSection pairSection in allocationSectionList)
+            {
+                Console.WriteLine($"{pairSection.ValidSectionPair[0]} | {pairSection.ValidSectionPair[0]}");
+                pairSection.CheckValidPair(validations, taffFilename);
+            }
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

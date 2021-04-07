@@ -59,7 +59,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                     line.StartsWith(TaffKeywords.CONFIG_FILENAME))
                 {
                     // Check whether the pair of key-value exists 
-                    
                     string[] lineData = validations.CheckPairKeyValue(
                         line, 
                         TaffKeywords.CONFIG_FILENAME, 
