@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TasksAllocation.Utils.Constants
 {
@@ -23,5 +24,14 @@ namespace TasksAllocation.Utils.Constants
         public static string CLOSING_ALLOCATION = "END-ALLOCATION";
         public static string ALLOCATION_ID = "ID";
         public static string ALLOCATION_MAP = "MAP";
+
+        public static string COMMENT = "//";
+
+        public static Dictionary<string, string> KEYWORD_DICT = (new TaffKeywords())
+                                                .GetType()
+                                                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                                                .Where(f => f.FieldType == typeof(string))
+                                                .ToDictionary(f => f.Name,
+                                                              f => (string)f.GetValue(null));
     }
 }

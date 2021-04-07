@@ -73,6 +73,9 @@ namespace TasksAllocation.Files
                 line = line.Trim();
                 validations.LineNumber = lineNumber.ToString();
 
+                // Check if keyword is valid or not
+                validations.CheckValidKeyword(line, TaffKeywords.KEYWORD_DICT);
+
                 // Check whether the line starts Opening/Closing Allocations section 
                 // If yes, mark it exist
                 openClosingAllocations.MarkSection(line, lineNumber);
@@ -188,13 +191,13 @@ namespace TasksAllocation.Files
 
             // Check TASKS, COUNT and PROCESSORS
             bool countExists = validations.CheckRequiredValueExist(
-                Count.ToString(),
+                Count.ToString(), 
                 TaffKeywords.ALLOCATIONS_COUNT);
             bool taskExists = validations.CheckRequiredValueExist(
-                NumberOfTasks.ToString(),
+                NumberOfTasks.ToString(), 
                 TaffKeywords.ALLOCATIONS_TASKS);
             bool processorsExists = validations.CheckRequiredValueExist(
-                NumberOfProcessors.ToString(),
+                NumberOfProcessors.ToString(), 
                 TaffKeywords.ALLOCATIONS_PROCESSORS);
 
             // Checking whether the number of allocation is the same as the defined COUNT
@@ -209,11 +212,9 @@ namespace TasksAllocation.Files
                 // Check whether the Allocation sections exist
                 foreach (PairSection pairSection in allocationSectionList)
                 {
-                    Console.WriteLine($"{pairSection.ValidSectionPair[0]} | {pairSection.ValidSectionPair[0]}");
                     pairSection.CheckValidPair(validations, taffFilename);
                 }
             }
-
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

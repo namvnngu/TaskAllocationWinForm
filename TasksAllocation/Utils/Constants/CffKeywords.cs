@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Reflection;
 
 namespace TasksAllocation.Utils.Constants
 {
@@ -75,5 +76,14 @@ namespace TasksAllocation.Utils.Constants
         public static string OPENING_REMOTE_COMMUNICATION = "REMOTE-COMMUNICATION";
         public static string CLOSING_REMOTE_COMMUNICATION = "END-REMOTE-COMMUNICATION";
         public static string REMOTE_COMMUNICATION_MAP = "MAP";
+
+        public static string COMMENT = "//";
+
+        public static Dictionary<string, string> KEYWORD_DICT = (new CffKeywords())
+                                                .GetType()
+                                                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                                                .Where(f => f.FieldType == typeof(string))
+                                                .ToDictionary(f => f.Name,
+                                                              f => (string)f.GetValue(null));
     }
 }

@@ -138,7 +138,7 @@ namespace TasksAllocation.Utils.Validation
                 Error error = new Error(
                     message,
                     value,
-                    "A value is different from null or -1",
+                    "A value should be different from null or -1",
                     Filename,
                     LineNumber,
                     ErrorCode.MISSING_VALUE);
@@ -296,6 +296,36 @@ namespace TasksAllocation.Utils.Validation
             }
 
             return data;
+        }
+
+        public bool CheckValidKeyword(string keyword, Dictionary<string, string> keywordDict)
+        { 
+            if (keyword == "")
+            {
+                return true;
+            }
+
+            foreach (KeyValuePair<string, string> entry in keywordDict) 
+            {
+                string iteratedKeyword = entry.Value;
+                if (keyword.StartsWith(iteratedKeyword))
+                {
+                    return true;
+                }
+            }
+
+            string message = $"{keyword} is invalid";
+            Error error = new Error(
+                message,
+                keyword,
+                "The keyword should be listed in the format description",
+                Filename,
+                LineNumber,
+                ErrorCode.INVALID_KEYWORD);
+
+            ErrorValidationManager.Errors.Add(error);
+
+            return false;
         }
     }
 }
