@@ -19,6 +19,7 @@ namespace TasksAllocation.Utils.Constants
         public static int INVALID_CFF_FORMAT = 18;
         public static int INVALID_EXTENSION = 19;
         public static int INVALID_FILE = 20;
+        public static int INVALID_MAP = 21;
 
         public static int MISSING_VALUE = 30;
         public static int MISSING_SECTION = 31;
@@ -42,7 +43,8 @@ namespace TasksAllocation.Utils.Constants
             { MISSING_VALUE, "Missing value" },
             { MISSING_SECTION, "Missing section" },
             { MISSING_FILE, "Missing file" },
-            { NOT_FOUND, "File cannot be found" }
+            { NOT_FOUND, "File cannot be found" },
+            { INVALID_MAP, "The map data is invalid" }
         };
     }
 }

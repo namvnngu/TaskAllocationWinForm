@@ -176,18 +176,18 @@ namespace TasksAllocation.Utils.Validation
             return false;
         }
 
-        public bool CheckValidQuantity(int actualValue, int expectedValue, string field)
+        public bool CheckValidQuantity(string actualValue, string expectedValue, string field, int errorCode)
         {
             if(actualValue != expectedValue)
             {
                 string message = $"The number of {field} is not equal to the predefined value";
                 Error error = new Error(
                     message,
-                    actualValue.ToString(),
-                    expectedValue.ToString(),
+                    actualValue,
+                    expectedValue,
                     Filename,
                     LineNumber,
-                    ErrorCode.MISSING_SECTION);
+                    errorCode);
 
                 ErrorValidationManager.Errors.Add(error);
 
@@ -196,6 +196,20 @@ namespace TasksAllocation.Utils.Validation
 
             return true;
         } 
+
+        public void CheckInvalidMap(string actualValue, string expectedValue, string errorName)
+        {
+            string message = $"The number of {errorName} is invalid";
+            Error error = new Error(
+                message,
+                actualValue,
+                expectedValue,
+                Filename,
+                LineNumber,
+                ErrorCode.INVALID_MAP);
+
+            ErrorValidationManager.Errors.Add(error);
+        }
 
         public int CheckInteger(string number, string keyword)
         {

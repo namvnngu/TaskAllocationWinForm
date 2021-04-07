@@ -89,14 +89,14 @@ namespace TasksAllocation.Files
                         TaffKeywords.ALLOCATIONS_COUNT);
                     allocationCount = Count;
 
-                    for(int countNum = 0; countNum < Count; countNum++)
+                    for (int countNum = 0; countNum < Count; countNum++)
                     {
                         openClosingAllocation = new PairSection(
                             TaffKeywords.OPENING_ALLOCATION,
                             TaffKeywords.CLOSING_ALLOCATION);
                         allocationSectionList.Add(openClosingAllocation);
                     }
-                    
+
                 }
 
                 if (NumberOfTasks < 0 &&
@@ -157,7 +157,24 @@ namespace TasksAllocation.Files
                         Map newMapData = new Map(mapData);
                         Allocation newAllocation = new Allocation(id, newMapData);
 
-                        Allocations.Add(newAllocation);
+                        // Convert the map data to a 2D array
+                        newAllocation.MapMatrix = newMapData.ConvertToMatrix(
+                            NumberOfProcessors,
+                            NumberOfTasks,
+                            validations);
+
+                        // Check the number of tasks in each allocation
+                        int sumOfTasks = newAllocation.CountTasks();
+                        bool validMapData = validations.CheckValidQuantity(
+                            sumOfTasks.ToString(),
+                            NumberOfTasks.ToString(),
+                            "tasks in a allocation",
+                            ErrorCode.INVALID_MAP);
+
+                        if (validMapData)
+                        {
+                            Allocations.Add(newAllocation);
+                        }
                     }
                 }
 
@@ -171,12 +188,13 @@ namespace TasksAllocation.Files
 
             // Checking whether the number of allocation is the same as the defined COUNT
             validations.CheckValidQuantity(
-                Allocations.Count,
-                Count, 
-                TaffKeywords.OPENING_ALLOCATION);
+                Allocations.Count.ToString(),
+                Count.ToString(),
+                TaffKeywords.OPENING_ALLOCATION,
+                ErrorCode.MISSING_SECTION);
 
             // Check whether the Allocation sections exist
-            foreach(PairSection pairSection in allocationSectionList)
+            foreach (PairSection pairSection in allocationSectionList)
             {
                 Console.WriteLine($"{pairSection.ValidSectionPair[0]} | {pairSection.ValidSectionPair[0]}");
                 pairSection.CheckValidPair(validations, taffFilename);

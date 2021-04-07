@@ -25,5 +25,29 @@ namespace TasksAllocation.Components
                 TaffKeywords.OPENING_ALLOCATION, 
                 TaffKeywords.CLOSING_ALLOCATION);
         }
+
+        public int CountTasks()
+        {
+            if (MapMatrix == null)
+            {
+                return -1;
+            }
+
+            int nRow = MapMatrix.GetLength(0);
+            int nCol = MapMatrix.GetLength(1);
+            int sumOfTask = 0;
+
+            for (int row = 0; row < nRow; row++)
+            {
+                for(int col = 0; col < nCol; col++)
+                {
+                    int value;
+                    int.TryParse(MapMatrix[row, col], out value);
+                    sumOfTask += value;
+                }
+            }
+
+            return sumOfTask;
+        }
     }
 }

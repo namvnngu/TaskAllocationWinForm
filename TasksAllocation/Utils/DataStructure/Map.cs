@@ -4,29 +4,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Utils.Constants;
+using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.DataStructure
 {
     class Map
     {
         public string Data { get; set; }
-        public string ErrorMessage { get; set; }
 
         public Map(string data)
         {
             Data = data;
-            ErrorMessage = null;
         }
 
-        public string[,] ConvertToMatrix(int nRow, int nCol)
+        public string[,] ConvertToMatrix(int nRow, int nCol, Validations validations)
         {
             string[,] matrixData = new string[nRow, nCol];
             string[] rows = Data.Split(Symbols.SEMI_COLON);
 
             if (rows.Length != nRow)
             {
-                ErrorMessage = "The number of processor is invalid";
-
+                validations.CheckInvalidMap(
+                    rows.Length.ToString(),
+                    nRow.ToString(),
+                    "processors");
                 return null;
             }
 
@@ -37,8 +38,10 @@ namespace TasksAllocation.Utils.DataStructure
 
                 if (cols.Length != nCol)
                 {
-                    ErrorMessage = "The number of available task allocations per processor is insufficient";
-
+                    validations.CheckInvalidMap(
+                        cols.Length.ToString(),
+                        nCol.ToString(),
+                        "task allocation spaces per processor");
                     return null;
                 }
 
