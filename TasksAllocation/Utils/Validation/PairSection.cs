@@ -24,7 +24,7 @@ namespace TasksAllocation.Utils.Validation
             ClosingSection = closingSection;
         }
 
-        public bool CheckValidPair(ref ErrorManager errorManager, string fileName)
+        public bool CheckValidPair(Validations validations, string fileName)
         {
             if(ValidSectionPair[0] && ValidSectionPair[1])
             {
@@ -53,7 +53,7 @@ namespace TasksAllocation.Utils.Validation
                 lineText, 
                 ErrorCode.MISSING_SECTION);
             
-            errorManager.Errors.Add(error);
+            validations.ErrorValidationManager.Errors.Add(error);
 
             return false;
         }

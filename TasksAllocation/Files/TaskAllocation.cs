@@ -19,21 +19,39 @@ namespace TasksAllocation.Files
         public int NumberOfProcessors { get; set; }
         public List<Allocation> Allocations { get; set; }
 
-        public bool GetCffFilename(string taffFilename, ref ErrorManager errorManager)
+        public TaskAllocation()
+        {
+            CffFilename = null;
+            Count = -1;
+            NumberOfTasks = -1;
+            NumberOfProcessors = -1;
+            Allocations = new List<Allocation>();
+        }
+
+        public bool GetCffFilename(string taffFilename, Validations validations)
         {
             int beforeNumOfError, afterNumOfError;
 
-            beforeNumOfError = errorManager.Errors.Count;
+            beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
 
-            CffFilename = TaffManipulation.ExtractCff(taffFilename, ref errorManager);
+            CffFilename = TaffManipulation.ExtractCff(taffFilename, validations);
 
-            afterNumOfError = errorManager.Errors.Count;
+            afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
         }
 
-        public bool Validate(string taffFilename, ref ErrorManager errorManager)
+        public bool Validate(string taffFilename, Validations validations)
         {
+            if (taffFilename == null)
+            {
+                return false;
+            }
+
+            // Extract and validate the configuration data section
+            GetCffFilename(taffFilename, validations);
+
+            // Validate the rest of the taff file
             int beforeNumOfError, afterNumOfError, lineNumber = 1, allocationCount = -1;
             PairSection openClosingAllocations = new PairSection(
                 TaffKeywords.OPENING_ALLOCATIONS,
@@ -41,16 +59,15 @@ namespace TasksAllocation.Files
             PairSection openClosingAllocation;
             string line;
             StreamReader streamReader = new StreamReader(taffFilename);
+            validations.Filename = taffFilename;
 
-            beforeNumOfError = errorManager.Errors.Count;
-            Count = -1;
-            NumberOfTasks = -1;
-            NumberOfProcessors = -1;
+            beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             while (!streamReader.EndOfStream)
             {
                 line = streamReader.ReadLine();
                 line = line.Trim();
+                validations.LineNumber = lineNumber.ToString();
 
                 // Check whether the line starts Opening/Closing Allocations section 
                 // If yes, mark it exist
@@ -63,12 +80,9 @@ namespace TasksAllocation.Files
                     openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.ALLOCATIONS_COUNT))
                 {
-                    Count = Validations.ValidateIntegerPair(
+                    Count = validations.ValidateIntegerPair(
                         line,
-                        TaffKeywords.ALLOCATIONS_COUNT,
-                        ref errorManager,
-                        taffFilename,
-                        lineNumber.ToString());
+                        TaffKeywords.ALLOCATIONS_COUNT);
                     allocationCount = Count;
                 }
 
@@ -76,33 +90,26 @@ namespace TasksAllocation.Files
                     openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.ALLOCATIONS_TASKS))
                 {
-                    NumberOfTasks = Validations.ValidateIntegerPair(
+                    NumberOfTasks = validations.ValidateIntegerPair(
                         line,
-                        TaffKeywords.ALLOCATIONS_TASKS,
-                        ref errorManager,
-                        taffFilename,
-                        lineNumber.ToString());
+                        TaffKeywords.ALLOCATIONS_TASKS);
                 }
 
                 if (NumberOfProcessors < 0 &&
                     openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.ALLOCATIONS_PROCESSORS))
                 {
-                    NumberOfProcessors = Validations.ValidateIntegerPair(
+                    NumberOfProcessors = validations.ValidateIntegerPair(
                         line,
-                        TaffKeywords.ALLOCATIONS_PROCESSORS,
-                        ref errorManager,
-                        taffFilename,
-                        lineNumber.ToString());
+                        TaffKeywords.ALLOCATIONS_PROCESSORS);
                 }
 
                 // According to Count, extract the relevant allocation data
-                
+                /*
                 if (allocationCount > 0 &&
                     openClosingAllocations.ValidSectionPair[0] &&
                     line.StartsWith(TaffKeywords.OPENING_ALLOCATION))
                 {
-                    Allocations = new List<Allocation>();
                     string id = null;
                     string mapData = null;
                     openClosingAllocation = new PairSection(
@@ -114,19 +121,20 @@ namespace TasksAllocation.Files
                     openClosingAllocation.MarkSection(line, lineNumber);
 
                     // Checking whether the Allocation section exists
-                    openClosingAllocation.CheckValidPair(ref errorManager, taffFilename);
+                    openClosingAllocation.CheckValidPair(validations, taffFilename);
 
                     allocationCount--;
                 }
+                */
                 lineNumber++;
             }
 
             // Checking whether the Allocations section exists
-            openClosingAllocations.CheckValidPair(ref errorManager, taffFilename);
+            openClosingAllocations.CheckValidPair(validations, taffFilename);
 
             streamReader.Close();
 
-            afterNumOfError = errorManager.Errors.Count;
+            afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
         }

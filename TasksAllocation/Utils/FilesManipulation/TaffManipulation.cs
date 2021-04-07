@@ -11,7 +11,7 @@ namespace TasksAllocation.Utils.FilesManipulation
 {
     class TaffManipulation
     {
-        public static string ExtractCff(string taffFilename, ref ErrorManager errorManager)
+        public static string ExtractCff(string taffFilename, Validations validations)
         {
             string cffFilename = null;
             string line, expectedCffFilename = null;
@@ -20,15 +20,11 @@ namespace TasksAllocation.Utils.FilesManipulation
                 TaffKeywords.OPENING_CONFIG_DATA, 
                 TaffKeywords.CLOSING_CONFIG_DATA);
             int lineNumber = 1;
+            validations.Filename = taffFilename;
 
             // Check whether taffFilename has .taff extension
-            if (Validations.CheckExtension(
-                taffFilename,
-                TaffKeywords.FILE_EXTENSION,
-                ref errorManager,
-                taffFilename,
-                ""
-            ))
+            validations.LineNumber = "";
+            if (validations.CheckExtension(taffFilename, TaffKeywords.FILE_EXTENSION))
             {
                 expectedCffFilename = Files.ReplaceExtension(
                     taffFilename, 
@@ -44,6 +40,7 @@ namespace TasksAllocation.Utils.FilesManipulation
             {
                 line = streamReader.ReadLine();
                 line = line.Trim();
+                validations.LineNumber = lineNumber.ToString();
 
                 // Check whether the line starts Opening Configuration Data section 
                 // If yes, mark it exist
@@ -62,52 +59,34 @@ namespace TasksAllocation.Utils.FilesManipulation
                     line.StartsWith(TaffKeywords.CONFIG_FILENAME))
                 {
                     // Check whether the pair of key-value exists 
-                    string[] lineData = Validations.CheckPairKeyValue(
+                    
+                    string[] lineData = validations.CheckPairKeyValue(
                         line, 
                         TaffKeywords.CONFIG_FILENAME, 
-                        $"\"{expectedCffFilename}\"", 
-                        ref errorManager, 
-                        taffFilename, 
-                        lineNumber.ToString());
+                        $"\"{expectedCffFilename}\"");
 
                     if (lineData != null)
                     {
                         // Check whether the value in the above pair is valid
-                        cffFilename = Validations.CheckTextValueExist(
+                        cffFilename = validations.CheckTextValueExist(
                             lineData[1], 
                             cffFilename,
-                            expectedCffFilename,
-                            ref errorManager, 
-                            taffFilename, 
-                            lineNumber.ToString());
+                            expectedCffFilename);
                     }
 
                     // Check whether the value in the above pair has the valid extension (.cff),
                     // and check the filename has no invalia file character 
-                    bool cffExtensionValid = cffFilename != null && 
-                        Validations.CheckExtension(
-                            cffFilename,
-                            CffKeywords.FILE_EXTENSION,
-                            ref errorManager, 
-                            taffFilename, 
-                            lineNumber.ToString());
-                    bool noInvalidaFilenameChars = cffExtensionValid && 
-                        Validations.CheckInvalidFileNameChars(
-                            cffFilename,
-                            ref errorManager, 
-                            taffFilename, 
-                            lineNumber.ToString());
+                    bool cffExtensionValid = cffFilename != null &&
+                        validations.CheckExtension(cffFilename, CffKeywords.FILE_EXTENSION);
+                    bool noInvalidaFilenameChars = cffExtensionValid &&
+                        validations.CheckInvalidFileNameChars(cffFilename);
                     
                     if (noInvalidaFilenameChars)
                     {
                         string filePath = Path.GetDirectoryName(taffFilename);
                         cffFilename = $"{filePath}{Path.DirectorySeparatorChar}{cffFilename}";
 
-                        Validations.CheckFileExists(
-                            cffFilename,
-                            ref errorManager, 
-                            taffFilename,
-                            lineNumber.ToString());
+                        validations.CheckFileExists(cffFilename);
                     }
                 }
 
@@ -117,14 +96,10 @@ namespace TasksAllocation.Utils.FilesManipulation
             streamReader.Close();
 
             // Checking whether the configuration data section exists
-            openClosingConfigData.CheckValidPair(ref errorManager, taffFilename);
+            openClosingConfigData.CheckValidPair(validations, taffFilename);
 
             // Check whether the cffFilename has been assigned a value or not
-            Validations.CheckProcessedFileExists(
-                cffFilename, 
-                expectedCffFilename, 
-                ref errorManager, 
-                taffFilename);
+            validations.CheckProcessedFileExists(cffFilename, expectedCffFilename);
 
             return cffFilename;
         }

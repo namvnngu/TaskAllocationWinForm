@@ -19,7 +19,8 @@ namespace TasksAllocation
         ErrorsForm errorsForm;
         TaskAllocation taskAllocation = new TaskAllocation();
         Configuration configuration = new Configuration();
-        ErrorManager errorManager = new ErrorManager();
+        Validations validations = new Validations();
+
         string errorText;
 
         public TaskAllocationForm()
@@ -35,24 +36,21 @@ namespace TasksAllocation
             {
                 string taffFileName = openFileDialog.FileName;
                 string cffFilename;
-                bool cffFileNameExits = taskAllocation.GetCffFilename(taffFileName, ref errorManager);
                 bool validTaskAllocation, validaConfiguration;
                 bool allValidFiles = false;
 
-                if (cffFileNameExits)
+                urlTextBox.Text = taffFileName;
+
+                // Validate task allocation file and configuration file
+                validTaskAllocation = taskAllocation.Validate(taffFileName, validations);
+                cffFilename = taskAllocation.CffFilename;
+                validaConfiguration = configuration.Validate(cffFilename);
+
+                if (validTaskAllocation && validaConfiguration)
                 {
-                    urlTextBox.Text = taffFileName;
-
-                    // Validate task allocation file and configuration file
-                    validTaskAllocation = taskAllocation.Validate(taffFileName, ref errorManager);
-                    cffFilename = taskAllocation.CffFilename;
-                    validaConfiguration = configuration.Validate(cffFilename);
-
-                    if (validTaskAllocation && validaConfiguration)
-                    {
-                        allValidFiles = true;
-                    }
+                    allValidFiles = true;
                 }
+
 
                 // Display Error
 
@@ -65,11 +63,16 @@ namespace TasksAllocation
                 else
                 {
                     errorsForm = new ErrorsForm();
-                    errorText = ErrorDisplay.DisplayText(errorManager.Errors);
+                    errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager.Errors);
                     errorsForm.errorWebBrowser.DocumentText = errorText;
                     errorsForm.Show();
                 }
-                errorManager.Errors = new List<Error>();
+                Console.WriteLine(validations.ErrorValidationManager.Errors.Count);
+
+                // Reset
+                validations = new Validations();
+                taskAllocation = new TaskAllocation();
+                configuration = new Configuration();
             }
         }
 
