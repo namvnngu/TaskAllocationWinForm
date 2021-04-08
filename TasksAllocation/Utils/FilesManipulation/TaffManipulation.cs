@@ -26,7 +26,7 @@ namespace TasksAllocation.Utils.FilesManipulation
             validations.LineNumber = "";
             if (validations.CheckExtension(taffFilename, TaffKeywords.FILE_EXTENSION))
             {
-                expectedCffFilename = Files.ReplaceExtension(
+                expectedCffFilename = FilesUtils.ReplaceExtension(
                     taffFilename, 
                     CffKeywords.FILE_EXTENSION);
             }

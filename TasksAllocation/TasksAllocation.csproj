@@ -82,10 +82,12 @@
     <Compile Include="Utils\DataStructure\Map.cs" />
     <Compile Include="Utils\Display\Display.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
-    <Compile Include="Utils\FilesManipulation\Files.cs" />
+    <Compile Include="Utils\FilesManipulation\FilesUtils.cs" />
+    <Compile Include="Utils\FilesManipulation\TaffAllocations.cs" />
     <Compile Include="Utils\FilesManipulation\TaffManipulation.cs" />
     <Compile Include="Utils\Validation\Error.cs" />
     <Compile Include="Utils\Constants\ErrorCode.cs" />
+    <Compile Include="Utils\Validation\KeywordPair.cs" />
     <Compile Include="Utils\Validation\PairSection.cs" />
     <Compile Include="Utils\Validation\ErrorManager.cs" />
     <Compile Include="Utils\Validation\Validations.cs" />

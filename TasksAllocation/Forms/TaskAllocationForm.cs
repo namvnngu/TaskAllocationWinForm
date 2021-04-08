@@ -42,7 +42,7 @@ namespace TasksAllocation
                 urlTextBox.Text = taffFileName;
 
                 // Validate task allocation file and configuration file
-                validTaskAllocation = taskAllocation.Validate(taffFileName, validations);
+                validTaskAllocation = taskAllocation.ValidateFile(taffFileName, validations);
                 cffFilename = taskAllocation.CffFilename;
                 validaConfiguration = configuration.Validate(cffFilename);
 

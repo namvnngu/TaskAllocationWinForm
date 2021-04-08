@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class Files
+    class FilesUtils
     {
         public static string ReplaceExtension(string filePath, string newExenstion)
         {
@@ -16,6 +17,18 @@ namespace TasksAllocation.Utils.FilesManipulation
             string filenameWithNewExtension = filename.Replace(extractedExtension, $".{newExenstion}");
 
             return filenameWithNewExtension;
+        }
+
+        public static int ExtractNumber(int number, string line, string keyword, Validations validations)
+        {
+            if(number < 0 && line.StartsWith(keyword))
+            {
+                int extractedNumber = validations.ValidateIntegerPair(line, keyword);
+
+                return extractedNumber;
+            }
+
+            return number;
         }
     }
 }
