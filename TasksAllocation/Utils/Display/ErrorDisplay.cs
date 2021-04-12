@@ -26,11 +26,12 @@ namespace TasksAllocation.Utils.Display
                 Error error = errors[errorNumber];
                 string lineNumberText = error.LineNumber != "" ? $"Line {error.LineNumber}:" : "File:";
                 string errorCodeDescription = ErrorCode.ErrorCodeDescription[error.ErrorCode];
+                string actualValue = error.ActualValue == "-1" || error.ActualValue == "0" ? "null" : error.ActualValue;
 
                 renderedText += $"<div style=\" color: red \">Error {error.ErrorCode}: {errorCodeDescription}</div>";
                 renderedText += $"<div style=\" color: red \">{lineNumberText} <span style=\" color: blue \">{error.Filename}</span></div>";
                 renderedText += $"<div>Message: {error.Message}</div>";
-                renderedText += $"<div>Actual value: {error.ActualValue}</div>";
+                renderedText += $"<div>Actual value: {actualValue}</div>";
                 renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br>";
             }
 
