@@ -12,10 +12,14 @@ namespace TasksAllocation.Utils.Display
     {
         public static string DisplayText(List<Error> errors)
         {
-            string renderedText = Display.BOOTSTRAP_LINK;
+            string renderedText = "";
+            int numOfTaffErrors = CountTaffErrors(errors);
+            int numOfCffErrors = errors.Count - numOfTaffErrors;
             
-            renderedText += $"<h3 class=\"font-weight-bold\">There are " +
-                $"<span class=\"badge badge-primary badge-pill\">{errors.Count}</span> errors</h3>";
+            renderedText += $"<h3>There are " +
+                $"<span style=\" color: red \">{errors.Count}</span> errors" +
+                $", where TAFF file has <span style=\" color: red \">{numOfTaffErrors}</span> errors and " +
+                $"CFF file has <span style=\" color: red \">{numOfCffErrors}</span> errors</h3>";
             
             for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
             {
@@ -23,14 +27,34 @@ namespace TasksAllocation.Utils.Display
                 string lineNumberText = error.LineNumber != "" ? $"Line {error.LineNumber}:" : "File:";
                 string errorCodeDescription = ErrorCode.ErrorCodeDescription[error.ErrorCode];
 
-                renderedText += $"<div class=\"text-danger\">Error {error.ErrorCode}: {errorCodeDescription}</div>";
-                renderedText += $"<div class=\"text-danger\">{lineNumberText} {error.Filename}</div>";
+                renderedText += $"<div style=\" color: red \">Error {error.ErrorCode}: {errorCodeDescription}</div>";
+                renderedText += $"<div style=\" color: red \">{lineNumberText} <span style=\" color: blue \">{error.Filename}</span></div>";
                 renderedText += $"<div>Message: {error.Message}</div>";
                 renderedText += $"<div>Actual value: {error.ActualValue}</div>";
-                renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br/>";
+                renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br>";
             }
 
             return renderedText;
+        }
+
+        public static int CountTaffErrors(List<Error> errors)
+        {
+            int numOfTafffErrors = 0;
+            string taffFilename = errors[0].Filename;
+
+            for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
+            {
+                Error error = errors[errorNumber];
+                string currentFilename = error.Filename;
+                if (currentFilename != taffFilename)
+                {
+                    break;
+                }
+
+                numOfTafffErrors++;
+            }
+
+            return numOfTafffErrors;
         }
     }
 }
