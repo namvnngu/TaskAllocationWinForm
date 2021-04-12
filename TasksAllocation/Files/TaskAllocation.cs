@@ -124,8 +124,8 @@ namespace TasksAllocation.Files
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
-            Console.WriteLine($"{Count} | {NumberOfTasks} | {NumberOfProcessors}");
-            Console.WriteLine($"{Allocations.Count} | {allocationPair.CalculateNumOfPair()}");
+            // Console.WriteLine($"{Count} | {NumberOfTasks} | {NumberOfProcessors}");
+            // Console.WriteLine($"{Allocations.Count} | {allocationPair.CalculateNumOfPair()}");
 
             return (beforeNumOfError == afterNumOfError);
         }

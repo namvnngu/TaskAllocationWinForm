@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Utils.Constants;
 using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace TasksAllocation.Utils.Validation
 {
@@ -24,9 +26,11 @@ namespace TasksAllocation.Utils.Validation
         public bool CheckExtension(string filePath, string expectedExtension)
         {
             string extractedExtension = Path.GetExtension(filePath);
+            string pattern = @"(\.\w+$)";
+            bool exisitingExtension = Regex.IsMatch(filePath, pattern);
             Error error = new Error();
 
-            if (extractedExtension == "")
+            if (!exisitingExtension && extractedExtension == "")
             {
 
                 error.Message = "File extension cannot be found";
@@ -199,7 +203,7 @@ namespace TasksAllocation.Utils.Validation
 
         public bool CheckValidQuantity(string actualValue, string expectedValue, string field, int errorCode)
         {
-            if(actualValue != expectedValue)
+            if (actualValue != expectedValue)
             {
                 string message = $"The number of {field} is not equal to the predefined value";
                 Error error = new Error(
@@ -216,7 +220,7 @@ namespace TasksAllocation.Utils.Validation
             }
 
             return true;
-        } 
+        }
 
         public void CheckInvalidMap(string actualValue, string expectedValue, string errorName)
         {
@@ -262,6 +266,26 @@ namespace TasksAllocation.Utils.Validation
             int returnedInteger = -1;
             // Check whether the pair of key-value exists
             string[] lineCountData = CheckPairKeyValue(line, keyword, "(an integer)");
+            string pattern = @"(\w+)=(\d+)";
+            bool validPair = Regex.IsMatch(line, pattern);
+
+            if(!validPair)
+            {
+                string message = "Missing key or value";
+                string actualValue = line;
+                string expectedValue = "(key)=(value)";
+                Error error = new Error(
+                    message,
+                    actualValue,
+                    expectedValue,
+                    Filename,
+                    LineNumber,
+                    ErrorCode.MISSING_VALUE);
+
+                ErrorValidationManager.Errors.Add(error);
+
+                return returnedInteger;
+            }
 
             if (lineCountData != null)
             {
@@ -299,13 +323,13 @@ namespace TasksAllocation.Utils.Validation
         }
 
         public bool CheckValidKeyword(string keyword, Dictionary<string, string> keywordDict)
-        { 
+        {
             if (keyword == "")
             {
                 return true;
             }
 
-            foreach (KeyValuePair<string, string> entry in keywordDict) 
+            foreach (KeyValuePair<string, string> entry in keywordDict)
             {
                 string iteratedKeyword = entry.Value;
                 if (keyword.StartsWith(iteratedKeyword))
