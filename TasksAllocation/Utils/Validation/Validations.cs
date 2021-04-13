@@ -261,6 +261,31 @@ namespace TasksAllocation.Utils.Validation
             return parsedInt;
         }
 
+        public double CheckDouble(string number, string keyword)
+        {
+            double parsedDouble = -1;
+
+            if (double.TryParse(number, out parsedDouble))
+            {
+                return parsedDouble;
+            }
+
+            string message = "Cannot be parsed to a floating number";
+            string actualValue = number;
+            string expectedValue = $"A floating number for \"{keyword}\"";
+            Error error = new Error(
+                message,
+                actualValue,
+                expectedValue,
+                Filename,
+                LineNumber,
+                ErrorCode.INVALID_VALUE);
+
+            ErrorValidationManager.Errors.Add(error);
+
+            return parsedDouble;
+        }
+
         public int ValidateIntegerPair(string line, string keyword)
         {
             string integer = null;
@@ -276,7 +301,7 @@ namespace TasksAllocation.Utils.Validation
                 integer = CheckTextValueExist(
                     lineCountData[1],
                     "null",
-                    "A string has one or more than one characters");
+                    "An integer");
             }
 
             // Check whether the value is an integer
@@ -286,6 +311,33 @@ namespace TasksAllocation.Utils.Validation
             }
 
             return returnedInteger;
+        }
+
+        public double ValidateDoublePair(string line, string keyword)
+        {
+            string doulbeNumber = null;
+            double returnedDouble = -1;
+            // Check whether the pair of key-value exists
+            string[] lineCountData = CheckPairKeyValue(line, keyword, "(a floating number)");
+
+            // Check the line follows valid format
+            RegexValidation.RegexDoublePair(line, this);
+
+            if (lineCountData != null)
+            {
+                doulbeNumber = CheckTextValueExist(
+                    lineCountData[1],
+                    "null",
+                    "A floating number");
+            }
+
+            // Check whether the value is an integer
+            if (doulbeNumber != null)
+            {
+                returnedDouble = CheckDouble(doulbeNumber, keyword);
+            }
+
+            return returnedDouble;
         }
 
         public string ValidateStringPair(string line, string keyword)

@@ -21,6 +21,12 @@ namespace TasksAllocation.Files
         public LocalCommunication LocalCommunicationInfo { get; set; }
         public RemoteCommunication RemoteCommunicationInfo { get; set; }
 
+        public Configuration()
+        {
+            LogFilename = null;
+            LimitData = null;
+        }
+
         public bool Validate(string cffFilename, Validations validations)
         {
             if (cffFilename == null)
@@ -29,6 +35,7 @@ namespace TasksAllocation.Files
             }
 
             CffLogFile cffLogFile = new CffLogFile();
+            CffLimits cffLimits = new CffLimits();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -47,20 +54,36 @@ namespace TasksAllocation.Files
                 validations.CheckValidKeyword(line, CffKeywords.KEYWORD_DICT);
 
                 // Extract and validate the LOGFILE section
-                
-
-                // If the LOGFILE section is already visited, ignore
+                // If the LOGFILE section is already visited, then ignore
                 if (!cffLogFile.LogFileSection.ValidSectionPair[1])
                 {
                     LogFilename = cffLogFile.ExtractLogFile(cffFilename, line, validations);
                 }
-                Console.WriteLine(LogFilename);
 
+                // Extract and validate the LIMITS section
+                // If the LIMITS sections is already visited, then ignore
+                if (!cffLimits.LimitPairSection.ValidSectionPair[1])
+                {
+                    LimitData = cffLimits.ExtractLimitData(line, validations);
+                }
 
                 lineNumber++;
             }
 
+            streamReader.Close();
+            Console.WriteLine(LimitData);
 
+            // Check whether the LOGFILE section exists
+            cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the LIMITS section exists
+            cffLimits.LimitPairSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the log file has been assigned a value or not
+            validations.CheckProcessedFileExists(LogFilename, $"\"[name].{cffLogFile.LOGFILE_EXTENSION}\"");
+
+            // TODO: Check whether the Limits object has all valid property values
+            
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);

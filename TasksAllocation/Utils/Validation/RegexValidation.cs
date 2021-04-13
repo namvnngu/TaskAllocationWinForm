@@ -44,6 +44,23 @@ namespace TasksAllocation.Utils.Validation
             return validPair;
         }
 
+        public static bool RegexDoublePair(string text, Validations validations)
+        {
+            string pattern = @"(\w+)=([0-9]+([.|,][0-9]+)?)";
+            bool validPair = Regex.IsMatch(text, pattern);
+
+            if (!validPair)
+            {
+                AddError(
+                    "Invalid key-value (floating number) format",
+                    text,
+                    $"Regular Expression = {pattern}",
+                    validations);
+            }
+
+            return validPair;
+        }
+
         public static bool RegexPair(string text, Validations validations)
         {
             string pattern = @"(\w+)=(.+)";

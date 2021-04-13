@@ -12,7 +12,7 @@ namespace TasksAllocation.Utils.FilesManipulation
     {
         public PairSection LogFileSection { get; set; }
         public string LogFile { get; set; }
-        public const string LOGFILE_EXTENSION = "txt";
+        public string LOGFILE_EXTENSION = "txt";
 
         public CffLogFile()
         {
