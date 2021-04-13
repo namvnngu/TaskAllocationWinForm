@@ -48,6 +48,10 @@ namespace TasksAllocation.Files
                 return false;
             }
 
+            int beforeNumOfError, afterNumOfError;
+
+            beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
+
             // Extract and validate the configuration data section
             GetCffFilename(taffFilename, validations);
 
@@ -60,11 +64,10 @@ namespace TasksAllocation.Files
                 TaffKeywords.CLOSING_ALLOCATIONS);
             StreamReader streamReader = new StreamReader(taffFilename);
             TaffAllocations taffAllocations = new TaffAllocations();
-            int beforeNumOfError, afterNumOfError, lineNumber = 1;
+            int lineNumber = 1;
             string line;
 
             validations.Filename = taffFilename;
-            beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             while (!streamReader.EndOfStream)
             {

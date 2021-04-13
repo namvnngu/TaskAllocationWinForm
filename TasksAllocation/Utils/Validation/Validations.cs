@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Utils.Constants;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace TasksAllocation.Utils.Validation
 {
@@ -26,11 +24,11 @@ namespace TasksAllocation.Utils.Validation
         public bool CheckExtension(string filePath, string expectedExtension)
         {
             string extractedExtension = Path.GetExtension(filePath);
-            string pattern = @"(\.\w+$)";
-            bool exisitingExtension = Regex.IsMatch(filePath, pattern);
+            string filename = Path.GetFileName(filePath);
+            bool validExtensionFormat = RegexValidation.RegexExtension(filename, this);
             Error error = new Error();
 
-            if (!exisitingExtension && extractedExtension == "")
+            if (!validExtensionFormat && extractedExtension == "")
             {
 
                 error.Message = "File extension cannot be found";
@@ -89,6 +87,9 @@ namespace TasksAllocation.Utils.Validation
         {
             string[] lineData = line.Split(Symbols.EQUALITY);
             const int N_LINE_DATA = 2;
+
+            // Check valid pair 
+            RegexValidation.RegexPair(line, this);
 
             if (lineData.Length == N_LINE_DATA)
             {
@@ -266,26 +267,9 @@ namespace TasksAllocation.Utils.Validation
             int returnedInteger = -1;
             // Check whether the pair of key-value exists
             string[] lineCountData = CheckPairKeyValue(line, keyword, "(an integer)");
-            string pattern = @"(\w+)=(\d+)";
-            bool validPair = Regex.IsMatch(line, pattern);
 
-            if(!validPair)
-            {
-                string message = "Missing key or value";
-                string actualValue = line;
-                string expectedValue = "(key)=(value)";
-                Error error = new Error(
-                    message,
-                    actualValue,
-                    expectedValue,
-                    Filename,
-                    LineNumber,
-                    ErrorCode.MISSING_VALUE);
-
-                ErrorValidationManager.Errors.Add(error);
-
-                return returnedInteger;
-            }
+            // Check the line follows valid format
+            RegexValidation.RegexIntegerPair(line, this);
 
             if (lineCountData != null)
             {
