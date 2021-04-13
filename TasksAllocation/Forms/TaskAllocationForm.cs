@@ -44,7 +44,7 @@ namespace TasksAllocation
                 // Validate task allocation file and configuration file
                 validTaskAllocation = taskAllocation.ValidateFile(taffFileName, validations);
                 cffFilename = taskAllocation.CffFilename;
-                validaConfiguration = configuration.Validate(cffFilename);
+                validaConfiguration = configuration.Validate(cffFilename, validations);
 
                 if (validTaskAllocation && validaConfiguration)
                 {

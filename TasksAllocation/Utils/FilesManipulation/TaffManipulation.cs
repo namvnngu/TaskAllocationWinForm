@@ -46,7 +46,7 @@ namespace TasksAllocation.Utils.FilesManipulation
                 // If yes, mark it exist
                 openClosingConfigData.StartWithOpeningSection(line, lineNumber);
 
-                // Check whether the line starts Opening Configuration Data section 
+                // Check whether the line starts Closing Configuration Data section 
                 // If yes, mark it exist, and stop the loop
                 if (openClosingConfigData.StartWithClosingSection(line, lineNumber))
                 {

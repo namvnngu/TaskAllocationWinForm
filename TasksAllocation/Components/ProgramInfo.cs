@@ -8,14 +8,14 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class Program
+    class ProgramInfo
     {
         public int Duration { get; set; }
         public int Tasks { get; set; }
         public int Processors { get; set; }
         public PairSection OpeningClosingSection { get; set; }
 
-        public Program(int duration, int tasks, int processors)
+        public ProgramInfo(int duration, int tasks, int processors)
         {
             Duration = duration;
             Tasks = tasks;

@@ -81,8 +81,8 @@ namespace TasksAllocation.Utils.Validation
         }
 
         public bool StartWithOpeningSection(string line, int lineNumber)
-        { 
-            if (line.StartsWith(OpeningSection))
+        {
+            if (line == OpeningSection)
             {
                 OpeningLineNumber = lineNumber;
                 ValidSectionPair[0] = true;
@@ -94,7 +94,7 @@ namespace TasksAllocation.Utils.Validation
 
         public bool StartWithClosingSection(string line, int lineNumber)
         {
-            if (line.StartsWith(ClosingSection))
+            if (line == ClosingSection)
             {
                 ClosingLineNumber = lineNumber;
                 ValidSectionPair[1] = true;
