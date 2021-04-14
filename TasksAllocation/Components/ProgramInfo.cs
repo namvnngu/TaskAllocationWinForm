@@ -10,12 +10,19 @@ namespace TasksAllocation.Components
 {
     class ProgramInfo
     {
-        public int Duration { get; set; }
+        public double Duration { get; set; }
         public int Tasks { get; set; }
         public int Processors { get; set; }
         public PairSection OpeningClosingSection { get; set; }
 
-        public ProgramInfo(int duration, int tasks, int processors)
+        public ProgramInfo()
+        {
+            Duration = -1;
+            Tasks = -1;
+            Processors = -1;
+        }
+
+        public ProgramInfo(double duration, int tasks, int processors)
         {
             Duration = duration;
             Tasks = tasks;
@@ -23,6 +30,17 @@ namespace TasksAllocation.Components
             OpeningClosingSection = new PairSection(
                 CffKeywords.OPENING_PROGRAM, 
                 CffKeywords.CLOSING_PROGRAM);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder text = new StringBuilder();
+
+            text.AppendLine($"DURATION={Duration}");
+            text.AppendLine($"TASKS={Tasks}");
+            text.AppendLine($"PROCESSORS={Processors}");
+
+            return text.ToString();
         }
     }
 }

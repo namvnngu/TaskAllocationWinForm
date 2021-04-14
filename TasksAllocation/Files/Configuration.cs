@@ -36,6 +36,7 @@ namespace TasksAllocation.Files
 
             CffLogFile cffLogFile = new CffLogFile();
             CffLimits cffLimits = new CffLimits();
+            CffProgram cffProgram = new CffProgram();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -67,11 +68,18 @@ namespace TasksAllocation.Files
                     LimitData = cffLimits.ExtractLimitData(line, validations);
                 }
 
+                // Extract and validate the PROGRAM section
+                // If the LIMITS sections is already visited, then ignore
+                if (!cffProgram.ProgramPairSection.ValidSectionPair[1])
+                {
+                    Program = cffProgram.ExtractProgramData(line, validations);
+                }
+
                 lineNumber++;
             }
 
             streamReader.Close();
-            Console.WriteLine(LimitData);
+            Console.WriteLine(Program);
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);
@@ -79,12 +87,18 @@ namespace TasksAllocation.Files
             // Check whether the LIMITS section exists
             cffLimits.LimitPairSection.CheckValidPair(validations, cffFilename);
 
+            // Check whether the PROGRAM section exists
+            cffProgram.ProgramPairSection.CheckValidPair(validations, cffFilename);
+
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, $"\"[name].{cffLogFile.LOGFILE_EXTENSION}\"");
 
             // Check whether the Limits object has all valid property values
             cffLimits.ValidateLimitData(validations);
-            
+
+            // Check whether the Program object has all valid property values
+            cffProgram.ValidateProgramData(validations);
+
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
