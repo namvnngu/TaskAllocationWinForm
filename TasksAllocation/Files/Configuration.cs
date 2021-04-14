@@ -82,7 +82,8 @@ namespace TasksAllocation.Files
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, $"\"[name].{cffLogFile.LOGFILE_EXTENSION}\"");
 
-            // TODO: Check whether the Limits object has all valid property values
+            // Check whether the Limits object has all valid property values
+            cffLimits.ValidateLimitData(validations);
             
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

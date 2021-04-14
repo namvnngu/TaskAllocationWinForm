@@ -163,5 +163,84 @@ namespace TasksAllocation.Utils.FilesManipulation
                     CffKeywords.MAXIMUM_UPLOAD);
             }
         }
+
+        public void ValidateLimitData(Validations validations)
+        {
+            if (LimitData.MinimumTasks == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_TASKS, validations);
+            }
+
+            if (LimitData.MaximumTasks == -1)
+            {
+                CreateError(CffKeywords.MAXIMUM_TASKS, validations);
+            }
+
+            if (LimitData.MinimumProcessors == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_PROCESSORS, validations);
+            }
+
+            if (LimitData.MaximumProcessors == -1)
+            {
+                CreateError(CffKeywords.MAXIMUM_PROCESSORS, validations);
+            }
+
+            if (LimitData.MinimumProcessorsFrequencies == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_PROCESSOR_FREQUENCIES, validations);
+            }
+
+            if (LimitData.MaximumProcessorsFrequencies == -1)
+            {
+                CreateError(CffKeywords.MAXIMUM_PROCESSOR_FREQUENCIES, validations);
+            }
+
+            if (LimitData.MinimumRAM == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_RAM, validations);
+            }
+
+            if (LimitData.MaximumRAM == -1)
+            {
+                CreateError(CffKeywords.MAXIMUM_RAM, validations);
+            }
+
+            if (LimitData.MinimumDownload == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_DOWNLOAD, validations);
+            }
+
+            if (LimitData.MaximumDownload == -1)
+            {
+                CreateError(CffKeywords.MAXINUM_DOWNLOAD, validations);
+            }
+
+            if (LimitData.MinimumUpload == -1)
+            {
+                CreateError(CffKeywords.MINIMUM_UPLOAD, validations);
+            }
+
+            if (LimitData.MaximumUpload == -1)
+            {
+                CreateError(CffKeywords.MAXIMUM_UPLOAD, validations);
+            }
+        }
+
+        public void CreateError(string keyword, Validations validations)
+        {
+            string message = $"{keyword} value is missing";
+            string actualValue = "null";
+            string expectedValue = "An integer (or a floating number for processor frequencies)";
+            Error error = new Error(
+                message,
+                actualValue,
+                expectedValue,
+                validations.Filename,
+                "",
+                ErrorCode.MISSING_VALUE);
+
+            validations.ErrorValidationManager.Errors.Add(error);
+        }
     }
 }
