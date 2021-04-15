@@ -54,7 +54,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexDoublePair(string text, Validations validations)
         {
-            string pattern = @"^\s*(\w+(\-?\w+)*)=(\d+([.|,]\d+)?)$";
+            string pattern = @"^\s*(\w+(\-?\w+)*)=(\d+(\.\d+)?)$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)
@@ -96,7 +96,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexMap(string text, Validations validations)
         {
-            string pattern = @"^\s*MAP=((0|1)(,0|,1)*)(;(0|1)(,0|,1)*)*$";
+            string pattern = @"^\s*MAP=((0(\.\d+)?|1)(,0(\.\d+)?|,1)*)(;(0(\.\d+)?|1)(,0(\.\d+)?|,1)*)*$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)

@@ -89,10 +89,10 @@ namespace TasksAllocation.Files
 
             streamReader.Close();
 
-            /*foreach(Task task in Tasks)
+            foreach (Task task in Tasks)
             {
                 Console.WriteLine(task);
-            }*/
+            }
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);
