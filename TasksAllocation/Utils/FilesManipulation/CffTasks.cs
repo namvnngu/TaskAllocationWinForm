@@ -29,20 +29,20 @@ namespace TasksAllocation.Utils.FilesManipulation
 
         public List<Task> ExtractTasks(string line, Validations validations)
         {
-            // Check whether the line starts opening/closing PROGRAM section
+            // Check whether the line starts opening/closing TASKS section
             // If yes, mark it exist
             TasksSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            // Count Task section
+            // Count TASK section
             TaskPair.CheckValidKeyword(line);
 
-            // Extract Task data within Tasks section
+            // Extract Task data within TASK section
             if (TasksSection.ValidSectionPair[0] &&
                 !TasksSection.ValidSectionPair[1])
             {
                 Task task;
 
-                // Check whether the reader goes within the Task section
+                // Check whether the reader goes within the TASK section
                 CffTaskExtraction.MarkInsideTask(line, validations);
 
                 task = CffTaskExtraction.ExtractTask(line, validations);

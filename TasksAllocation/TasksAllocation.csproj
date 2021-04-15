@@ -83,6 +83,8 @@
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
     <Compile Include="Utils\FilesManipulation\CffLimits.cs" />
     <Compile Include="Utils\FilesManipulation\CffLogFile.cs" />
+    <Compile Include="Utils\FilesManipulation\CffProcessor.cs" />
+    <Compile Include="Utils\FilesManipulation\CffProcessors.cs" />
     <Compile Include="Utils\FilesManipulation\CffProgram.cs" />
     <Compile Include="Utils\FilesManipulation\CffTask.cs" />
     <Compile Include="Utils\FilesManipulation\CffTasks.cs" />

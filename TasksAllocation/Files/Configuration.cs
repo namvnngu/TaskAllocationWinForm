@@ -38,6 +38,7 @@ namespace TasksAllocation.Files
             CffLimits cffLimits = new CffLimits();
             CffProgram cffProgram = new CffProgram();
             CffTasks cffTasks = new CffTasks();
+            CffProcessors cffProcessors = new CffProcessors();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -84,14 +85,21 @@ namespace TasksAllocation.Files
                     Tasks = cffTasks.ExtractTasks(line, validations);
                 }
 
+                // Extract and validate the PROCESSORS section
+                // If the PROCESSORS sections is already visited, then ignore
+                if (!cffProcessors.ProcessorsSection.ValidSectionPair[1])
+                {
+                    Processors = cffProcessors.ExtractProcessors(line, validations);
+                }
+
                 lineNumber++;
             }
 
             streamReader.Close();
 
-            foreach (Task task in Tasks)
+            foreach (Processor processor in Processors)
             {
-                Console.WriteLine(task);
+                Console.WriteLine(processor);
             }
 
             // Check whether the LOGFILE section exists
@@ -105,6 +113,9 @@ namespace TasksAllocation.Files
 
             // Check whether the TASKS section exists
             cffTasks.TasksSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the PROCCESORS section exists
+            cffProcessors.ProcessorsSection.CheckValidPair(validations, cffFilename);
 
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, EXPECTED_LOGFILE_FORMAT);
@@ -120,6 +131,13 @@ namespace TasksAllocation.Files
                 cffTasks.TaskPair.CalculateNumOfPair().ToString(),
                 cffProgram.Program.Tasks.ToString(),
                 CffKeywords.OPENING_TASKS,
+                ErrorCode.MISSING_SECTION);
+
+            // Check whether the number of processors extracted is equal to the required number
+            validations.CheckValidQuantity(
+                cffProcessors.ProcessorPair.CalculateNumOfPair().ToString(),
+                cffProgram.Program.Processors.ToString(),
+                CffKeywords.OPENING_PROCESSORS,
                 ErrorCode.MISSING_SECTION);
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
