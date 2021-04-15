@@ -119,8 +119,12 @@ namespace TasksAllocation.Utils.FilesManipulation
 
         private void ExtractMapData(string line, Validations validations)
         {
+
             if (AllocationMapData == null && line.StartsWith(TaffKeywords.ALLOCATION_MAP))
             {
+                // Check the MAP format is valid
+                RegexValidation.RegexMap(line, validations);
+
                 AllocationMapData = validations.ValidateStringPair(
                     line,
                     TaffKeywords.ALLOCATION_MAP);

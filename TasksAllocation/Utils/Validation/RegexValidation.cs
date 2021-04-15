@@ -33,7 +33,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexIntegerPair(string text, Validations validations)
         {
-            string pattern = @"(\w+)=(\d+)";
+            string pattern = @"^\s*(\w+(\-?\w+)*)=(\d+)$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)
@@ -54,7 +54,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexDoublePair(string text, Validations validations)
         {
-            string pattern = @"(\w+)=([0-9]+([.|,][0-9]+)?)";
+            string pattern = @"^\s*(\w+(\-?\w+)*)=(\d+([.|,]\d+)?)$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)
@@ -75,12 +75,33 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexPair(string text, Validations validations)
         {
-            string pattern = @"(\w+)=(.+)";
+            string pattern = @"^\s*(\w+(\-?\w+)*)=(.+)$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)
             {
                 string message = "Invalid key-value format";
+                string actualValue = text;
+                string expectedValue = $"Regular Expression = {pattern}";
+
+                AddError(
+                    message,
+                    actualValue,
+                    expectedValue,
+                    validations);
+            }
+
+            return validPair;
+        }
+
+        public static bool RegexMap(string text, Validations validations)
+        {
+            string pattern = @"^\s*MAP=((0|1)(,0|,1)*)(;(0|1)(,0|,1)*)*$";
+            bool validPair = Regex.IsMatch(text, pattern);
+
+            if (!validPair)
+            {
+                string message = "Invalid key-value (MAP) format";
                 string actualValue = text;
                 string expectedValue = $"Regular Expression = {pattern}";
 

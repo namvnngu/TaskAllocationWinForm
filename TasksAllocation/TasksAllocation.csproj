@@ -80,7 +80,6 @@
     <Compile Include="Utils\Constants\Symbols.cs" />
     <Compile Include="Utils\Constants\TaffKeywords.cs" />
     <Compile Include="Utils\DataStructure\Map.cs" />
-    <Compile Include="Utils\Display\Display.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
     <Compile Include="Utils\FilesManipulation\CffLimits.cs" />
     <Compile Include="Utils\FilesManipulation\CffLogFile.cs" />
