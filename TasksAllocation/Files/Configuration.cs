@@ -37,6 +37,7 @@ namespace TasksAllocation.Files
             CffLogFile cffLogFile = new CffLogFile();
             CffLimits cffLimits = new CffLimits();
             CffProgram cffProgram = new CffProgram();
+            CffTasks cffTasks = new CffTasks();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -76,11 +77,22 @@ namespace TasksAllocation.Files
                     Program = cffProgram.ExtractProgramData(line, validations);
                 }
 
+                // Extract and validate the TASKS section
+                // If the TASKS sections is already visited, then ignore
+                if (!cffTasks.TasksSection.ValidSectionPair[1])
+                {
+                    Tasks = cffTasks.ExtractTasks(line, Program.Tasks, validations);
+                }
+
                 lineNumber++;
             }
 
             streamReader.Close();
-            Console.WriteLine(Program);
+
+            /*foreach(Task task in Tasks)
+            {
+                Console.WriteLine(task);
+            }*/
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);

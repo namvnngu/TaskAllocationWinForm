@@ -96,8 +96,8 @@ namespace TasksAllocation.Utils.FilesManipulation
                  AllocationSectionList[Count - 1].StartWithClosingSection(line, lineNumber))
             {
                 // Check the required values are missing
-                validations.CheckRequiredValueExist(AllocationID.ToString(), "Allocation ID");
-                validations.CheckRequiredValueExist(AllocationMapData, "Allocation Map");
+                validations.CheckRequiredValueExist(AllocationID.ToString(), TaffKeywords.ALLOCATION_ID);
+                validations.CheckRequiredValueExist(AllocationMapData, TaffKeywords.ALLOCATION_MAP);
 
                 // Reset Allocation data
                 InsideAllocationData = false;

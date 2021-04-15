@@ -84,6 +84,8 @@
     <Compile Include="Utils\FilesManipulation\CffLimits.cs" />
     <Compile Include="Utils\FilesManipulation\CffLogFile.cs" />
     <Compile Include="Utils\FilesManipulation\CffProgram.cs" />
+    <Compile Include="Utils\FilesManipulation\CffTask.cs" />
+    <Compile Include="Utils\FilesManipulation\CffTasks.cs" />
     <Compile Include="Utils\FilesManipulation\FilesUtils.cs" />
     <Compile Include="Utils\FilesManipulation\TaffAllocations.cs" />
     <Compile Include="Utils\FilesManipulation\TaffManipulation.cs" />

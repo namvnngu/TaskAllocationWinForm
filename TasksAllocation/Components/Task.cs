@@ -11,12 +11,22 @@ namespace TasksAllocation.Components
     class Task
     {
         public int ID { get; set; }
-        public int Runtime { get; set; }
-        public int ReferenceFrequency { get; set; }
+        public double Runtime { get; set; }
+        public double ReferenceFrequency { get; set; }
         public int RAM { get; set; }
         public int Download { get; set; }
         public int Upload { get; set; }
         public PairSection OpeningClosingSection { get; set; }
+
+        public Task()
+        {
+            ID = -1;
+            Runtime = -1;
+            ReferenceFrequency = -1;
+            RAM = -1;
+            Download = -1;
+            Upload = -1;
+        }
 
         public Task(
             int id,
@@ -35,6 +45,20 @@ namespace TasksAllocation.Components
             OpeningClosingSection = new PairSection(
                 CffKeywords.OPENING_TASK, 
                 CffKeywords.CLOSING_TASK);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder text = new StringBuilder();
+
+            text.AppendLine($"TASK-ID={ID}");
+            text.AppendLine($"TASK-RUNTIME={Runtime}");
+            text.AppendLine($"TASK-REFERENCE-FREQUENCY={ReferenceFrequency}");
+            text.AppendLine($"TASK-RAM={RAM}");
+            text.AppendLine($"TASK-DOWNLOAD={Download}");
+            text.AppendLine($"TASK-UPLOAD={Upload}");
+
+            return text.ToString();
         }
     }
 }
