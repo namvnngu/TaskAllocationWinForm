@@ -17,10 +17,14 @@ namespace TasksAllocation.Utils.Validation
 
             if (!exisitingExtension)
             {
+                string message = "Invalid file extension format";
+                string actualValue = text;
+                string expectedValue = $"Regular Expression = {pattern}";
+
                 AddError(
-                    "Invalid file extension format",
-                    text,
-                    $"Regular Expression = {pattern}",
+                    message,
+                    actualValue,
+                    expectedValue,
                     validations);
             }
             
@@ -34,10 +38,14 @@ namespace TasksAllocation.Utils.Validation
 
             if (!validPair)
             {
+                string message = "Invalid key-value (integer value) format";
+                string actualValue = text;
+                string expectedValue = $"Regular Expression = {pattern}";
+
                 AddError(
-                    "Invalid key-value (integer value) format",
-                    text,
-                    $"Regular Expression = {pattern}",
+                    message,
+                    actualValue,
+                    expectedValue,
                     validations);
             }
 
@@ -51,10 +59,14 @@ namespace TasksAllocation.Utils.Validation
 
             if (!validPair)
             {
+                string message = "Invalid key-value (floating number) format";
+                string actualValue = text;
+                string expectedValue = $"Regular Expression = {pattern}";
+
                 AddError(
-                    "Invalid key-value (floating number) format",
-                    text,
-                    $"Regular Expression = {pattern}",
+                    message,
+                    actualValue,
+                    expectedValue,
                     validations);
             }
 
@@ -68,10 +80,14 @@ namespace TasksAllocation.Utils.Validation
 
             if (!validPair)
             {
+                string message = "Invalid key-value format";
+                string actualValue = text;
+                string expectedValue = $"Regular Expression = {pattern}";
+
                 AddError(
-                    "Invalid key-value format",
-                    text,
-                    $"Regular Expression = {pattern}",
+                    message,
+                    actualValue,
+                    expectedValue,
                     validations);
             }
 

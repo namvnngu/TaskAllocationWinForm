@@ -41,6 +41,7 @@ namespace TasksAllocation.Files
             int lineNumber = 1;
             string line;
             StreamReader streamReader = new StreamReader(cffFilename);
+            string EXPECTED_LOGFILE_FORMAT = $"\"[name].{cffLogFile.LOGFILE_EXTENSION}\"";
 
             validations.Filename = cffFilename;
             beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
@@ -91,7 +92,7 @@ namespace TasksAllocation.Files
             cffProgram.ProgramPairSection.CheckValidPair(validations, cffFilename);
 
             // Check whether the log file has been assigned a value or not
-            validations.CheckProcessedFileExists(LogFilename, $"\"[name].{cffLogFile.LOGFILE_EXTENSION}\"");
+            validations.CheckProcessedFileExists(LogFilename, EXPECTED_LOGFILE_FORMAT);
 
             // Check whether the Limits object has all valid property values
             cffLimits.ValidateLimitData(validations);

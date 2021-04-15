@@ -30,6 +30,11 @@ namespace TasksAllocation
 
         private void OpenToolStripMenuItemClick(object sender, EventArgs e)
         {
+            // Reset
+            validations = new Validations();
+            taskAllocation = new TaskAllocation();
+            configuration = new Configuration();
+
             DialogResult dialogResult = openFileDialog.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
@@ -67,11 +72,6 @@ namespace TasksAllocation
                     errorsForm.errorWebBrowser.DocumentText = errorText;
                     errorsForm.Show();
                 }
-
-                // Reset
-                validations = new Validations();
-                taskAllocation = new TaskAllocation();
-                configuration = new Configuration();
             }
         }
 

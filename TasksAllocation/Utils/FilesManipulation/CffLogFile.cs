@@ -24,6 +24,8 @@ namespace TasksAllocation.Utils.FilesManipulation
 
         public string ExtractLogFile(string cffFilename, string line, Validations validations)
         {
+            string EXPECTED_LOGFILE_FORMAT = $"\"[name].{LOGFILE_EXTENSION}\"";
+
             // Check whether the line starts opening/closing LOGFILE section
             // If yes, mark it exist
             LogFileSection.MarkSection(line, Int16.Parse(validations.LineNumber));
@@ -35,14 +37,14 @@ namespace TasksAllocation.Utils.FilesManipulation
                 string[] lineData = validations.CheckPairKeyValue(
                     line,
                     CffKeywords.DEFAULT_LOGFILE,
-                    $"\"[name].{LOGFILE_EXTENSION}\"");
+                    EXPECTED_LOGFILE_FORMAT);
 
                 if (lineData != null)
                 {
                     LogFile = validations.CheckTextValueExist(
                         lineData[1],
                         LogFile,
-                        $"\"[name].{LOGFILE_EXTENSION}\"");
+                        EXPECTED_LOGFILE_FORMAT);
                 }
             }
 

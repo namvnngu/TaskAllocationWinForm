@@ -67,12 +67,14 @@ namespace TasksAllocation.Utils.Validation
                 string message = $"There is no expected file";
                 string actualValue = "null";
                 string expectedValue = expectedFilename;
+                string noLinenumber = "";
+
                 Error error = new Error(
                     message,
                     actualValue,
                     expectedValue,
                     Filename,
-                    "",
+                    noLinenumber,
                     ErrorCode.MISSING_FILE);
 
                 ErrorValidationManager.Errors.Add(error);

@@ -19,6 +19,11 @@ namespace TasksAllocation.Utils.DataStructure
 
         public string[,] ConvertToMatrix(int nRow, int nCol, Validations validations)
         {
+            if (nRow < 0 || nCol < 0)
+            {
+                return null;
+            }
+
             string[,] matrixData = new string[nRow, nCol];
             string[] rows = Data.Split(Symbols.SEMI_COLON);
 

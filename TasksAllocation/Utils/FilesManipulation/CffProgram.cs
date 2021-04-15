@@ -88,12 +88,14 @@ namespace TasksAllocation.Utils.FilesManipulation
             string message = $"{keyword} value is missing";
             string actualValue = "null";
             string expectedValue = "An integer (or a floating number for processor frequencies)";
+            string noLinenumber = "";
+
             Error error = new Error(
                 message,
                 actualValue,
                 expectedValue,
                 validations.Filename,
-                "",
+                noLinenumber,
                 ErrorCode.MISSING_VALUE);
 
             validations.ErrorValidationManager.Errors.Add(error);
