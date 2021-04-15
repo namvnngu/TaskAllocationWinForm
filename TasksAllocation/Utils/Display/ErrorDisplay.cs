@@ -10,17 +10,38 @@ namespace TasksAllocation.Utils.Display
 {
     class ErrorDisplay
     {
-        public static string DisplayText(List<Error> errors)
+        public static string DisplayText(ErrorManager errorManager)
         {
             string renderedText = "";
-            int numOfTaffErrors = CountTaffErrors(errors);
-            int numOfCffErrors = errors.Count - numOfTaffErrors;
+            Dictionary<string, List<Error>> errorTypeDict = errorManager.ClassifyFileError();
+            List<Error> taffErrors = errorTypeDict[TaffKeywords.FILE_EXTENSION];
+            List<Error> cffErrors = errorTypeDict[CffKeywords.FILE_EXTENSION];
+            int numOfTaffErrors = taffErrors.Count;
+            int numOfCffErrors = cffErrors.Count;
+            int totalError = numOfCffErrors + numOfTaffErrors;
             
             renderedText += $"<h3>There are " +
-                $"<span style=\" color: red \">{errors.Count}</span> errors" +
+                $"<span style=\" color: red \">{totalError}</span> errors" +
                 $", where TAFF file has <span style=\" color: red \">{numOfTaffErrors}</span> errors and " +
                 $"CFF file has <span style=\" color: red \">{numOfCffErrors}</span> errors</h3>";
-            
+
+            renderedText += RenderErrorText(taffErrors, "ALLOCATION");
+            renderedText += RenderErrorText(cffErrors, "CONFIGURATION");
+
+            return renderedText;
+        }
+
+        public static string RenderErrorText(List<Error> errors, string fileType)
+        {
+            string renderedText = "";
+
+            if (errors.Count == 0)
+            {
+                return renderedText;
+            }
+
+            renderedText += $"<h4 style=\" color: green \">START PROCESSING {fileType} FILE: {errors[0].Filename}</h4>";
+
             for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
             {
                 Error error = errors[errorNumber];
@@ -35,27 +56,9 @@ namespace TasksAllocation.Utils.Display
                 renderedText += $"<div>Expected value: {error.ExpectedValue}</div><br>";
             }
 
+            renderedText += $"<h4 style=\" color: green \">END PROCESSING {fileType} FILE: {errors[0].Filename}</h4>";
+
             return renderedText;
-        }
-
-        public static int CountTaffErrors(List<Error> errors)
-        {
-            int numOfTafffErrors = 0;
-            string taffFilename = errors[0].Filename;
-
-            for (int errorNumber = 0; errorNumber < errors.Count; errorNumber++)
-            {
-                Error error = errors[errorNumber];
-                string currentFilename = error.Filename;
-                if (currentFilename != taffFilename)
-                {
-                    break;
-                }
-
-                numOfTafffErrors++;
-            }
-
-            return numOfTafffErrors;
         }
     }
 }

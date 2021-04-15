@@ -68,7 +68,7 @@ namespace TasksAllocation
                 else
                 {
                     errorsForm = new ErrorsForm();
-                    errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager.Errors);
+                    errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager);
                     errorsForm.errorWebBrowser.DocumentText = errorText;
                     errorsForm.Show();
                 }
