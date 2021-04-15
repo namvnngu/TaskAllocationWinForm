@@ -27,7 +27,7 @@ namespace TasksAllocation.Utils.FilesManipulation
             CffTaskExtraction = new CffTask();
         }
 
-        public List<Task> ExtractTasks(string line, int numOfTasks, Validations validations)
+        public List<Task> ExtractTasks(string line, Validations validations)
         {
             // Check whether the line starts opening/closing PROGRAM section
             // If yes, mark it exist

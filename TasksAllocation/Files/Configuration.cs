@@ -81,7 +81,7 @@ namespace TasksAllocation.Files
                 // If the TASKS sections is already visited, then ignore
                 if (!cffTasks.TasksSection.ValidSectionPair[1])
                 {
-                    Tasks = cffTasks.ExtractTasks(line, Program.Tasks, validations);
+                    Tasks = cffTasks.ExtractTasks(line, validations);
                 }
 
                 lineNumber++;
@@ -103,6 +103,9 @@ namespace TasksAllocation.Files
             // Check whether the PROGRAM section exists
             cffProgram.ProgramPairSection.CheckValidPair(validations, cffFilename);
 
+            // Check whether the TASKS section exists
+            cffTasks.TasksSection.CheckValidPair(validations, cffFilename);
+
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, EXPECTED_LOGFILE_FORMAT);
 
@@ -111,6 +114,13 @@ namespace TasksAllocation.Files
 
             // Check whether the Program object has all valid property values
             cffProgram.ValidateProgramData(validations);
+
+            // Check whether the number of tasks extracted is equal to the required number
+            validations.CheckValidQuantity(
+                cffTasks.TaskPair.CalculateNumOfPair().ToString(),
+                cffProgram.Program.Tasks.ToString(),
+                CffKeywords.OPENING_TASKS,
+                ErrorCode.MISSING_SECTION);
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
