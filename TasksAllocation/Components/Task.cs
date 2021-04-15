@@ -51,12 +51,12 @@ namespace TasksAllocation.Components
         {
             StringBuilder text = new StringBuilder();
 
-            text.AppendLine($"TASK-ID={ID}");
-            text.AppendLine($"TASK-RUNTIME={Runtime}");
-            text.AppendLine($"TASK-REFERENCE-FREQUENCY={ReferenceFrequency}");
-            text.AppendLine($"TASK-RAM={RAM}");
-            text.AppendLine($"TASK-DOWNLOAD={Download}");
-            text.AppendLine($"TASK-UPLOAD={Upload}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_ID}={ID}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_RUNTIME}={Runtime}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_REFERENCE_FREQUENCY}={ReferenceFrequency}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_RAM}={RAM}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_DOWNLOAD}={Download}");
+            text.AppendLine($"TASK-{CffKeywords.TASK_UPLOAD}={Upload}");
 
             return text.ToString();
         }

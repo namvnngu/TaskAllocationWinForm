@@ -36,9 +36,9 @@ namespace TasksAllocation.Components
         {
             StringBuilder text = new StringBuilder();
 
-            text.AppendLine($"DURATION={Duration}");
-            text.AppendLine($"TASKS={Tasks}");
-            text.AppendLine($"PROCESSORS={Processors}");
+            text.AppendLine($"PROGRAM-{CffKeywords.PROGRAM_DURATION}={Duration}");
+            text.AppendLine($"PROGRAM-{CffKeywords.PROGRAM_TASKS}={Tasks}");
+            text.AppendLine($"PROGRAM-{CffKeywords.CLOSING_PROCESSOR}={Processors}");
 
             return text.ToString();
         }

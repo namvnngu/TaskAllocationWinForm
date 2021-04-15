@@ -14,9 +14,11 @@ namespace TasksAllocation.Components
         double C1 { get; set; }
         double C2 { get; set; }
         public PairSection OpeningClosingSection { get; set; }
+        public string ProcessorName { get; set; }
 
-        public ProcessorType(double coefficient2, double coefficient1, double coefficient0)
+        public ProcessorType(string processorName, double coefficient2, double coefficient1, double coefficient0)
         {
+            ProcessorName = processorName;
             C2 = coefficient2;
             C1 = coefficient1;
             C0 = coefficient0;

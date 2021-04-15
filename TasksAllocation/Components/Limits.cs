@@ -75,18 +75,18 @@ namespace TasksAllocation.Components
         {
             StringBuilder text = new StringBuilder();
 
-            text.AppendLine($"MINIMUM-TASKS={MinimumTasks}");
-            text.AppendLine($"MAXIMUM-TASKS={MaximumTasks}");
-            text.AppendLine($"MINIMUM-PROCESSORS={MinimumProcessors}");
-            text.AppendLine($"MAXIMUM-PROCESSORS={MaximumProcessors}");
-            text.AppendLine($"MINIMUM-PROCESSOR-FREQUENCIES={MinimumProcessorsFrequencies}");
-            text.AppendLine($"MAXIMUM-PROCESSOR-FREQUENCIES={MaximumProcessorsFrequencies}");
-            text.AppendLine($"MINIMUM-RAM={MinimumRAM}");
-            text.AppendLine($"MAXIMUM-RAM={MaximumRAM}");
-            text.AppendLine($"MINIMUM-DOWNLOAD={MinimumDownload}");
-            text.AppendLine($"MAXIMUM-DOWNLOAD={MaximumDownload}");
-            text.AppendLine($"MINIMUM-UPLOAD={MinimumUpload}");
-            text.AppendLine($"MAXIMUM-UPLOAD={MaximumUpload}");
+            text.AppendLine($"{CffKeywords.MINIMUM_TASKS}={MinimumTasks}");
+            text.AppendLine($"{CffKeywords.MAXIMUM_TASKS}={MaximumTasks}");
+            text.AppendLine($"{CffKeywords.MINIMUM_PROCESSORS}={MinimumProcessors}");
+            text.AppendLine($"{CffKeywords.MAXIMUM_PROCESSORS}={MaximumProcessors}");
+            text.AppendLine($"{CffKeywords.MINIMUM_PROCESSOR_FREQUENCIES}={MinimumProcessorsFrequencies}");
+            text.AppendLine($"{CffKeywords.MAXIMUM_PROCESSOR_FREQUENCIES}={MaximumProcessorsFrequencies}");
+            text.AppendLine($"{CffKeywords.MINIMUM_RAM}={MinimumRAM}");
+            text.AppendLine($"{CffKeywords.MAXIMUM_RAM}={MaximumRAM}");
+            text.AppendLine($"{CffKeywords.MINIMUM_DOWNLOAD}={MinimumDownload}");
+            text.AppendLine($"{CffKeywords.MAXINUM_DOWNLOAD}={MaximumDownload}");
+            text.AppendLine($"{CffKeywords.MINIMUM_UPLOAD}={MinimumUpload}");
+            text.AppendLine($"{CffKeywords.MAXIMUM_UPLOAD}={MaximumUpload}");
 
             return text.ToString(); 
         }
