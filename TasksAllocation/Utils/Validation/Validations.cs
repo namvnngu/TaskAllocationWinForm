@@ -317,7 +317,7 @@ namespace TasksAllocation.Utils.Validation
 
         public double ValidateDoublePair(string line, string keyword)
         {
-            string doulbeNumber = null;
+            string doubleNumber = null;
             double returnedDouble = -1;
             // Check whether the pair of key-value exists
             string[] lineCountData = CheckPairKeyValue(line, keyword, "(a floating number)");
@@ -327,16 +327,16 @@ namespace TasksAllocation.Utils.Validation
 
             if (lineCountData != null)
             {
-                doulbeNumber = CheckTextValueExist(
+                doubleNumber = CheckTextValueExist(
                     lineCountData[1],
                     "null",
                     "A floating number");
             }
 
             // Check whether the value is an integer
-            if (doulbeNumber != null)
+            if (doubleNumber != null)
             {
-                returnedDouble = CheckDouble(doulbeNumber, keyword);
+                returnedDouble = CheckDouble(doubleNumber, keyword);
             }
 
             return returnedDouble;
@@ -377,10 +377,11 @@ namespace TasksAllocation.Utils.Validation
             }
 
             string message = $"{keyword} is invalid";
+            string expectedValue = "The keyword should be listed in the format description";
             Error error = new Error(
                 message,
                 keyword,
-                "The keyword should be listed in the format description",
+                expectedValue,
                 Filename,
                 LineNumber,
                 ErrorCode.INVALID_KEYWORD);

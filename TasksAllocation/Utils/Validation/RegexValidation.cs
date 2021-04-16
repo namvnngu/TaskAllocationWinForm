@@ -54,7 +54,7 @@ namespace TasksAllocation.Utils.Validation
 
         public static bool RegexDoublePair(string text, Validations validations)
         {
-            string pattern = @"^\s*(\w+(\-?\w+)*)=(\d+(\.\d+)?)$";
+            string pattern = @"^\s*(\w+(\-?\w+)*)=(\-?\d+(\.\d+)?)$";
             bool validPair = Regex.IsMatch(text, pattern);
 
             if (!validPair)

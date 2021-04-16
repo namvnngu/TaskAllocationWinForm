@@ -39,6 +39,7 @@ namespace TasksAllocation.Files
             CffProgram cffProgram = new CffProgram();
             CffTasks cffTasks = new CffTasks();
             CffProcessors cffProcessors = new CffProcessors();
+            CffProcessorTypes cffProcessorTypes = new CffProcessorTypes();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -92,15 +93,25 @@ namespace TasksAllocation.Files
                     Processors = cffProcessors.ExtractProcessors(line, validations);
                 }
 
+                // Extract and validate the PROCESSOR-TYPES section
+                // If the PROCESSOR-TYPES sections is already visited, then ignore
+                if (!cffProcessorTypes.ProcessorTypesSection.ValidSectionPair[1])
+                {
+                    ProcessorTypes = cffProcessorTypes.ExtractProcessorTypes(line, validations);
+                }
+
                 lineNumber++;
             }
 
             streamReader.Close();
 
-            foreach (Processor processor in Processors)
+            // Assign the corresponding Processor Type object to Processor
+            AssignProcessType();
+
+            /*foreach (Processor processor in Processors)
             {
-                Console.WriteLine(processor);
-            }
+                Console.WriteLine(processor.PType.Name);
+            }*/
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);
@@ -116,6 +127,9 @@ namespace TasksAllocation.Files
 
             // Check whether the PROCCESORS section exists
             cffProcessors.ProcessorsSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the PROCESSOR-TYPES section exists
+            cffProcessorTypes.ProcessorTypesSection.CheckValidPair(validations, cffFilename);
 
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, EXPECTED_LOGFILE_FORMAT);
@@ -140,9 +154,51 @@ namespace TasksAllocation.Files
                 CffKeywords.OPENING_PROCESSORS,
                 ErrorCode.MISSING_SECTION);
 
+            // Check whether the processor type of each processor is missing
+            CheckMissingProcessorType(validations);
+
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
+        }
+
+
+        private void AssignProcessType()
+        {
+            if (ProcessorTypes.Count != 0 && Processors.Count != 0)
+            {
+                foreach (Processor processor in Processors)
+                {
+                    foreach (ProcessorType processorType in ProcessorTypes)
+                    {
+                        if (processor.Type == processorType.Name)
+                        {
+                            processor.PType = processorType;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void CheckMissingProcessorType(Validations validations)
+        {
+            foreach (Processor processor in Processors)
+            {
+                if (processor.PType == null)
+                {
+                    Error error = new Error();
+
+                    error.Message = $"The processor type {processor.Type} of " +
+                        $"the processor (ID={processor.ID}) does not exist";
+                    error.ActualValue = "null";
+                    error.ExpectedValue = $"The processor type should be listed in" +
+                        $" the {CffKeywords.OPENING_PROCESSOR_TYPES} list in the CONFIGURATION file";
+                    error.Filename = validations.Filename;
+                    error.ErrorCode = ErrorCode.MISSING_VALUE;
+
+                    validations.ErrorValidationManager.Errors.Add(error);
+                }
+            }
         }
     }
 }

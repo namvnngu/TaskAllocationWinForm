@@ -23,6 +23,7 @@ namespace TasksAllocation.Components
         {
             ID = -1;
             Type = null;
+            PType = null;
             Frequency = -1;
             RAM = -1;
             Download = -1;

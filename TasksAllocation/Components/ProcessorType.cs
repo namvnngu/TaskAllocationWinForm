@@ -10,15 +10,23 @@ namespace TasksAllocation.Components
 {
     class ProcessorType
     {
-        double C0 { get; set; }
-        double C1 { get; set; }
-        double C2 { get; set; }
+        public string Name { get; set; }
+        public double C0 { get; set; }
+        public double C1 { get; set; }
+        public double C2 { get; set; }
         public PairSection OpeningClosingSection { get; set; }
-        public string ProcessorName { get; set; }
 
-        public ProcessorType(string processorName, double coefficient2, double coefficient1, double coefficient0)
+        public ProcessorType()
         {
-            ProcessorName = processorName;
+            Name = null;
+            C0 = -1;
+            C1 = -1;
+            C2 = -1;
+        }
+
+        public ProcessorType(string name, double coefficient2, double coefficient1, double coefficient0)
+        {
+            Name = name;
             C2 = coefficient2;
             C1 = coefficient1;
             C0 = coefficient0;
@@ -35,6 +43,18 @@ namespace TasksAllocation.Components
         public double Energy(double frequency, double runtime)
         {
             return (EnergyPerSecond(frequency) * runtime);
+        }
+
+        public override string ToString()
+        {
+            StringBuilder text = new StringBuilder();
+
+            text.AppendLine($"PRCESSOR-TYPE-{CffKeywords.PROCESSOR_TYPE_NAME}={Name}");
+            text.AppendLine($"{CffKeywords.PROCESSOR_TYPE_C2}={C2}");
+            text.AppendLine($"{CffKeywords.PROCESSOR_TYPE_C1}={C1}");
+            text.AppendLine($"{CffKeywords.PROCESSOR_TYPE_C0}={C0}");
+
+            return text.ToString();
         }
     }
 }
