@@ -123,11 +123,14 @@ namespace TasksAllocation.Utils.FilesManipulation
             if (AllocationMapData == null && line.StartsWith(TaffKeywords.ALLOCATION_MAP))
             {
                 // Check the MAP format is valid
-                RegexValidation.RegexMap(line, validations);
+                bool isValidMapFormat = RegexValidation.RegexMap(line, validations);
 
-                AllocationMapData = validations.ValidateStringPair(
-                    line,
-                    TaffKeywords.ALLOCATION_MAP);
+                if (isValidMapFormat)
+                {
+                    AllocationMapData = validations.ValidateStringPair(
+                        line,
+                        TaffKeywords.ALLOCATION_MAP);
+                }
             }
         }
 
