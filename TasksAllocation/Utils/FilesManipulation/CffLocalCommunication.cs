@@ -29,7 +29,9 @@ namespace TasksAllocation.Utils.FilesManipulation
             // If yes, mark it exist
             LocalCommunicationSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            if (LocalCommunicationSection.ValidSectionPair[0])
+            bool openingSectionVisited = LocalCommunicationSection.ValidSectionPair[0];
+
+            if (openingSectionVisited)
             {
                 ExtractMapData(line, numOfTasks, validations);
             }

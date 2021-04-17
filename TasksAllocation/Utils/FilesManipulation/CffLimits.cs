@@ -28,7 +28,9 @@ namespace TasksAllocation.Utils.FilesManipulation
             // If yes, mark it exist
             LimitPairSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            if (LimitPairSection.ValidSectionPair[0])
+            bool openingSectionVisited = LimitPairSection.ValidSectionPair[0];
+
+            if (openingSectionVisited)
             {
                 ExtractMinimumTasks(line, validations);
                 ExtractMaximumTasks(line, validations);

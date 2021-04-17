@@ -28,7 +28,9 @@ namespace TasksAllocation.Utils.FilesManipulation
             // If yes, mark it exist
             ProgramPairSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            if (ProgramPairSection.ValidSectionPair[0])
+            bool openingSectionVisited = ProgramPairSection.ValidSectionPair[0];
+
+            if (openingSectionVisited)
             {
                 ExtractDuration(line, validations);
                 ExtractTasks(line, validations);
