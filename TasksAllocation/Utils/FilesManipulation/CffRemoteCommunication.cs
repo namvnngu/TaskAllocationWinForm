@@ -10,37 +10,37 @@ using TasksAllocation.Utils.DataStructure;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffLocalCommunication
+    class CffRemoteCommunication
     {
-        public LocalCommunication LocalCommunication { get; set; }
-        public PairSection LocalCommunicationSection { get; set; }
-        
-        public CffLocalCommunication()
+        public RemoteCommunication RemoteCommunication { get; set; }
+        public PairSection RemoteCommunicationSection { get; set; }
+
+        public CffRemoteCommunication()
         {
-            LocalCommunication = new LocalCommunication();
-            LocalCommunicationSection = new PairSection(
-                CffKeywords.OPENING_LOCAL_COMMUNICATION,
-                CffKeywords.CLOSING_LOCAL_COMMUNICATION);
+            RemoteCommunication = new RemoteCommunication();
+            RemoteCommunicationSection = new PairSection(
+                CffKeywords.OPENING_REMOTE_COMMUNICATION,
+                CffKeywords.CLOSING_REMOTE_COMMUNICATION);
         }
 
-        public LocalCommunication ExtractLocalCommunication(string line, int numOfTasks, Validations validations)
+        public RemoteCommunication ExtractRemoteCommunication(string line, int numOfTasks, Validations validations)
         {
-            // Check whether the line starts opening/closing LOCAL-COMMUNICATION section
+            // Check whether the line starts opening/closing REMOTE-COMMUNICATION section
             // If yes, mark it exist
-            LocalCommunicationSection.MarkSection(line, Int16.Parse(validations.LineNumber));
+            RemoteCommunicationSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            if (LocalCommunicationSection.ValidSectionPair[0])
+            if (RemoteCommunicationSection.ValidSectionPair[0])
             {
                 ExtractMapData(line, numOfTasks, validations);
             }
 
-            return LocalCommunication;
+            return RemoteCommunication;
         }
 
         private void ExtractMapData(string line, int numOfTasks, Validations validations)
         {
 
-            if (LocalCommunication.MapMatrix == null && line.StartsWith(CffKeywords.LOCAL_COMMUNICATION_MAP))
+            if (RemoteCommunication.MapMatrix == null && line.StartsWith(CffKeywords.REMOTE_COMMUNICATION_MAP))
             {
                 // Check the MAP format is valid
                 bool isValidMapFormat = RegexValidation.RegexMap(line, validations);
@@ -55,8 +55,8 @@ namespace TasksAllocation.Utils.FilesManipulation
 
                 if (returnedMap != null)
                 {
-                    LocalCommunication.MapData = new Map(returnedMap);
-                    LocalCommunication.MapMatrix = LocalCommunication.MapData.ConvertToMatrix(
+                    RemoteCommunication.MapData = new Map(returnedMap);
+                    RemoteCommunication.MapMatrix = RemoteCommunication.MapData.ConvertToMatrix(
                         numOfTasks,
                         numOfTasks,
                         validations);
@@ -64,13 +64,13 @@ namespace TasksAllocation.Utils.FilesManipulation
             }
         }
 
-        public void ValidateLocalCommunication(Validations validations)
+        public void ValidateRemoteCommunication(Validations validations)
         {
-            if (LocalCommunication.MapData == null || LocalCommunication.MapMatrix == null)
+            if (RemoteCommunication.MapData == null || RemoteCommunication.MapMatrix == null)
             {
                 Error error = new Error();
 
-                error.Message = $"The map data for {CffKeywords.OPENING_LOCAL_COMMUNICATION} is missing";
+                error.Message = $"The map data for {CffKeywords.OPENING_REMOTE_COMMUNICATION} is missing";
                 error.ActualValue = "null";
                 error.ExpectedValue = "The map value";
                 error.LineNumber = "";

@@ -40,6 +40,8 @@ namespace TasksAllocation.Files
             CffTasks cffTasks = new CffTasks();
             CffProcessors cffProcessors = new CffProcessors();
             CffProcessorTypes cffProcessorTypes = new CffProcessorTypes();
+            CffLocalCommunication cffLocalCommunication = new CffLocalCommunication();
+            CffRemoteCommunication cffRemoteCommunication = new CffRemoteCommunication();
             int beforeNumOfError, afterNumOfError;
             int lineNumber = 1;
             string line;
@@ -100,6 +102,20 @@ namespace TasksAllocation.Files
                     ProcessorTypes = cffProcessorTypes.ExtractProcessorTypes(line, validations);
                 }
 
+                // Extract and validate the LOCAL-COMMUNICATION section
+                // If the LOCAL-COMMUNICATION sections is already visited, then ignore
+                if (!cffLocalCommunication.LocalCommunicationSection.ValidSectionPair[1])
+                {
+                    LocalCommunicationInfo = cffLocalCommunication.ExtractLocalCommunication(line, Program.Tasks, validations);
+                }
+
+                // Extract and validate the REMOTE-COMMUNICATION section
+                // If the REMOTE-COMMUNICATION sections is already visited, then ignore
+                if (!cffRemoteCommunication.RemoteCommunicationSection.ValidSectionPair[1])
+                {
+                    RemoteCommunicationInfo = cffRemoteCommunication.ExtractRemoteCommunication(line, Program.Tasks, validations);
+                }
+
                 lineNumber++;
             }
 
@@ -108,10 +124,7 @@ namespace TasksAllocation.Files
             // Assign the corresponding Processor Type object to Processor
             AssignProcessType();
 
-            /*foreach (Processor processor in Processors)
-            {
-                Console.WriteLine(processor.PType.Name);
-            }*/
+            Console.WriteLine(RemoteCommunicationInfo);
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);
@@ -130,6 +143,12 @@ namespace TasksAllocation.Files
 
             // Check whether the PROCESSOR-TYPES section exists
             cffProcessorTypes.ProcessorTypesSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the LOCAL-COMMUNICATION section exists
+            cffLocalCommunication.LocalCommunicationSection.CheckValidPair(validations, cffFilename);
+
+            // Check whether the REMOTE-COMMUNICATION section exists
+            cffRemoteCommunication.RemoteCommunicationSection.CheckValidPair(validations, cffFilename);
 
             // Check whether the log file has been assigned a value or not
             validations.CheckProcessedFileExists(LogFilename, EXPECTED_LOGFILE_FORMAT);
@@ -156,6 +175,12 @@ namespace TasksAllocation.Files
 
             // Check whether the processor type of each processor is missing
             CheckMissingProcessorType(validations);
+
+            // Check whether the local communication is missing
+            cffLocalCommunication.ValidateLocalCommunication(validations);
+
+            // Check whether the remote communication is missing
+            cffRemoteCommunication.ValidateRemoteCommunication(validations);
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

@@ -11,6 +11,10 @@ namespace TasksAllocation.Components
 {
     class RemoteCommunication : Communication
     { 
+        public RemoteCommunication()
+        {
+        }
+
         public RemoteCommunication(Map mapData) : base(mapData)
         {
             OpeningClosingSection = new PairSection(

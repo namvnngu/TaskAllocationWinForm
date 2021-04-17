@@ -31,7 +31,7 @@ namespace TasksAllocation.Utils.FilesManipulation
             LogFileSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
             // Check the line start with the expected keyword, "DEFAULT"
-            if (line.StartsWith(CffKeywords.DEFAULT_LOGFILE))
+            if (LogFileSection.ValidSectionPair[0] && line.StartsWith(CffKeywords.DEFAULT_LOGFILE))
             {
                 // Check whether the pair key-value exists
                 string[] lineData = validations.CheckPairKeyValue(

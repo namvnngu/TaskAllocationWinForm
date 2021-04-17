@@ -90,6 +90,7 @@
     <Compile Include="Utils\FilesManipulation\CffProcessorType.cs" />
     <Compile Include="Utils\FilesManipulation\CffProcessorTypes.cs" />
     <Compile Include="Utils\FilesManipulation\CffProgram.cs" />
+    <Compile Include="Utils\FilesManipulation\CffRemoteCommunication.cs" />
     <Compile Include="Utils\FilesManipulation\CffTask.cs" />
     <Compile Include="Utils\FilesManipulation\CffTasks.cs" />
     <Compile Include="Utils\FilesManipulation\FilesUtils.cs" />

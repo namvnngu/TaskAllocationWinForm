@@ -28,18 +28,21 @@ namespace TasksAllocation.Utils.FilesManipulation
             // If yes, mark it exist
             LimitPairSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            ExtractMinimumTasks(line, validations);
-            ExtractMaximumTasks(line, validations);
-            ExtractMinimumProcessors(line, validations);
-            ExtractMaximumProcessors(line, validations);
-            ExtractMinimumProcessorFrequencies(line, validations);
-            ExtractMaximumProcessorFrequencies(line, validations);
-            ExtractMinimumRAM(line, validations);
-            ExtractMaximumRAM(line, validations);
-            ExtractMinimumDownload(line, validations);
-            ExtractMaximumDownload(line, validations);
-            ExtractMinimumUpload(line, validations);
-            ExtractMaximumUpload(line, validations);
+            if (LimitPairSection.ValidSectionPair[0])
+            {
+                ExtractMinimumTasks(line, validations);
+                ExtractMaximumTasks(line, validations);
+                ExtractMinimumProcessors(line, validations);
+                ExtractMaximumProcessors(line, validations);
+                ExtractMinimumProcessorFrequencies(line, validations);
+                ExtractMaximumProcessorFrequencies(line, validations);
+                ExtractMinimumRAM(line, validations);
+                ExtractMaximumRAM(line, validations);
+                ExtractMinimumDownload(line, validations);
+                ExtractMaximumDownload(line, validations);
+                ExtractMinimumUpload(line, validations);
+                ExtractMaximumUpload(line, validations);
+            }
 
             return LimitData;
         }

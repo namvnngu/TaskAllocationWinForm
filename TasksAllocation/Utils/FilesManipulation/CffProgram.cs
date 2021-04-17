@@ -28,9 +28,12 @@ namespace TasksAllocation.Utils.FilesManipulation
             // If yes, mark it exist
             ProgramPairSection.MarkSection(line, Int16.Parse(validations.LineNumber));
 
-            ExtractDuration(line, validations);
-            ExtractTasks(line, validations);
-            ExtractProcessors(line, validations);
+            if (ProgramPairSection.ValidSectionPair[0])
+            {
+                ExtractDuration(line, validations);
+                ExtractTasks(line, validations);
+                ExtractProcessors(line, validations);
+            }
 
             return Program;
         }

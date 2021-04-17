@@ -29,6 +29,11 @@ namespace TasksAllocation.Components
 
         public override string ToString()
         {
+            if (MapMatrix == null)
+            {
+                return null;
+            }
+
             StringBuilder displayedMap = new StringBuilder();
             int nRow = MapMatrix.GetLength(0);
             int nCol = MapMatrix.GetLength(1);
@@ -37,7 +42,7 @@ namespace TasksAllocation.Components
             {
                 for (int col = 0; col < nCol; col++)
                 {
-                    displayedMap.Append(MapMatrix[row, col]);
+                    displayedMap.Append(MapMatrix[row, col] + " | ");
                 }
                 displayedMap.Append('\n');
             }
