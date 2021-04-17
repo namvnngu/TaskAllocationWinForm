@@ -9,19 +9,17 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class LocalCommunication
+    class LocalCommunication : Communication
     {
-        public Map MapData { get; set; }
-        public PairSection OpeningClosingSection { get; set; }
-        public string[,] MapMatrix { get; set; }
-
-        public LocalCommunication(Map mapData)
+        public LocalCommunication()
         {
-            MapData = mapData;
+        }
+
+        public LocalCommunication(Map mapData) : base(mapData)
+        {
             OpeningClosingSection = new PairSection(
                 CffKeywords.OPENING_LOCAL_COMMUNICATION, 
                 CffKeywords.CLOSING_LOCAL_COMMUNICATION);
-            MapMatrix = null;
         }
     }
 }

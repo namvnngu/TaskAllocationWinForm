@@ -27,7 +27,7 @@ namespace TasksAllocation.Files
             LimitData = null;
         }
 
-        public bool Validate(string cffFilename, Validations validations)
+        public bool ValidateFile(string cffFilename, Validations validations)
         {
             if (cffFilename == null)
             {

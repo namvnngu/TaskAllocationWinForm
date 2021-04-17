@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Communication.cs" />
     <Compile Include="Components\Limits.cs" />
     <Compile Include="Components\LocalCommunication.cs" />
     <Compile Include="Components\Processor.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="Utils\DataStructure\Map.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
     <Compile Include="Utils\FilesManipulation\CffLimits.cs" />
+    <Compile Include="Utils\FilesManipulation\CffLocalCommunication.cs" />
     <Compile Include="Utils\FilesManipulation\CffLogFile.cs" />
     <Compile Include="Utils\FilesManipulation\CffProcessor.cs" />
     <Compile Include="Utils\FilesManipulation\CffProcessors.cs" />
