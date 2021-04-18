@@ -182,6 +182,9 @@ namespace TasksAllocation.Files
             // Check whether the remote communication is missing
             cffRemoteCommunication.ValidateRemoteCommunication(validations);
 
+            // Configuration values must be within their corresponding limit
+            ValidateConfigurationValues(validations);
+
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
@@ -219,9 +222,95 @@ namespace TasksAllocation.Files
                     error.ExpectedValue = $"The processor type should be listed in" +
                         $" the {CffKeywords.OPENING_PROCESSOR_TYPES} list in the CONFIGURATION file";
                     error.Filename = validations.Filename;
+                    error.LineNumber = "";
                     error.ErrorCode = ErrorCode.MISSING_VALUE;
 
                     validations.ErrorValidationManager.Errors.Add(error);
+                }
+            }
+        }
+
+        private void CreateError(string keyword, string actualValue, string minValue, string maxValue, Validations validations)
+        {
+            Error error = new Error();
+
+            error.Message = $"The value of {keyword} is out of limit";
+            error.ActualValue = $"{actualValue}";
+            error.ExpectedValue = $"The value of {keyword} must be in range between {minValue} and {maxValue} inclusively";
+            error.Filename = validations.Filename;
+            error.ErrorCode = ErrorCode.OUT_OF_LIMIT;
+
+            validations.ErrorValidationManager.Errors.Add(error);
+        }
+
+        private void ValidateConfigurationValues(Validations validations)
+        {
+            if (Program.Tasks < LimitData.MinimumTasks ||
+                Program.Tasks > LimitData.MaximumTasks)
+            {
+                CreateError(
+                    "tasks", 
+                    Program.Tasks.ToString(), 
+                    LimitData.MinimumTasks.ToString(), 
+                    LimitData.MaximumTasks.ToString(),
+                    validations);
+            }
+
+            if (Program.Processors < LimitData.MinimumProcessors ||
+                Program.Processors > LimitData.MaximumProcessors)
+            {
+                CreateError(
+                    "processors", 
+                    Program.Processors.ToString(), 
+                    LimitData.MinimumProcessors.ToString(),
+                    LimitData.MaximumProcessors.ToString(),
+                    validations);
+            }
+
+            foreach(Processor processor in Processors)
+            {
+                if (processor.Frequency < LimitData.MinimumProcessorsFrequencies ||
+                    processor.Frequency > LimitData.MaximumProcessorsFrequencies)
+                {
+                    CreateError(
+                        $"process's frequency (ID={processor.ID})",
+                        processor.Frequency.ToString(),
+                        LimitData.MinimumProcessorsFrequencies.ToString(),
+                        LimitData.MaximumProcessorsFrequencies.ToString(),
+                        validations);
+                }
+
+                if (processor.RAM < LimitData.MinimumRAM ||
+                    processor.RAM > LimitData.MaximumRAM)
+                {
+                    CreateError(
+                        $"process's RAM (ID={processor.ID})",
+                        processor.RAM.ToString(),
+                        LimitData.MinimumRAM.ToString(),
+                        LimitData.MaximumRAM.ToString(),
+                        validations);
+                }
+
+                if (processor.Download < LimitData.MinimumDownload ||
+                    processor.Download > LimitData.MaximumDownload)
+                { 
+                    CreateError(
+                        $"process's download (ID={processor.ID})",
+                        processor.Download.ToString(),
+                        LimitData.MinimumDownload.ToString(),
+                        LimitData.MaximumDownload.ToString(),
+                        validations);
+                }
+
+                if (processor.Upload < LimitData.MinimumUpload ||
+                    processor.Upload > LimitData.MaximumUpload)
+                {
+                    CreateError(
+                        $"process's upload (ID={processor.ID})",
+                        processor.Upload.ToString(),
+                        LimitData.MinimumUpload.ToString(),
+                        LimitData.MaximumUpload.ToString(),
+                        validations);
                 }
             }
         }

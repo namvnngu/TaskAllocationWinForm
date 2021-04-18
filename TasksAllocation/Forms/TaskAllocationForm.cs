@@ -56,14 +56,9 @@ namespace TasksAllocation
                     allValidFiles = true;
                 }
 
-
-                // Display Error
-
-
-                // Display the allocations
                 if (allValidFiles)
                 {
-
+                    
                 }
                 else
                 {

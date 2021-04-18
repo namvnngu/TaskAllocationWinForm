@@ -27,6 +27,8 @@ namespace TasksAllocation.Utils.Constants
 
         public static int NOT_FOUND = 41;
 
+        public static int OUT_OF_LIMIT = 51;
+
         public static Dictionary<int, string> ErrorCodeDescription = new Dictionary<int, string>
         {
             { INVALID_KEYWORD, "Invalid keyword" },
@@ -44,7 +46,8 @@ namespace TasksAllocation.Utils.Constants
             { MISSING_SECTION, "Missing section" },
             { MISSING_FILE, "Missing file" },
             { NOT_FOUND, "File cannot be found" },
-            { INVALID_MAP, "The map data is invalid" }
+            { INVALID_MAP, "The map data is invalid" },
+            { OUT_OF_LIMIT, "The values is out of the required limit" }
         };
     }
 }
