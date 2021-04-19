@@ -15,6 +15,8 @@ namespace TasksAllocation.Components
         public Map MapData { get; set; }
         public string[,] MapMatrix { get; set; }
         public PairSection OpeningClosingSection { get; set; }
+        public double Runtime { get; set; }
+        public double Energy { get; set; }
 
         public Allocation(int id, Map mapData)
         {
@@ -24,6 +26,8 @@ namespace TasksAllocation.Components
             OpeningClosingSection = new PairSection(
                 TaffKeywords.OPENING_ALLOCATION, 
                 TaffKeywords.CLOSING_ALLOCATION);
+            Runtime = 0;
+            Energy = 0;
         }
 
         public int CountTasks()

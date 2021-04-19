@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.IO;
 using TasksAllocation.Components;
 using TasksAllocation.Utils.Validation;
 using TasksAllocation.Utils.FilesManipulation;
 using TasksAllocation.Utils.Constants;
+using TasksAllocation.Utils.Display;
 
 namespace TasksAllocation.Files
 {
@@ -19,6 +19,7 @@ namespace TasksAllocation.Files
         public int NumberOfProcessors { get; set; }
         public List<Allocation> Allocations { get; set; }
         private string TaffFilename = "";
+        public List<AllocationDisplay> AllocationDisplays { get; set; }
 
         public TaskAllocation()
         {
@@ -27,6 +28,7 @@ namespace TasksAllocation.Files
             NumberOfTasks = -1;
             NumberOfProcessors = -1;
             Allocations = new List<Allocation>();
+            AllocationDisplays = new List<AllocationDisplay>();
         }
 
         public bool GetCffFilename(string taffFilename, Validations validations)
@@ -147,9 +149,148 @@ namespace TasksAllocation.Files
             taskAllocationValdations.IsEqual("PROCESSORS", NumberOfProcessors, configuration.Program.Processors);
             taskAllocationValdations.IsEqual("TASKS", NumberOfTasks, configuration.Program.Tasks);
 
+            // Calculate allocations' Runtime and Energy
+            for (int allocationNum = 0; allocationNum < Allocations.Count; allocationNum++)
+            {
+                CalculateAllocationRuntime(Allocations[allocationNum], configuration);
+                Console.WriteLine(CalculateAllocationEnergy(Allocations[allocationNum], configuration));
+            }
+
+
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
+        }
+
+        public double CalculateAllocationRuntime(Allocation allocation, Configuration configuration)
+        {
+            string[,] mapMatrix = allocation.MapMatrix;
+            int nRow = mapMatrix.GetLength(0);
+            int nCol = mapMatrix.GetLength(1);
+            string TASK_ON = "1";
+
+            for (int row = 0; row < nRow; row++)
+            {
+                double currentProcessorRuntime = 0;
+                for (int col = 0; col < nCol; col++)
+                {
+                    string task = mapMatrix[row, col];
+                    if (task == TASK_ON)
+                    {
+                        Task currentTask = configuration.Tasks[col];
+                        Processor currentProcessor = configuration.Processors[row];
+                        double currentProcessorFrequency = currentProcessor.Frequency;
+
+                        currentProcessorRuntime += currentTask.CalculateRuntime(currentProcessorFrequency);
+                    }
+                }
+
+                allocation.Runtime = Math.Max(allocation.Runtime, currentProcessorRuntime);
+            }
+
+            allocation.Runtime = Math.Round(allocation.Runtime, 2);
+
+            return allocation.Runtime;
+        }
+
+        public double CalculateAllocationEnergy(Allocation allocation, Configuration configuration)
+        {
+            double taskEnery = CalculateTaskEnergy(allocation, configuration);
+            double communincationEnery = CalculateCommunicationEnergy(allocation, configuration);
+
+            allocation.Energy += taskEnery;
+            allocation.Energy += communincationEnery;
+
+            allocation.Energy = Math.Round(allocation.Energy, 2);
+
+            return allocation.Energy;
+        }
+
+        private double CalculateTaskEnergy(Allocation allocation, Configuration configuration)
+        {
+            string[,] mapMatrix = allocation.MapMatrix;
+            int nRow = mapMatrix.GetLength(0);
+            int nCol = mapMatrix.GetLength(1);
+            string TASK_ON = "1";
+            double taskEnergy = 0;
+
+            for (int row = 0; row < nRow; row++)
+            {
+                for (int col = 0; col < nCol; col++)
+                {
+                    string task = mapMatrix[row, col];
+                    if (task == TASK_ON)
+                    {
+                        Task currentTask = configuration.Tasks[col];
+                        Processor currentProcessor = configuration.Processors[row];
+                        double currentProcessorFrequency = currentProcessor.Frequency;
+                        double currentTaskRuntime = currentTask.CalculateRuntime(currentProcessorFrequency); ;
+                        double currenttaskEnergy = currentProcessor.PType.CalculateEnergy(currentProcessorFrequency, currentTaskRuntime);
+
+                        taskEnergy += currenttaskEnergy;
+                    }
+                }
+            }
+
+            return taskEnergy;
+        }
+
+        private double CalculateCommunicationEnergy(Allocation allocation, Configuration configuration)
+        {
+            string[,] mapMatrix = allocation.MapMatrix;
+            int nRow = mapMatrix.GetLength(0);
+            int nCol = mapMatrix.GetLength(1);
+            string TASK_ON = "1";
+            string TASK_OFF = "1";
+            double localCommunicationEnergy = 0;
+            double remoteCommunicationEnergy = 0;
+            double communicationEnergy = 0;
+
+            for (int row = 0; row < nRow; row++)
+            {
+                List<int> currentLocalTasks = new List<int>();
+                List<int> currentRemoteTasks = new List<int>();
+
+                for (int col = 0; col < nCol; col++)
+                {
+                    string task = mapMatrix[row, col];
+
+                    if (task == TASK_ON)
+                    {
+                        currentLocalTasks.Add(col);
+                    } else if (task == TASK_OFF)
+                    {
+                        currentRemoteTasks.Add(col);
+                    }
+                }
+
+                localCommunicationEnergy += CalculateCommnucationEnergy(currentLocalTasks, configuration.LocalCommunicationInfo);
+                remoteCommunicationEnergy += CalculateCommnucationEnergy(currentLocalTasks, configuration.RemoteCommunicationInfo);
+            }
+
+            communicationEnergy += localCommunicationEnergy + remoteCommunicationEnergy;
+
+            return communicationEnergy;
+        }
+
+        private double CalculateCommnucationEnergy(List<int> tasks, Communication communication)
+        {
+            double energy = 0;
+            string[,] commnucationMap = communication.MapMatrix;
+
+            for (int taskNum = 0; taskNum < tasks.Count - 1; taskNum++)
+            {
+                for (int nextTaskNum = taskNum + 1; nextTaskNum < tasks.Count; nextTaskNum++)
+                {
+                    double currentEnergy = 0;
+                    currentEnergy += Convert.ToDouble(commnucationMap[taskNum, nextTaskNum]);
+                    currentEnergy += Convert.ToDouble(commnucationMap[nextTaskNum, taskNum]);
+
+                    energy += currentEnergy;
+                }
+            }
+
+            return energy;
         }
     }
 }

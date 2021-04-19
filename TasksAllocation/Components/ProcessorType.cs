@@ -40,7 +40,7 @@ namespace TasksAllocation.Components
             return (C2 * frequency * frequency + C1 * frequency + C0);
         }
 
-        public double Energy(double frequency, double runtime)
+        public double CalculateEnergy(double frequency, double runtime)
         {
             return (EnergyPerSecond(frequency) * runtime);
         }

@@ -81,7 +81,10 @@
     <Compile Include="Utils\Constants\Symbols.cs" />
     <Compile Include="Utils\Constants\TaffKeywords.cs" />
     <Compile Include="Utils\DataStructure\Map.cs" />
+    <Compile Include="Utils\Display\AllocationDisplay.cs" />
+    <Compile Include="Utils\Display\ProcessorAllocation.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />
+    <Compile Include="Utils\Display\AllocationsDisplay.cs" />
     <Compile Include="Utils\FilesManipulation\CffLimits.cs" />
     <Compile Include="Utils\FilesManipulation\CffLocalCommunication.cs" />
     <Compile Include="Utils\FilesManipulation\CffLogFile.cs" />

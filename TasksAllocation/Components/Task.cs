@@ -47,6 +47,15 @@ namespace TasksAllocation.Components
                 CffKeywords.CLOSING_TASK);
         }
 
+        public double CalculateRuntime(double processorFrequency)
+        {
+            double taskRuntimeInProcessor;
+
+            taskRuntimeInProcessor = Runtime * (ReferenceFrequency / processorFrequency);
+
+            return taskRuntimeInProcessor;
+        }
+
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();
