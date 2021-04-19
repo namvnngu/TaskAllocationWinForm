@@ -238,56 +238,95 @@ namespace TasksAllocation.Files
         private double CalculateCommunicationEnergy(Allocation allocation, Configuration configuration)
         {
             string[,] mapMatrix = allocation.MapMatrix;
-            int nRow = mapMatrix.GetLength(0);
-            int nCol = mapMatrix.GetLength(1);
+            int numOfProcessors = mapMatrix.GetLength(0); // Number of rows
+            int numOfTasks = mapMatrix.GetLength(1); // Number of columns
             string TASK_ON = "1";
-            string TASK_OFF = "1";
             double localCommunicationEnergy = 0;
             double remoteCommunicationEnergy = 0;
             double communicationEnergy = 0;
 
-            for (int row = 0; row < nRow; row++)
+            for (int row = 0; row < numOfProcessors; row++)
             {
+                // Local Communication
                 List<int> currentLocalTasks = new List<int>();
-                List<int> currentRemoteTasks = new List<int>();
 
-                for (int col = 0; col < nCol; col++)
+                for (int col = 0; col < numOfTasks; col++)
                 {
                     string task = mapMatrix[row, col];
 
                     if (task == TASK_ON)
                     {
                         currentLocalTasks.Add(col);
-                    } else if (task == TASK_OFF)
-                    {
-                        currentRemoteTasks.Add(col);
                     }
                 }
 
-                localCommunicationEnergy += CalculateCommnucationEnergy(currentLocalTasks, configuration.LocalCommunicationInfo);
-                remoteCommunicationEnergy += CalculateCommnucationEnergy(currentLocalTasks, configuration.RemoteCommunicationInfo);
+                localCommunicationEnergy += CalculateLocalCommnucationEnergy(currentLocalTasks, configuration.LocalCommunicationInfo);
+
+                // Remote Communication
+                for (int localTaskNum = 0; localTaskNum < currentLocalTasks.Count; localTaskNum++)
+                {
+                    List<int> currentRemoteTasks = new List<int>();
+                    currentRemoteTasks.Add(currentLocalTasks[localTaskNum]);
+                    Console.Write(currentLocalTasks[localTaskNum]);
+
+                    for (int taskNum = 0; taskNum < numOfTasks; taskNum++)
+                    {
+                        if (!currentLocalTasks.Contains(taskNum))
+                        {
+                            currentRemoteTasks.Add(taskNum);
+                            Console.Write(taskNum);
+                        }
+                    }
+                    Console.WriteLine();
+
+                    remoteCommunicationEnergy += CalculateRemoteCommnucationEnergy(currentLocalTasks[localTaskNum], currentRemoteTasks, configuration.RemoteCommunicationInfo);
+                }
             }
 
+            Console.WriteLine($"Local: {localCommunicationEnergy}");
+            Console.WriteLine($"Remote: {remoteCommunicationEnergy}");
             communicationEnergy += localCommunicationEnergy + remoteCommunicationEnergy;
 
             return communicationEnergy;
         }
 
-        private double CalculateCommnucationEnergy(List<int> tasks, Communication communication)
+        private double CalculateLocalCommnucationEnergy(List<int> tasks, Communication communication)
         {
             double energy = 0;
             string[,] commnucationMap = communication.MapMatrix;
 
-            for (int taskNum = 0; taskNum < tasks.Count - 1; taskNum++)
+            for (int taskNumIndex = 0; taskNumIndex < tasks.Count - 1; taskNumIndex++)
             {
-                for (int nextTaskNum = taskNum + 1; nextTaskNum < tasks.Count; nextTaskNum++)
+                int taskNum = tasks[taskNumIndex];
+                for (int nextTaskNumIndex = taskNumIndex + 1; nextTaskNumIndex < tasks.Count; nextTaskNumIndex++)
                 {
                     double currentEnergy = 0;
+                    int nextTaskNum = tasks[nextTaskNumIndex];
+
                     currentEnergy += Convert.ToDouble(commnucationMap[taskNum, nextTaskNum]);
                     currentEnergy += Convert.ToDouble(commnucationMap[nextTaskNum, taskNum]);
 
                     energy += currentEnergy;
                 }
+            }
+
+            return energy;
+        }
+
+        private double CalculateRemoteCommnucationEnergy(int baseTaskNum, List<int> tasks, Communication communication)
+        {
+            double energy = 0;
+            string[,] commnucationMap = communication.MapMatrix;
+
+            for (int taskNumIndex = 0; taskNumIndex < tasks.Count - 1; taskNumIndex++)
+            {
+                int taskNum = tasks[taskNumIndex];
+                double currentEnergy = 0;
+
+                currentEnergy += Convert.ToDouble(commnucationMap[taskNum, baseTaskNum]);
+                currentEnergy += Convert.ToDouble(commnucationMap[baseTaskNum, taskNum]);
+
+                energy += currentEnergy;
             }
 
             return energy;
