@@ -124,7 +124,7 @@ namespace TasksAllocation.Files
             // Assign the corresponding Processor Type object to Processor
             AssignProcessType();
 
-            Console.WriteLine(RemoteCommunicationInfo);
+            // Console.WriteLine(RemoteCommunicationInfo);
 
             // Check whether the LOGFILE section exists
             cffLogFile.LogFileSection.CheckValidPair(validations, cffFilename);

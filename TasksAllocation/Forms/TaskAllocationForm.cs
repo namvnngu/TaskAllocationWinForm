@@ -30,10 +30,16 @@ namespace TasksAllocation
 
         private void OpenToolStripMenuItemClick(object sender, EventArgs e)
         {
+            int errorCount;
+
             // Reset
             validations = new Validations();
             taskAllocation = new TaskAllocation();
             configuration = new Configuration();
+
+            errorsToolStripMenuItem.Enabled = false;
+            allocationToolStripMenuItem.Enabled = false;
+            validateButton.Enabled = false;
 
             DialogResult dialogResult = openFileDialog.ShowDialog();
 
@@ -41,7 +47,7 @@ namespace TasksAllocation
             {
                 string taffFileName = openFileDialog.FileName;
                 string cffFilename;
-                bool validTaskAllocation, validaConfiguration;
+                bool validTaskAllocation, validConfiguration;
                 bool allValidFiles = false;
 
                 urlTextBox.Text = taffFileName;
@@ -49,23 +55,25 @@ namespace TasksAllocation
                 // Validate task allocation file and configuration file
                 validTaskAllocation = taskAllocation.ValidateFile(taffFileName, validations);
                 cffFilename = taskAllocation.CffFilename;
-                validaConfiguration = configuration.ValidateFile(cffFilename, validations);
+                validConfiguration = configuration.ValidateFile(cffFilename, validations);
 
-                if (validTaskAllocation && validaConfiguration)
+                if (validTaskAllocation && validConfiguration)
                 {
                     allValidFiles = true;
                 }
 
                 if (allValidFiles)
                 {
-                    
+                    allocationToolStripMenuItem.Enabled = true;
+                    validateButton.Enabled = true;
                 }
-                else
+
+                errorCount = validations.ErrorValidationManager.Errors.Count;
+
+                if (errorCount != 0)
                 {
-                    errorsForm = new ErrorsForm();
                     errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager);
-                    errorsForm.errorWebBrowser.DocumentText = errorText;
-                    errorsForm.Show();
+                    errorsToolStripMenuItem.Enabled = true;
                 }
             }
         }
@@ -96,7 +104,29 @@ namespace TasksAllocation
 
         private void ValidateButtonClick(object sender, EventArgs e)
         {
+            ValidateAllocation();
+        }
 
+        private void AllocationToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            ValidateAllocation();
+        }
+
+        private void ValidateAllocation()
+        {
+            int errorCount;
+
+            taskAllocation.ValidateAllocations(configuration, validations);
+            errorCount = validations.ErrorValidationManager.Errors.Count;
+
+            if (errorCount != 0)
+            {
+                errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager);
+                errorsToolStripMenuItem.Enabled = true;
+            }
+
+            allocationToolStripMenuItem.Enabled = false;
+            validateButton.Enabled = false;
         }
     }
 }

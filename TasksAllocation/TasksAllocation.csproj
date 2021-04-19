@@ -102,6 +102,7 @@
     <Compile Include="Utils\Validation\PairSection.cs" />
     <Compile Include="Utils\Validation\ErrorManager.cs" />
     <Compile Include="Utils\Validation\RegexValidation.cs" />
+    <Compile Include="Utils\Validation\TaskAllocationValdations.cs" />
     <Compile Include="Utils\Validation\Validations.cs" />
     <EmbeddedResource Include="Forms\AboutBoxForm.resx">
       <DependentUpon>AboutBoxForm.cs</DependentUpon>

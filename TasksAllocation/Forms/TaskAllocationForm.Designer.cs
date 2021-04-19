@@ -48,6 +48,7 @@ namespace TasksAllocation
             // 
             // menu
             // 
+            this.menu.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menu.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -56,7 +57,7 @@ namespace TasksAllocation
             this.helpToolStripMenuItem});
             this.menu.Location = new System.Drawing.Point(0, 0);
             this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(1600, 40);
+            this.menu.Size = new System.Drawing.Size(1600, 42);
             this.menu.TabIndex = 0;
             this.menu.Text = "menuStrip1";
             // 
@@ -66,7 +67,7 @@ namespace TasksAllocation
             this.openToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(72, 36);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(72, 38);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // openToolStripMenuItem
@@ -88,28 +89,30 @@ namespace TasksAllocation
             this.validateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.allocationToolStripMenuItem});
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
-            this.validateToolStripMenuItem.Size = new System.Drawing.Size(119, 36);
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(119, 38);
             this.validateToolStripMenuItem.Text = "Validate";
             // 
             // allocationToolStripMenuItem
             // 
             this.allocationToolStripMenuItem.Enabled = false;
             this.allocationToolStripMenuItem.Name = "allocationToolStripMenuItem";
-            this.allocationToolStripMenuItem.Size = new System.Drawing.Size(255, 44);
+            this.allocationToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.allocationToolStripMenuItem.Text = "Allocation";
+            this.allocationToolStripMenuItem.Click += new System.EventHandler(this.AllocationToolStripMenuItemClick);
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.errorsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(86, 36);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(86, 38);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // errorsToolStripMenuItem
             // 
+            this.errorsToolStripMenuItem.Enabled = false;
             this.errorsToolStripMenuItem.Name = "errorsToolStripMenuItem";
-            this.errorsToolStripMenuItem.Size = new System.Drawing.Size(209, 44);
+            this.errorsToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.errorsToolStripMenuItem.Text = "Errors";
             this.errorsToolStripMenuItem.Click += new System.EventHandler(this.ErrorsToolStripMenuItemClick);
             // 
@@ -118,7 +121,7 @@ namespace TasksAllocation
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(85, 36);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(85, 38);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
@@ -152,6 +155,7 @@ namespace TasksAllocation
             // 
             // validateButton
             // 
+            this.validateButton.Enabled = false;
             this.validateButton.Location = new System.Drawing.Point(703, 48);
             this.validateButton.Margin = new System.Windows.Forms.Padding(0);
             this.validateButton.Name = "validateButton";

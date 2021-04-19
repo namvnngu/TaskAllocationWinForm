@@ -18,6 +18,7 @@ namespace TasksAllocation.Files
         public int NumberOfTasks { get; set; }
         public int NumberOfProcessors { get; set; }
         public List<Allocation> Allocations { get; set; }
+        private string TaffFilename = "";
 
         public TaskAllocation()
         {
@@ -51,6 +52,7 @@ namespace TasksAllocation.Files
             int beforeNumOfError, afterNumOfError;
 
             beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
+            TaffFilename = taffFilename;
 
             // Extract and validate the configuration data section
             GetCffFilename(taffFilename, validations);
@@ -129,6 +131,23 @@ namespace TasksAllocation.Files
 
             // Console.WriteLine($"{Count} | {NumberOfTasks} | {NumberOfProcessors}");
             // Console.WriteLine($"{Allocations.Count} | {allocationPair.CalculateNumOfPair()}");
+
+            return (beforeNumOfError == afterNumOfError);
+        }
+
+        public bool ValidateAllocations(Configuration configuration, Validations validations)
+        {
+            int beforeNumOfError, afterNumOfError;
+            TaskAllocationValdations taskAllocationValdations = new TaskAllocationValdations(validations);
+
+            taskAllocationValdations.ValidationsManager.Filename = TaffFilename;
+            beforeNumOfError = validations.ErrorValidationManager.Errors.Count;
+
+            // Check the number of tasks and processors are the same in both cff and taff file
+            taskAllocationValdations.IsEqual("PROCESSORS", NumberOfProcessors, configuration.Program.Processors);
+            taskAllocationValdations.IsEqual("TASKS", NumberOfTasks, configuration.Program.Tasks);
+
+            afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
         }
