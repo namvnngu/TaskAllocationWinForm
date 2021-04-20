@@ -196,10 +196,10 @@ namespace TasksAllocation.Files
         public double CalculateAllocationEnergy(Allocation allocation, Configuration configuration)
         {
             double taskEnery = CalculateTaskEnergy(allocation, configuration);
-            double communincationEnery = CalculateCommunicationEnergy(allocation, configuration);
+            double communincationEnergy = CalculateCommunicationEnergy(allocation, configuration);
 
             allocation.Energy += taskEnery;
-            allocation.Energy += communincationEnery;
+            allocation.Energy += communincationEnergy;
 
             allocation.Energy = Math.Round(allocation.Energy, 2);
 
@@ -224,7 +224,7 @@ namespace TasksAllocation.Files
                         Task currentTask = configuration.Tasks[col];
                         Processor currentProcessor = configuration.Processors[row];
                         double currentProcessorFrequency = currentProcessor.Frequency;
-                        double currentTaskRuntime = currentTask.CalculateRuntime(currentProcessorFrequency); ;
+                        double currentTaskRuntime = currentTask.CalculateRuntime(currentProcessorFrequency);
                         double currenttaskEnergy = currentProcessor.PType.CalculateEnergy(currentProcessorFrequency, currentTaskRuntime);
 
                         taskEnergy += currenttaskEnergy;
@@ -247,7 +247,7 @@ namespace TasksAllocation.Files
 
             for (int row = 0; row < numOfProcessors; row++)
             {
-                // Local Communication
+                // Local Communication: Gain all tasks in the same processor
                 List<int> currentLocalTasks = new List<int>();
 
                 for (int col = 0; col < numOfTasks; col++)
@@ -262,29 +262,25 @@ namespace TasksAllocation.Files
 
                 localCommunicationEnergy += CalculateLocalCommnucationEnergy(currentLocalTasks, configuration.LocalCommunicationInfo);
 
-                // Remote Communication
+                // Remote Communication: For each the local task in the same processor,
+                // find the external tasks which are in the different processors
                 for (int localTaskNum = 0; localTaskNum < currentLocalTasks.Count; localTaskNum++)
                 {
                     List<int> currentRemoteTasks = new List<int>();
                     currentRemoteTasks.Add(currentLocalTasks[localTaskNum]);
-                    Console.Write(currentLocalTasks[localTaskNum]);
 
                     for (int taskNum = 0; taskNum < numOfTasks; taskNum++)
                     {
                         if (!currentLocalTasks.Contains(taskNum))
                         {
                             currentRemoteTasks.Add(taskNum);
-                            Console.Write(taskNum);
                         }
                     }
-                    Console.WriteLine();
 
                     remoteCommunicationEnergy += CalculateRemoteCommnucationEnergy(currentLocalTasks[localTaskNum], currentRemoteTasks, configuration.RemoteCommunicationInfo);
                 }
             }
 
-            Console.WriteLine($"Local: {localCommunicationEnergy}");
-            Console.WriteLine($"Remote: {remoteCommunicationEnergy}");
             communicationEnergy += localCommunicationEnergy + remoteCommunicationEnergy;
 
             return communicationEnergy;
@@ -318,12 +314,11 @@ namespace TasksAllocation.Files
             double energy = 0;
             string[,] commnucationMap = communication.MapMatrix;
 
-            for (int taskNumIndex = 0; taskNumIndex < tasks.Count - 1; taskNumIndex++)
+            for (int taskNumIndex = 0; taskNumIndex < tasks.Count; taskNumIndex++)
             {
                 int taskNum = tasks[taskNumIndex];
                 double currentEnergy = 0;
 
-                currentEnergy += Convert.ToDouble(commnucationMap[taskNum, baseTaskNum]);
                 currentEnergy += Convert.ToDouble(commnucationMap[baseTaskNum, taskNum]);
 
                 energy += currentEnergy;
