@@ -149,18 +149,34 @@ namespace TasksAllocation.Files
             taskAllocationValdations.IsEqual("PROCESSORS", NumberOfProcessors, configuration.Program.Processors);
             taskAllocationValdations.IsEqual("TASKS", NumberOfTasks, configuration.Program.Tasks);
 
+            // Ensure one task is allocated in only one processor
+            taskAllocationValdations.CheckTaskExistsInOneProcessor(Allocations);
+
             // Calculate allocations' Runtime and Energy
-            for (int allocationNum = 0; allocationNum < Allocations.Count; allocationNum++)
-            {
-                CalculateAllocationRuntime(Allocations[allocationNum], configuration);
-                Console.WriteLine(CalculateAllocationEnergy(Allocations[allocationNum], configuration));
-            }
+            CalculateAllocationValues(configuration);
 
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
             return (beforeNumOfError == afterNumOfError);
         }
+
+        public void CalculateAllocationValues(Configuration configuration)
+        {
+            for (int allocationNum = 0; allocationNum < Allocations.Count; allocationNum++)
+            {
+                AllocationDisplay allocationDisplay = new AllocationDisplay();
+                Allocation allocation = Allocations[allocationNum];
+
+                allocationDisplay.ID = allocation.ID;
+                allocationDisplay.Runtime = CalculateAllocationRuntime(allocation, configuration);
+                allocationDisplay.Energy = CalculateAllocationEnergy(allocation, configuration);
+                allocationDisplay.ProcessorAllocations = CalculateProcessorAllocationValues(allocation, configuration);
+
+                AllocationDisplays.Add(allocationDisplay);
+            }
+        }
+
 
         public double CalculateAllocationRuntime(Allocation allocation, Configuration configuration)
         {
@@ -325,6 +341,51 @@ namespace TasksAllocation.Files
             }
 
             return energy;
+        }
+
+        public List<ProcessorAllocation> CalculateProcessorAllocationValues(Allocation allocation, Configuration configuration)
+        {
+            List<ProcessorAllocation> processorAllocations = new List<ProcessorAllocation>();
+
+            string[,] mapMatrix = allocation.MapMatrix;
+            int numOfProcessors = mapMatrix.GetLength(0); // Number of rows
+            int numOfTasks = mapMatrix.GetLength(1); // Number of columns
+            string TASK_ON = "1";
+
+            for (int row = 0; row < numOfProcessors; row++)
+            {
+                ProcessorAllocation processorAllocation = new ProcessorAllocation();
+                processorAllocation.Allocation = "";
+
+                for (int col = 0; col < numOfTasks; col++)
+                {
+                    string task = mapMatrix[row, col];
+
+                    // Task distribution on each processor
+                    if (col == numOfTasks - 1)
+                    {
+                        processorAllocation.Allocation += $"{task}";
+                    }
+                    else
+                    {
+                        processorAllocation.Allocation += $"{task},";
+                    }
+
+                    // Calculate RAM, Upload, Donwload
+                    Task currentTask = configuration.Tasks[col];
+
+                    if (task == TASK_ON)
+                    {
+                        processorAllocation.RAM = Math.Max(processorAllocation.RAM, currentTask.RAM);
+                        processorAllocation.Upload = Math.Max(processorAllocation.Upload, currentTask.Upload);
+                        processorAllocation.Download = Math.Max(processorAllocation.Download, currentTask.Download);
+                    }
+                }
+
+                processorAllocations.Add(processorAllocation);
+            }
+
+            return processorAllocations;
         }
     }
 }

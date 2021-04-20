@@ -11,19 +11,36 @@ namespace TasksAllocation.Utils.Display
         public int ID;
         public double Runtime;
         public double Energy;
-        public List<ProcessorAllocation> Allocations;
+        public List<ProcessorAllocation> ProcessorAllocations;
 
         public AllocationDisplay()
         {
 
         }
 
-        public AllocationDisplay(int id, double runtime, double energy, List<ProcessorAllocation> allocations)
+        public AllocationDisplay(int id, double runtime, double energy, List<ProcessorAllocation> processorAllocations)
         {
             ID = id;
             Runtime = runtime;
             Energy = energy;
-            Allocations = allocations;
+            ProcessorAllocations = processorAllocations;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder text = new StringBuilder();
+
+            text.AppendLine($"ID={ID}");
+            text.AppendLine($"Runtime={Runtime}");
+            text.AppendLine($"Energy={Energy}");
+
+            foreach (ProcessorAllocation processorAllocation in ProcessorAllocations)
+            {
+                text.AppendLine($"{processorAllocation.Allocation} | RAM={processorAllocation.RAM} | " +
+                    $"Upload={processorAllocation.Upload} | Donwload={processorAllocation.Download}");
+            }
+
+            return text.ToString();
         }
     }
 }

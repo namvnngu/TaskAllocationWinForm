@@ -9,16 +9,19 @@ namespace TasksAllocation.Utils.Display
     class ProcessorAllocation
     {
         public string Allocation;
-        public string RAM;
-        public string Upload;
-        public string Download;
+        public int RAM;
+        public int Upload;
+        public int Download;
 
         public ProcessorAllocation()
         {
-
+            Allocation = null;
+            RAM = 0;
+            Upload = 0;
+            Download = 0;
         }
 
-        public ProcessorAllocation(string allocation, string ram, string upload, string download)
+        public ProcessorAllocation(string allocation, int ram, int upload, int download)
         {
             Allocation = allocation;
             RAM = ram;
