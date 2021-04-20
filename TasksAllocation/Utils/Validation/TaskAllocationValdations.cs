@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Utils.Constants;
 using TasksAllocation.Components;
+using TasksAllocation.Utils.Display;
+using TasksAllocation.Files;
 
 namespace TasksAllocation.Utils.Validation
 {
@@ -67,7 +69,7 @@ namespace TasksAllocation.Utils.Validation
                         }
 
                         if (task == TASK_ON && allocatedTasks[col] > 1)
-                        { 
+                        {
                             Error error = new Error();
 
                             error.Message = $"The task (ID={col}) in allocation " +
@@ -83,6 +85,153 @@ namespace TasksAllocation.Utils.Validation
                         }
                     }
                 }
+            }
+
+            return (errorCount == 0);
+        }
+
+        public bool ValidateTaskRAM(AllocationDisplay allocationDisplay, Configuration configuration)
+        {
+            int errorCount = 0;
+            List<ProcessorAllocation> processorAllocations = allocationDisplay.ProcessorAllocations;
+
+            for (int processorAllocatioNum = 0; processorAllocatioNum < processorAllocations.Count; processorAllocatioNum++)
+            {
+                ProcessorAllocation processorAllocation = processorAllocations[processorAllocatioNum];
+                int processorAllocationRAM = processorAllocation.RAM;
+                int processorRAM = configuration.Processors[processorAllocatioNum].RAM;
+
+                if (processorAllocationRAM > processorRAM)
+                {
+
+                    Error error = new Error();
+
+                    error.Message = $"The processor (ID={processorAllocatioNum}) of allocation (ID={allocationDisplay.ID}) " +
+                        $"has {processorRAM} GB RAM but requires {processorAllocationRAM} GB RAM";
+                    error.ActualValue = $"{processorAllocationRAM} GB RAM";
+                    error.ExpectedValue = $"Must be less than or equal to {processorRAM} GB RAM";
+                    error.Filename = ValidationsManager.Filename;
+                    error.LineNumber = "";
+                    error.ErrorCode = ErrorCode.INVALID_ALLOCATION;
+
+                    errorCount++;
+                    ValidationsManager.ErrorValidationManager.Errors.Add(error);
+                }
+
+            }
+
+            return (errorCount == 0);
+        }
+
+        public bool ValidateTaskUpload(AllocationDisplay allocationDisplay, Configuration configuration)
+        {
+            int errorCount = 0;
+            List<ProcessorAllocation> processorAllocations = allocationDisplay.ProcessorAllocations;
+
+            for (int processorAllocatioNum = 0; processorAllocatioNum < processorAllocations.Count; processorAllocatioNum++)
+            {
+                ProcessorAllocation processorAllocation = processorAllocations[processorAllocatioNum];
+                int processorAllocationUpload = processorAllocation.Upload;
+                int processorUpload = configuration.Processors[processorAllocatioNum].Upload;
+
+                if (processorAllocationUpload > processorUpload)
+                {
+
+                    Error error = new Error();
+
+                    error.Message = $"The processor (ID={processorAllocatioNum}) of allocation (ID={allocationDisplay.ID}) " +
+                        $"has a maximum upload {processorUpload} Gbps but requires {processorAllocationUpload} Gbps";
+                    error.ActualValue = $"{processorAllocationUpload} Gbps";
+                    error.ExpectedValue = $"Must be less than or equal to {processorUpload} Gbps";
+                    error.Filename = ValidationsManager.Filename;
+                    error.LineNumber = "";
+                    error.ErrorCode = ErrorCode.INVALID_ALLOCATION;
+
+                    errorCount++;
+                    ValidationsManager.ErrorValidationManager.Errors.Add(error);
+                }
+
+            }
+
+            return (errorCount == 0);
+        }
+
+        public bool ValidateTaskDownload(AllocationDisplay allocationDisplay, Configuration configuration)
+        {
+            int errorCount = 0;
+            List<ProcessorAllocation> processorAllocations = allocationDisplay.ProcessorAllocations;
+
+            for (int processorAllocatioNum = 0; processorAllocatioNum < processorAllocations.Count; processorAllocatioNum++)
+            {
+                ProcessorAllocation processorAllocation = processorAllocations[processorAllocatioNum];
+                int processorAllocationDownload = processorAllocation.Download;
+                int processorDownload = configuration.Processors[processorAllocatioNum].Download;
+
+                if (processorAllocationDownload > processorDownload)
+                {
+
+                    Error error = new Error();
+
+                    error.Message = $"The processor (ID={processorAllocatioNum}) of allocation (ID={allocationDisplay.ID}) " +
+                        $"has a maximum download {processorDownload} Gbps but requires {processorAllocationDownload} Gbps";
+                    error.ActualValue = $"{processorAllocationDownload} Gbps";
+                    error.ExpectedValue = $"Must be less than or equal to {processorDownload} Gbps";
+                    error.Filename = ValidationsManager.Filename;
+                    error.LineNumber = "";
+                    error.ErrorCode = ErrorCode.INVALID_ALLOCATION;
+
+                    errorCount++;
+                    ValidationsManager.ErrorValidationManager.Errors.Add(error);
+                }
+
+            }
+
+            return (errorCount == 0);
+        }
+
+        public bool IsAllocationEnergiesEqual(double initalEnergy, AllocationDisplay allocationDisplay)
+        {
+            int errorCount = 0;
+            double allocationEnergy = allocationDisplay.Energy;
+
+            if (allocationEnergy != initalEnergy)
+            {
+                Error error = new Error();
+
+                error.Message = $"The energy value ({allocationEnergy}) of an allocation (ID={allocationDisplay.ID})" +
+                    $" differs from the energy value ({initalEnergy}) of another allocation (ID=0)";
+                error.ActualValue = $"{allocationEnergy}";
+                error.ExpectedValue = "All allocation's energy values must be the same";
+                error.Filename = ValidationsManager.Filename;
+                error.LineNumber = "";
+                error.ErrorCode = ErrorCode.INVALID_ALLOCATION;
+
+                errorCount++;
+                ValidationsManager.ErrorValidationManager.Errors.Add(error);
+            }
+
+            return (errorCount == 0);
+        }
+
+        public bool CheckValidRuntime(AllocationDisplay allocationDisplay, double requiredRuntime)
+        {
+            double runtime = allocationDisplay.Runtime;
+            int errorCount = 0;
+
+            if (runtime > requiredRuntime)
+            {
+                Error error = new Error();
+
+                error.Message = $"The runtime ({runtime}) of an allocation (ID={allocationDisplay.ID})" +
+                    $" is greater then the expected program runtime ({requiredRuntime})";
+                error.ActualValue = $"{runtime}";
+                error.ExpectedValue = $"Must be smaller than or equal to {requiredRuntime}";
+                error.Filename = ValidationsManager.Filename;
+                error.LineNumber = "";
+                error.ErrorCode = ErrorCode.INVALID_ALLOCATION;
+
+                errorCount++;
+                ValidationsManager.ErrorValidationManager.Errors.Add(error);
             }
 
             return (errorCount == 0);

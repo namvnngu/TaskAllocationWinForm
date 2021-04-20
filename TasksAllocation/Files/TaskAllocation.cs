@@ -155,6 +155,26 @@ namespace TasksAllocation.Files
             // Calculate allocations' Runtime and Energy
             CalculateAllocationValues(configuration);
 
+            foreach (AllocationDisplay allocationDisplay in AllocationDisplays)
+            {
+                // Ensure all allocation runtime is not greater than the expected program runtime
+                double expectedProgramRuntime = configuration.Program.Duration;
+                taskAllocationValdations.CheckValidRuntime(allocationDisplay, expectedProgramRuntime);
+
+                // Ensure all allocations have the same energy
+                double initalEnergy = AllocationDisplays[0].Energy;
+                taskAllocationValdations.IsAllocationEnergiesEqual(initalEnergy, allocationDisplay);
+
+                // Ensure the maximum amount of RAM required by tasks on each processor
+                taskAllocationValdations.ValidateTaskRAM(allocationDisplay, configuration);
+
+                // Ensure the maximum download required by tasks on each processor
+                taskAllocationValdations.ValidateTaskDownload(allocationDisplay, configuration);
+
+                // Ensure the maximum upload required by tasks on each processor
+                taskAllocationValdations.ValidateTaskUpload(allocationDisplay, configuration);
+            }
+           
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 
