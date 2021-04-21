@@ -16,7 +16,6 @@ namespace TasksAllocation.Utils.FilesManipulation
         public int NumberOfTasks { get; set; }
         public int NumberOfProcessors { get; set; }
         public List<Allocation> Allocations { get; set; }
-        private List<PairSection> AllocationSectionList;
         private bool InsideAllocationData;
         private int AllocationID;
         private string AllocationMapData;
