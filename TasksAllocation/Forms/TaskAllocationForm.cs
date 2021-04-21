@@ -41,7 +41,6 @@ namespace TasksAllocation
             if (dialogResult == DialogResult.OK)
             {
                 TaffFilename = openFileDialog.FileName;
-                bool allValidFiles = false;
 
                 urlTextBox.Text = TaffFilename;
 
@@ -52,11 +51,7 @@ namespace TasksAllocation
 
                 if (ValidTaskAllocation && ValidConfiguration)
                 {
-                    allValidFiles = true;
-                }
-
-                if (allValidFiles)
-                {
+                    TaskAllocationController.CalculateAllocationValues(ConfigurationController);
                     allocationToolStripMenuItem.Enabled = true;
                     validateButton.Enabled = true;
                 }

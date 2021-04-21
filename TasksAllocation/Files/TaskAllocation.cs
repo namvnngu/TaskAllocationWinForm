@@ -153,7 +153,7 @@ namespace TasksAllocation.Files
             taskAllocationValdations.CheckTaskExistsInOneProcessor(Allocations);
 
             // Calculate allocations' Runtime and Energy
-            CalculateAllocationValues(configuration);
+            // CalculateAllocationValues(configuration);
 
             foreach (AllocationDisplay allocationDisplay in AllocationDisplays)
             {
