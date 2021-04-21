@@ -1,27 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using TasksAllocation.Files;
 using TasksAllocation.Forms;
-using TasksAllocation.Utils.Validation;
 using TasksAllocation.Utils.Display;
+using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation
 {
     public partial class TaskAllocationForm : Form
     {
-        ErrorsForm errorsForm;
-        TaskAllocation taskAllocation = new TaskAllocation();
-        Configuration configuration = new Configuration();
-        Validations validations = new Validations();
-
-        string errorText;
+        ErrorsForm ErrorsDisplayForm;
+        TaskAllocation TaskAllocationController = new TaskAllocation();
+        Configuration ConfigurationController = new Configuration();
+        Validations ValdationsController = new Validations();
+        string RenderedMainDisplayText = "", RenderedErrorText;
+        string TaffFilename, CffFilename;
+        bool ValidTaskAllocation, ValidConfiguration;
 
         public TaskAllocationForm()
         {
@@ -33,31 +27,30 @@ namespace TasksAllocation
             int errorCount;
 
             // Reset
-            validations = new Validations();
-            taskAllocation = new TaskAllocation();
-            configuration = new Configuration();
+            ValdationsController = new Validations();
+            TaskAllocationController = new TaskAllocation();
+            ConfigurationController = new Configuration();
 
             errorsToolStripMenuItem.Enabled = false;
             allocationToolStripMenuItem.Enabled = false;
             validateButton.Enabled = false;
+            RenderedMainDisplayText = "";
 
             DialogResult dialogResult = openFileDialog.ShowDialog();
 
             if (dialogResult == DialogResult.OK)
             {
-                string taffFileName = openFileDialog.FileName;
-                string cffFilename;
-                bool validTaskAllocation, validConfiguration;
+                TaffFilename = openFileDialog.FileName;
                 bool allValidFiles = false;
 
-                urlTextBox.Text = taffFileName;
+                urlTextBox.Text = TaffFilename;
 
                 // Validate task allocation file and configuration file
-                validTaskAllocation = taskAllocation.ValidateFile(taffFileName, validations);
-                cffFilename = taskAllocation.CffFilename;
-                validConfiguration = configuration.ValidateFile(cffFilename, validations);
+                ValidTaskAllocation = TaskAllocationController.ValidateFile(TaffFilename, ValdationsController);
+                CffFilename = TaskAllocationController.CffFilename;
+                ValidConfiguration = ConfigurationController.ValidateFile(CffFilename, ValdationsController);
 
-                if (validTaskAllocation && validConfiguration)
+                if (ValidTaskAllocation && ValidConfiguration)
                 {
                     allValidFiles = true;
                 }
@@ -68,13 +61,19 @@ namespace TasksAllocation
                     validateButton.Enabled = true;
                 }
 
-                errorCount = validations.ErrorValidationManager.Errors.Count;
+                errorCount = ValdationsController.ErrorValidationManager.Errors.Count;
 
                 if (errorCount != 0)
                 {
-                    errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager);
+                    RenderedErrorText = ErrorDisplay.DisplayText(ValdationsController.ErrorValidationManager);
                     errorsToolStripMenuItem.Enabled = true;
                 }
+
+                // Display a summary of validations and a set of allocations
+                RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocationFile(TaffFilename, ValidTaskAllocation);
+                RenderedMainDisplayText += ValidationSummaryDisplay.ValidConfigurationFile(CffFilename, ValidConfiguration);
+
+                mainWebBrowser.DocumentText = RenderedMainDisplayText;
             }
         }
 
@@ -92,9 +91,9 @@ namespace TasksAllocation
 
         private void ErrorsToolStripMenuItemClick(object sender, EventArgs e)
         {
-            errorsForm = new ErrorsForm();
-            errorsForm.errorWebBrowser.DocumentText = errorText;
-            errorsForm.Show();
+            ErrorsDisplayForm = new ErrorsForm();
+            ErrorsDisplayForm.errorWebBrowser.DocumentText = RenderedErrorText;
+            ErrorsDisplayForm.Show();
         }
 
         private void MainWebBrowserDocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
@@ -116,17 +115,25 @@ namespace TasksAllocation
         {
             int errorCount;
 
-            taskAllocation.ValidateAllocations(configuration, validations);
-            errorCount = validations.ErrorValidationManager.Errors.Count;
+            TaskAllocationController.ValidateAllocations(ConfigurationController, ValdationsController);
+            errorCount = ValdationsController.ErrorValidationManager.Errors.Count;
 
             if (errorCount != 0)
             {
-                errorText = ErrorDisplay.DisplayText(validations.ErrorValidationManager);
+                RenderedErrorText = ErrorDisplay.DisplayText(ValdationsController.ErrorValidationManager);
                 errorsToolStripMenuItem.Enabled = true;
             }
 
             allocationToolStripMenuItem.Enabled = false;
             validateButton.Enabled = false;
+
+            // Display a summary of validations and a set of allocations
+            RenderedMainDisplayText = "";
+            RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocationFile(TaffFilename, ValidTaskAllocation);
+            RenderedMainDisplayText += ValidationSummaryDisplay.ValidConfigurationFile(CffFilename, ValidConfiguration);
+            RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocations(errorCount);
+
+            mainWebBrowser.DocumentText = RenderedMainDisplayText;
         }
     }
 }

@@ -28,7 +28,6 @@ namespace TasksAllocation.Utils.FilesManipulation
             NumberOfTasks = -1;
             NumberOfProcessors = -1;
             Allocations = new List<Allocation>();
-            AllocationSectionList = new List<PairSection>();
             InsideAllocationData = false;
             AllocationID = -1;
             AllocationMapData = null;
@@ -41,14 +40,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                 Count = validations.ValidateIntegerPair(
                         line,
                         TaffKeywords.ALLOCATIONS_COUNT);
-
-                for (int countNum = 0; countNum < Count; countNum++)
-                {
-                    PairSection openClosingAllocation = new PairSection(
-                        TaffKeywords.OPENING_ALLOCATION,
-                        TaffKeywords.CLOSING_ALLOCATION);
-                    AllocationSectionList.Add(openClosingAllocation);
-                }
 
                 return Count;
             }
@@ -86,14 +77,12 @@ namespace TasksAllocation.Utils.FilesManipulation
 
         public void MarkInsideAllocation(string line, int lineNumber, Validations validations)
         {
-            if (Count > 0 &&
-                AllocationSectionList[Count - 1].StartWithOpeningSection(line, lineNumber))
+            if (line == TaffKeywords.OPENING_ALLOCATION)
             {
                 InsideAllocationData = true;
             }
   
-            if (Count > 0 &&
-                 AllocationSectionList[Count - 1].StartWithClosingSection(line, lineNumber))
+            if (line == TaffKeywords.CLOSING_ALLOCATION)
             {
                 // Check the required values are missing
                 validations.CheckRequiredValueExist(AllocationID.ToString(), TaffKeywords.ALLOCATION_ID);
@@ -203,12 +192,6 @@ namespace TasksAllocation.Utils.FilesManipulation
                    count.ToString(),
                    TaffKeywords.OPENING_ALLOCATION,
                    ErrorCode.MISSING_SECTION);
-
-                // Check whether the Allocation sections exist
-                foreach (PairSection pairSection in AllocationSectionList)
-                {
-                    pairSection.CheckValidPair(validations, taffFilename);
-                }
             }
         }
     }
