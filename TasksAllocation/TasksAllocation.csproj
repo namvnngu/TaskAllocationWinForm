@@ -82,6 +82,7 @@
     <Compile Include="Utils\Constants\TaffKeywords.cs" />
     <Compile Include="Utils\DataStructure\Map.cs" />
     <Compile Include="Utils\Display\AllocationDisplay.cs" />
+    <Compile Include="Utils\Display\InvalidAllocation.cs" />
     <Compile Include="Utils\Display\ValidationSummaryDisplay.cs" />
     <Compile Include="Utils\Display\ProcessorAllocation.cs" />
     <Compile Include="Utils\Display\ErrorDisplay.cs" />

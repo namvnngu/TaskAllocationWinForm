@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Files;
 using TasksAllocation.Components;
+using TasksAllocation.Utils.Constants;
 using System.IO;
 
 namespace TasksAllocation.Utils.Display
@@ -75,18 +76,9 @@ namespace TasksAllocation.Utils.Display
         public static string DisplayInvalidAllocations(string taffFile, string cffFile)
         {
             StringBuilder renderedText = new StringBuilder();
-            StreamReader streamReader = new StreamReader(taffFile);
-            string line;
+            List<string[]> allocations = new List<string[]>();
 
-            while (!streamReader.EndOfStream)
-            {
-                line = streamReader.ReadLine();
-                line = line.Trim();
-
-
-            }
-
-            streamReader.Close();
+            allocations = InvalidAllocation.ExtractAllocation(taffFile);
 
             return renderedText.ToString();
         }
