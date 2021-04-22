@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TasksAllocation.Files;
 using TasksAllocation.Components;
+using System.IO;
 
 namespace TasksAllocation.Utils.Display
 {
@@ -26,7 +27,7 @@ namespace TasksAllocation.Utils.Display
                 renderedText.Append("<tr>");
                 renderedText.Append($"<th colspan=\"4\">Allocation ID = {allocationID}, Runtime = {allocationRuntime}, Energy = {allocationEnergy}</th>");
                 renderedText.Append("</tr>");
-                
+
                 // Header
                 renderedText.Append("<tr>");
                 renderedText.Append($"<th style=\"text-align:left\">Allocation</th>");
@@ -67,6 +68,25 @@ namespace TasksAllocation.Utils.Display
                 renderedText.Append($"<td>{processTaskAllocationUpload}/{processUpload} Gbps</td>");
                 renderedText.Append("</tr>");
             }
+
+            return renderedText.ToString();
+        }
+
+        public static string DisplayInvalidAllocations(string taffFile, string cffFile)
+        {
+            StringBuilder renderedText = new StringBuilder();
+            StreamReader streamReader = new StreamReader(taffFile);
+            string line;
+
+            while (!streamReader.EndOfStream)
+            {
+                line = streamReader.ReadLine();
+                line = line.Trim();
+
+
+            }
+
+            streamReader.Close();
 
             return renderedText.ToString();
         }
