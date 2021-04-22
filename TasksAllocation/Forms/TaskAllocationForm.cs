@@ -67,6 +67,7 @@ namespace TasksAllocation
                 // Display a summary of validations and a set of allocations
                 RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocationFile(TaffFilename, ValidTaskAllocation);
                 RenderedMainDisplayText += ValidationSummaryDisplay.ValidConfigurationFile(CffFilename, ValidConfiguration);
+                RenderedMainDisplayText += AllocationsDisplay.Display(TaskAllocationController.AllocationDisplays, ConfigurationController);
 
                 mainWebBrowser.DocumentText = RenderedMainDisplayText;
             }
@@ -127,6 +128,7 @@ namespace TasksAllocation
             RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocationFile(TaffFilename, ValidTaskAllocation);
             RenderedMainDisplayText += ValidationSummaryDisplay.ValidConfigurationFile(CffFilename, ValidConfiguration);
             RenderedMainDisplayText += ValidationSummaryDisplay.ValidAllocations(errorCount);
+            RenderedMainDisplayText += AllocationsDisplay.Display(TaskAllocationController.AllocationDisplays, ConfigurationController);
 
             mainWebBrowser.DocumentText = RenderedMainDisplayText;
         }
