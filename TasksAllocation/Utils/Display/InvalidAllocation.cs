@@ -10,10 +10,19 @@ namespace TasksAllocation.Utils.Display
 {
     class InvalidAllocation
     {
-        public static List<string[]> ExtractAllocation(string taffFile)
+        public List<string[]> Allocations { get; set; }
+        public List<string[]> Processors { get; set; }
+
+        public InvalidAllocation()
+        {
+            Allocations = new List<string[]>();
+            Processors = new List<string[]>();
+        }
+
+        public void ExtractAllocation(string taffFile)
         {
             StreamReader streamReader = new StreamReader(taffFile);
-            List<string[]> allocations = new List<string[]>();
+            
             string allocationID = "";
             string allocationMap = "";
             string line;
@@ -29,7 +38,7 @@ namespace TasksAllocation.Utils.Display
                 if (line == TaffKeywords.CLOSING_ALLOCATION)
                 {
                     string[] allocation = { allocationID, allocationMap };
-                    allocations.Add(allocation);
+                    Allocations.Add(allocation);
 
                     allocationID = "";
                     allocationMap = "";
@@ -37,23 +46,11 @@ namespace TasksAllocation.Utils.Display
             }
 
             streamReader.Close();
-
-            return allocations;
         }
 
-        public static List<string[]> ExtractTasks(string cffFile)
+        public void ExtractConfiguration(string cffFile)
         {
             StreamReader streamReader = new StreamReader(cffFile);
-            List<string[]> tasks = new List<string[]>();
-            List<string[]> processors = new List<string[]>();
-            
-            // Tasks
-            string taskID = "";
-            string taskRuntime = "";
-            string taskReferenceFrequency = "";
-            string taskRAM = "";
-            string taskDownload = "";
-            string taskUpload = "";
             string line;
 
             // Processors
@@ -69,50 +66,82 @@ namespace TasksAllocation.Utils.Display
                 line = streamReader.ReadLine();
                 line = line.Trim();
 
-                // Tasks
-                ExtractData(CffKeywords.TASK_ID, line, ref taskID);
-                ExtractData(CffKeywords.TASK_RUNTIME, line, ref taskRuntime);
-                ExtractData(CffKeywords.TASK_REFERENCE_FREQUENCY, line, ref taskReferenceFrequency);
-                ExtractData(CffKeywords.TASK_RAM, line, ref taskRAM);
-                ExtractData(CffKeywords.TASK_DOWNLOAD, line, ref taskDownload);
-                ExtractData(CffKeywords.TASK_UPLOAD, line, ref taskUpload);
+                // Processors
+                ExtractData(CffKeywords.PROCESSOR_ID, line, ref processorId);
+                ExtractData(CffKeywords.PROCESSOR_TYPE, line, ref processorType);
+                ExtractData(CffKeywords.PROCESSOR_FREQUENCY, line, ref processorFreq);
+                ExtractData(CffKeywords.PROCESSOR_RAM, line, ref processorRAM);
+                ExtractData(CffKeywords.PROCESSOR_DOWNLOAD, line, ref processorDownload);
+                ExtractData(CffKeywords.PROCESSOR_UPLOAD, line, ref processorUpload);
 
-                if (line == CffKeywords.CLOSING_TASK)
+                if (line == CffKeywords.CLOSING_PROCESSOR)
                 {
-                    string[] task = { 
-                        taskID,
-                        taskRuntime,
-                        taskReferenceFrequency,
-                        taskRAM,
-                        taskDownload,
-                        taskUpload
+                    string[] processor = {
+                        processorId,
+                        processorType,
+                        processorFreq,
+                        processorRAM,
+                        processorDownload,
+                        processorUpload
                     };
 
-                    tasks.Add(task);
+                    Processors.Add(processor);
 
-                    taskID = "";
-                    taskRuntime = "";
-                    taskReferenceFrequency = "";
-                    taskRAM = "";
-                    taskDownload = "";
-                    taskUpload = "";
+                    processorId = "";
+                    processorType = "";
+                    processorFreq = "";
+                    processorRAM = "";
+                    processorDownload = "";
+                    processorUpload = "";
                 }
-
-                // Processors
-                ExtractData(CffKeywords.PROCESSOR_ID, line, ref taskID);
-                ExtractData(CffKeywords.PROCESSOR_TYPE, line, ref taskRuntime);
-                ExtractData(CffKeywords.PROCESSOR_FREQUENCY, line, ref taskReferenceFrequency);
-                ExtractData(CffKeywords.PROCESSOR_RAM, line, ref taskRAM);
-                ExtractData(CffKeywords.TASK_DOWNLOAD, line, ref taskDownload);
-                ExtractData(CffKeywords.TASK_UPLOAD, line, ref taskUpload);
             }
 
             streamReader.Close();
-
-            return tasks;
         }
 
-        private static void ExtractData(string keyword, string line, ref string extractedData)
+        public void CalculateAllocationValues()
+        {
+            StringBuilder renderedText = new StringBuilder();
+
+            for (int allocationNum = 0; allocationNum < Allocations.Count; allocationNum++)
+            {
+                // Allocation Info
+                Random random = new Random();
+                string[] allocation = Allocations[allocationNum];
+                string allocationID = allocation[0];
+                string[] processTaskAllocations = allocation[1].Split(Symbols.SEMI_COLON);
+                double allocationRuntime = random.NextDouble() * 3;
+                double allocationEnergy = random.NextDouble() * (500 - 200) + 200;
+                
+                // Header
+                renderedText.Append("<br><table>");
+                renderedText.Append("<tr>");
+                renderedText.Append($"<th colspan=\"4\">Allocation ID = {allocationID}, Runtime = {allocationRuntime}, Energy = {allocationEnergy}</th>");
+                renderedText.Append("</tr>");
+
+                // Body
+                for (int processAllocationNum = 0; processAllocationNum < processTaskAllocations.Length; processAllocationNum++)
+                {
+                    int processorRAM = Convert.ToInt32(Processors[processAllocationNum][3]);
+                    int processorDownload = Convert.ToInt32(Processors[processAllocationNum][4]);
+                    int processorUpload = Convert.ToInt32(Processors[processAllocationNum][5]);
+                    string processTaskAllocation = processTaskAllocations[0];
+                    int processTaskAllocationRAM = random.Next(0, processorRAM);
+                    int processTaskAllocationDownload = random.Next(0, processorDownload);
+                    int processTaskAllocationUpload = random.Next(0, processorUpload);
+
+                    renderedText.Append("<tr>");
+                    renderedText.Append($"<td>{processTaskAllocation}</td>");
+                    renderedText.Append($"<td>{processTaskAllocationRAM}/{processorRAM} GB</td>");
+                    renderedText.Append($"<td>{processTaskAllocationDownload}/{processorDownload} Gbps</td>");
+                    renderedText.Append($"<td>{processTaskAllocationUpload}/{processorUpload} Gbps</td>");
+                    renderedText.Append("</tr>");
+                }
+               
+            }
+        }
+
+        private void ExtractData(string keyword, string line, ref string extractedData)
         {
             if (line.StartsWith(keyword))
             {

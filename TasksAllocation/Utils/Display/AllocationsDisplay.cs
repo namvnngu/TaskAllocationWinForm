@@ -77,8 +77,11 @@ namespace TasksAllocation.Utils.Display
         {
             StringBuilder renderedText = new StringBuilder();
             List<string[]> allocations = new List<string[]>();
+            InvalidAllocation invalidAllocation = new InvalidAllocation();
+            List<AllocationDisplay> allocationDisplays = new List<AllocationDisplay>();
 
-            allocations = InvalidAllocation.ExtractAllocation(taffFile);
+            invalidAllocation.ExtractAllocation(taffFile);
+            invalidAllocation.ExtractConfiguration(cffFile);
 
             return renderedText.ToString();
         }
