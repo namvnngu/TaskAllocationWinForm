@@ -20,6 +20,7 @@ namespace TasksAllocation.Files
         public List<Allocation> Allocations { get; set; }
         private string TaffFilename = "";
         public List<AllocationDisplay> AllocationDisplays { get; set; }
+        public int AllocationInFileCount { get; set; }
 
         public TaskAllocation()
         {
@@ -128,6 +129,8 @@ namespace TasksAllocation.Files
                 allocationPair,
                 taffFilename,
                 validations);
+
+            AllocationInFileCount = allocationPair.CalculateNumOfPair();
 
             afterNumOfError = validations.ErrorValidationManager.Errors.Count;
 

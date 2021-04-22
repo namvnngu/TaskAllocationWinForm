@@ -73,17 +73,31 @@ namespace TasksAllocation.Utils.Display
             return renderedText.ToString();
         }
 
-        public static string DisplayInvalidAllocations(string taffFile, string cffFile)
+        public static List<AllocationDisplay> DisplayInvalidAllocations(List<AllocationDisplay> allocationDisplays, int count)
         {
-            StringBuilder renderedText = new StringBuilder();
-            List<string[]> allocations = new List<string[]>();
-            InvalidAllocation invalidAllocation = new InvalidAllocation();
-            List<AllocationDisplay> allocationDisplays = new List<AllocationDisplay>();
+            if (allocationDisplays.Count == count || allocationDisplays.Count == 0)
+            {
+                return allocationDisplays;
+            }
 
-            invalidAllocation.ExtractAllocation(taffFile);
-            invalidAllocation.ExtractConfiguration(cffFile);
+            Random rnd = new Random();
+            List<AllocationDisplay> allocationDisplaysList = new List<AllocationDisplay>();
 
-            return renderedText.ToString();
+            for (int allocationDisplayNum = 0; allocationDisplayNum < count; allocationDisplayNum++)
+            {
+                int index = rnd.Next(0, allocationDisplays.Count);
+                AllocationDisplay allocationDisplay = new AllocationDisplay();
+                AllocationDisplay anotherAllocationDisplay = allocationDisplays[index];
+
+                allocationDisplay.ID = allocationDisplayNum;
+                allocationDisplay.Runtime = anotherAllocationDisplay.Runtime;
+                allocationDisplay.Energy = anotherAllocationDisplay.Energy;
+                allocationDisplay.ProcessorAllocations = anotherAllocationDisplay.ProcessorAllocations;
+
+                allocationDisplaysList.Add(allocationDisplay);
+            }
+
+            return allocationDisplaysList;
         }
     }
 }

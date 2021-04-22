@@ -41,22 +41,23 @@ namespace TasksAllocation
             if (dialogResult == DialogResult.OK)
             {
                 TaffFilename = openFileDialog.FileName;
-
                 urlTextBox.Text = TaffFilename;
 
                 // Validate task allocation file and configuration file
                 ValidTaskAllocation = TaskAllocationController.ValidateFile(TaffFilename, ValdationsController);
                 CffFilename = TaskAllocationController.CffFilename;
                 ValidConfiguration = ConfigurationController.ValidateFile(CffFilename, ValdationsController);
+                TaskAllocationController.CalculateAllocationValues(ConfigurationController);
+                errorCount = ValdationsController.ErrorValidationManager.Errors.Count;
 
                 if (ValidTaskAllocation && ValidConfiguration)
-                {
-                    TaskAllocationController.CalculateAllocationValues(ConfigurationController);
+                { 
                     allocationToolStripMenuItem.Enabled = true;
                     validateButton.Enabled = true;
+                } else
+                {
+                    TaskAllocationController.AllocationDisplays = AllocationsDisplay.DisplayInvalidAllocations(TaskAllocationController.AllocationDisplays, TaskAllocationController.AllocationInFileCount);
                 }
-
-                errorCount = ValdationsController.ErrorValidationManager.Errors.Count;
 
                 if (errorCount != 0)
                 {
