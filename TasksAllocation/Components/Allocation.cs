@@ -9,6 +9,10 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
+    /// <summary>
+    /// The Allocation class describes all realted data
+    /// to serve the application.
+    /// </summary>
     public class Allocation
     {
         public int ID { get; set; }
@@ -30,6 +34,11 @@ namespace TasksAllocation.Components
             Energy = 0;
         }
 
+        /// <summary>
+        /// All values in the map data are added up,
+        /// and the sum indicates how many tasks are 
+        /// allocated in a specific allocation.
+        /// </summary>
         public int CountTasks()
         {
             if (MapMatrix == null)

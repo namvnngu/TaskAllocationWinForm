@@ -9,6 +9,10 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
+    /// <summary>
+    /// The superclass Commnucation allows subclasses
+    /// to inherit and define their own behaviours.
+    /// </summary>
     public class Communication
     {
         public Map MapData { get; set; }

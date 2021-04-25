@@ -35,14 +35,14 @@ namespace TasksAllocation.Components
                 CffKeywords.CLOSING_PROCESSOR_TYPE);
         }
 
-        public double EnergyPerSecond(double frequency)
+        public double CalculateEnergyPerSecond(double frequency)
         {
             return (C2 * frequency * frequency + C1 * frequency + C0);
         }
 
         public double CalculateEnergy(double frequency, double runtime)
         {
-            return (EnergyPerSecond(frequency) * runtime);
+            return (CalculateEnergyPerSecond(frequency) * runtime);
         }
 
         public override string ToString()

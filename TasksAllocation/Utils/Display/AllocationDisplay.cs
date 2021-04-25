@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Display
 {
+    /// <summary>
+    /// The class describes an individual allocation 
+    /// data used for displaying in the main window.
+    /// </summary>
     public class AllocationDisplay
     {
         public int ID;

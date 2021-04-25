@@ -8,6 +8,10 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
+    /// <summary>
+    /// The class provides the number of tasks,
+    /// the number of processors and the maximum duration
+    /// </summary>
     public class ProgramInfo
     {
         public double Duration { get; set; }

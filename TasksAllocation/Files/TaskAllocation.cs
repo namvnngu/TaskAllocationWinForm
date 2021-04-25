@@ -11,6 +11,11 @@ using TasksAllocation.Utils.Display;
 
 namespace TasksAllocation.Files
 {
+    /// <summary>
+    /// The class valiates the provided CFF file, extracts all 
+    /// necessary values, caculate allocations' runtime, energy,
+    /// download, upload, and scan errors while reading the file.
+    /// </summary>
     public class TaskAllocation
     {
         public string CffFilename { get; set; }

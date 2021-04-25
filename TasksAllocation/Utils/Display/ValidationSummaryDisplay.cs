@@ -7,6 +7,11 @@ using System.IO;
 
 namespace TasksAllocation.Utils.Display
 {
+    /// <summary>
+    /// The class provides static methods as displaying utilities specific to 
+    /// allocations such as rendering text for invalid/valid files
+    /// as well as allocations, and extracting the file name.
+    /// </summary>
     public class ValidationSummaryDisplay
     {
         const string INVALID = "invalid";

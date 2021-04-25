@@ -47,6 +47,10 @@ namespace TasksAllocation.Components
                 CffKeywords.CLOSING_TASK);
         }
 
+        /// <summary>
+        /// The method compute the amount of runtime based on
+        /// the frequency of the process in which the task is allocated
+        /// </summary>
         public double CalculateRuntime(double processorFrequency)
         {
             double taskRuntimeInProcessor;

@@ -10,6 +10,10 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Files
 {
+    /// <summary>
+    /// The class valiates the provided CFF file, extracts all 
+    /// necessary values and scan errors while reading the file.
+    /// </summary>
     public class Configuration
     {
         public string LogFilename { get; set; }
@@ -190,7 +194,10 @@ namespace TasksAllocation.Files
             return (beforeNumOfError == afterNumOfError);
         }
 
-
+        /// <summary>
+        /// The method assigns process types to appropriate,
+        /// corresponding processors.
+        /// </summary>
         private void AssignProcessType()
         {
             if (ProcessorTypes.Count != 0 && Processors.Count != 0)
@@ -208,6 +215,10 @@ namespace TasksAllocation.Files
             }
         }
 
+        /// <summary>
+        /// The method collects errors if the process type is missing.
+        /// </summary>
+        /// <param name="validations"></param>
         private void CheckMissingProcessorType(Validations validations)
         {
             foreach (Processor processor in Processors)
@@ -230,6 +241,14 @@ namespace TasksAllocation.Files
             }
         }
 
+        /// <summary>
+        /// The method supports to create an error when it occurs.
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <param name="actualValue"></param>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <param name="validations"></param>
         private void CreateError(string keyword, string actualValue, string minValue, string maxValue, Validations validations)
         {
             Error error = new Error();

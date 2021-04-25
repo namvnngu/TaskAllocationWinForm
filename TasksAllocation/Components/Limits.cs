@@ -8,6 +8,11 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
+    /// <summary>
+    /// The class with different constructors holds 
+    /// the program's requirements to ensure that
+    /// allocations do not exceed the limits.
+    /// </summary>
     public class Limits
     {
         public int MinimumTasks { get; set; }

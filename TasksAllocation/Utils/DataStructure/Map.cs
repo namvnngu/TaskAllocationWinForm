@@ -17,6 +17,16 @@ namespace TasksAllocation.Utils.DataStructure
             Data = data;
         }
 
+        /// <summary>
+        /// The method converts a map string into a two-dimensional
+        /// matrix of n rows and m columns, and also throws an error 
+        /// when the number of rows or columns is different from
+        /// the predefined values.
+        /// </summary>
+        /// <param name="nRow"></param>
+        /// <param name="nCol"></param>
+        /// <param name="validations"></param>
+        /// <returns></returns>
         public string[,] ConvertToMatrix(int nRow, int nCol, Validations validations)
         {
             if (nRow < 0 || nCol < 0)

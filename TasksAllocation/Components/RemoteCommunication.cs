@@ -9,6 +9,10 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
+    /// <summary>
+    /// The class inherits the Commnucation superclass
+    /// without redefining any behaviours.
+    /// </summary>
     public class RemoteCommunication : Communication
     { 
         public RemoteCommunication()

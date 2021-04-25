@@ -49,6 +49,11 @@ namespace TasksAllocation.Components
                 CffKeywords.CLOSING_PROCESSOR);
         }
 
+        /// <summary>
+        /// Determining whether the amount of RAM required by a task 
+        /// is less than or equal to the amount of RAM associated
+        /// with a processor.
+        /// </summary>
         public bool IsRamSufficient(Task task)
         {
             if (task.RAM > RAM)
@@ -59,6 +64,11 @@ namespace TasksAllocation.Components
             return true;
         }
 
+        /// <summary>
+        /// Determining whether the amount of download speed 
+        /// required by a task is less than or equal to 
+        /// the amount of download speed provided by a processor.
+        /// </summary>
         public bool IsDownloadSufficient(Task task)
         {
             if (task.Download > Download)
@@ -69,6 +79,11 @@ namespace TasksAllocation.Components
             return true;
         }
 
+        /// <summary>
+        /// Determining whether the amount of upload speed 
+        /// required by a task is less than or equal to 
+        /// the amount of upload speed provided by a processor.
+        /// </summary>
         public bool IsUploadSufficient(Task task)
         {
             if (task.Upload > Upload)
