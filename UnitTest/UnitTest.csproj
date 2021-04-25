@@ -51,6 +51,8 @@
   <ItemGroup>
     <Compile Include="RamUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DownloadUnitTest.cs" />
+    <Compile Include="UploadUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

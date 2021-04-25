@@ -59,6 +59,26 @@ namespace TasksAllocation.Components
             return true;
         }
 
+        public bool IsDownloadSufficient(Task task)
+        {
+            if (task.Download > Download)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool IsUploadSufficient(Task task)
+        {
+            if (task.Upload > Upload)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();

@@ -5,22 +5,22 @@ using TasksAllocation.Components;
 namespace TaskAllocationUnitTest
 {
     [TestClass]
-    public class RamUnitTest
+    public class UploadUnitTest
     {
         [TestMethod]
         public void TestMethod1()
         {
             // Arrange
             Processor processor = new Processor();
-            processor.RAM = 4;
+            processor.Upload = 50;
             Task task = new Task();
-            task.RAM = 2;
+            task.Upload = 12;
             bool expectedValue = true;
-            string errorMessage = "The amount of RAM required by a task is higher than" +
-                " the amount of RAM associated with a processor";
+            string errorMessage = "the amount of upload speed required by a task is higher than" +
+                " the amount of upload speed provided by a processor";
 
             // Act
-            bool actualValue = processor.IsRamSufficient(task);
+            bool actualValue = processor.IsUploadSufficient(task);
 
             // Assert
             Assert.AreEqual(expectedValue, actualValue, errorMessage);
@@ -29,17 +29,17 @@ namespace TaskAllocationUnitTest
         [TestMethod]
         public void TestMethod2()
         {
-             // Arrange
+            // Arrange
             Processor processor = new Processor();
-            processor.RAM = 2;
+            processor.Upload = 30;
             Task task = new Task();
-            task.RAM = 2;
+            task.Upload = 30;
             bool expectedValue = true;
-            string errorMessage = "The amount of RAM required by a task is higher than" +
-                " the amount of RAM associated with a processor";
+            string errorMessage = "the amount of upload speed required by a task is higher than" +
+                " the amount of upload speed provided by a processor";
 
             // Act
-            bool actualValue = processor.IsRamSufficient(task);
+            bool actualValue = processor.IsUploadSufficient(task);
 
             // Assert
             Assert.AreEqual(expectedValue, actualValue, errorMessage);
@@ -50,15 +50,15 @@ namespace TaskAllocationUnitTest
         {
             // Arrange
             Processor processor = new Processor();
-            processor.RAM = 2;
+            processor.Upload = 45;
             Task task = new Task();
-            task.RAM = 4;
+            task.Upload = 50;
             bool expectedValue = false;
-            string errorMessage = "The amount of RAM required by a task is less than or equal to" +
-                " the amount of RAM associated with a processor";
+            string errorMessage = "the amount of upload speed required by a task is less than or equal to" +
+                " the amount of upload speed provided by a processor";
 
             // Act
-            bool actualValue = processor.IsRamSufficient(task);
+            bool actualValue = processor.IsUploadSufficient(task);
 
             // Assert
             Assert.AreEqual(expectedValue, actualValue, errorMessage);
