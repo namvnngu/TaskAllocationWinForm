@@ -2,10 +2,10 @@
 using System;
 using TasksAllocation.Components;
 
-namespace UnitTestProject1
+namespace TaskAllocationUnitTest
 {
     [TestClass]
-    public class UnitTest1
+    public class EnergyUnitTest
     {
         const double Accuracy = 0.0001;
 
