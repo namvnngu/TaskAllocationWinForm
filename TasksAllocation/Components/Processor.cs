@@ -49,6 +49,16 @@ namespace TasksAllocation.Components
                 CffKeywords.CLOSING_PROCESSOR);
         }
 
+        public bool IsRamSufficient(Task task)
+        {
+            if (task.RAM > RAM)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         public override string ToString()
         {
             StringBuilder text = new StringBuilder();
