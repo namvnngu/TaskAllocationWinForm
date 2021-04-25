@@ -10,7 +10,7 @@ using TasksAllocation.Utils.DataStructure;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffRemoteCommunication
+    public class CffRemoteCommunication
     {
         public RemoteCommunication RemoteCommunication { get; set; }
         public PairSection RemoteCommunicationSection { get; set; }

@@ -9,7 +9,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class Allocation
+    public class Allocation
     {
         public int ID { get; set; }
         public Map MapData { get; set; }

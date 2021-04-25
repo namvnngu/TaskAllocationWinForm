@@ -10,7 +10,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Files
 {
-    class Configuration
+    public class Configuration
     {
         public string LogFilename { get; set; }
         public Limits LimitData { get; set; }

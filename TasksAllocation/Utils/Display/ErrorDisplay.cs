@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Utils.Display
 {
-    class ErrorDisplay
+    public class ErrorDisplay
     {
         public static string DisplayText(ErrorManager errorManager)
         {

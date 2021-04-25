@@ -10,7 +10,7 @@ using TasksAllocation.Files;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class TaskAllocationValdations
+    public class TaskAllocationValdations
     {
         public Validations ValidationsManager;
 

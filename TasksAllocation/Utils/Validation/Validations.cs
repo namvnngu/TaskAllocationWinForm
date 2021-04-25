@@ -8,7 +8,7 @@ using System.IO;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class Validations
+    public class Validations
     {
         public ErrorManager ErrorValidationManager { get; set; }
         public string Filename { get; set; }

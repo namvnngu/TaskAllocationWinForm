@@ -9,7 +9,7 @@ using System.IO;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class TaffManipulation
+    public class TaffManipulation
     {
         public static string ExtractCff(string taffFilename, Validations validations)
         {

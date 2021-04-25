@@ -10,7 +10,7 @@ using TasksAllocation.Utils.DataStructure;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class TaffAllocations
+    public class TaffAllocations
     {
         public int Count { get; set; }
         public int NumberOfTasks { get; set; }

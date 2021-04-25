@@ -7,7 +7,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class PairSection
+    public class PairSection
     {
         public bool[] ValidSectionPair { get; set; }
         public string OpeningSection { get; set; }

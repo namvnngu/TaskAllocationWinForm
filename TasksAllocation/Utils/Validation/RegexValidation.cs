@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class RegexValidation
+    public class RegexValidation
     {
         public static bool RegexExtension(string text, Validations validations)
         {

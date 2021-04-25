@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class ProgramInfo
+    public class ProgramInfo
     {
         public double Duration { get; set; }
         public int Tasks { get; set; }

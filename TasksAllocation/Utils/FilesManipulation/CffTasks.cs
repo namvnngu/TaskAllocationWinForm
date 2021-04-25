@@ -8,7 +8,7 @@ using TasksAllocation.Components;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffTasks
+    public class CffTasks
     {
         public PairSection TasksSection { get; set; }
         public List<Task>  Tasks { get; set; }

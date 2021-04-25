@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffLogFile
+    public class CffLogFile
     {
         public PairSection LogFileSection { get; set; }
         public string LogFile { get; set; }

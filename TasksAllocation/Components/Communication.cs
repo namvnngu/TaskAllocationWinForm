@@ -9,7 +9,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class Communication
+    public class Communication
     {
         public Map MapData { get; set; }
         public PairSection OpeningClosingSection { get; set; }

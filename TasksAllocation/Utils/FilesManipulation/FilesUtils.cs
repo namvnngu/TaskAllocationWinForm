@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class FilesUtils
+    public class FilesUtils
     {
         public static string ReplaceExtension(string filePath, string newExenstion)
         {

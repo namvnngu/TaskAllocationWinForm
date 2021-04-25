@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.DataStructure
 {
-    class Map
+    public class Map
     {
         public string Data { get; set; }
 

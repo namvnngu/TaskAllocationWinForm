@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class ErrorManager
+    public class ErrorManager
     {
         public List<Error> Errors { get; set; }
 

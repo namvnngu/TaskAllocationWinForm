@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Display
 {
-    class ProcessorAllocation
+    public class ProcessorAllocation
     {
         public string Allocation;
         public int RAM;

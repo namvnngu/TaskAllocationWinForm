@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class KeywordPair
+    public class KeywordPair
     {
         public int Count { get; set; }
         public string OpeningKeyword { get; set; }

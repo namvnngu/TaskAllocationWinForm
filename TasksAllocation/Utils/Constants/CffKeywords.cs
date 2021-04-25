@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace TasksAllocation.Utils.Constants
 {
-    class CffKeywords
+    public class CffKeywords
     {
         public static string FILE_EXTENSION = "cff";
         public static string OPENING_LOGFILE = "LOGFILE";

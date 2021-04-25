@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class Limits
+    public class Limits
     {
         public int MinimumTasks { get; set; }
         public int MaximumTasks { get; set; }

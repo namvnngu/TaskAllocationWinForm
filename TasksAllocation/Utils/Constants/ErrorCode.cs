@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Constants
 {
-    class ErrorCode
+    public class ErrorCode
     {
         public static int INVALID_KEYWORD = 10;
         public static int INVALID_VALUE = 11;

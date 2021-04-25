@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Display
 {
-    class AllocationDisplay
+    public class AllocationDisplay
     {
         public int ID;
         public double Runtime;

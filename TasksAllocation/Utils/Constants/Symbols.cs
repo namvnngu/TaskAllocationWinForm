@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Constants
 {
-    class Symbols
+    public class Symbols
     {
         public static char EQUALITY = '=';
         public static char DOUBLE_QUOTE = '"';

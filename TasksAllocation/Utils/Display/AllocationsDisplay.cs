@@ -10,7 +10,7 @@ using System.IO;
 
 namespace TasksAllocation.Utils.Display
 {
-    class AllocationsDisplay
+    public class AllocationsDisplay
     {
         public static string Display(List<AllocationDisplay> allocationDisplays, Configuration configuration)
         {

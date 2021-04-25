@@ -9,7 +9,7 @@ using TasksAllocation.Components;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffLimits
+    public class CffLimits
     {
         public Limits LimitData { get; set; }
         public PairSection LimitPairSection { get; set; }

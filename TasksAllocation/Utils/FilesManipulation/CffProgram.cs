@@ -9,7 +9,7 @@ using TasksAllocation.Components;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffProgram
+    public class CffProgram
     {
         public ProgramInfo Program { get; set; }
         public PairSection ProgramPairSection { get; set; }

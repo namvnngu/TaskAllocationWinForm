@@ -9,7 +9,7 @@ using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffProcessor
+    public class CffProcessor
     {
         public Processor ProcessorInfo { get; set; }
         public bool InsideProcessor { get; set; }

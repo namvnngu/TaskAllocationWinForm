@@ -9,7 +9,7 @@ using TasksAllocation.Components;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffProcessorTypes
+    public class CffProcessorTypes
     {
         public PairSection ProcessorTypesSection { get; set; }
         public List<ProcessorType> ProcessorTypes { get; set; }

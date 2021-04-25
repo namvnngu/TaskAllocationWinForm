@@ -11,7 +11,7 @@ using TasksAllocation.Utils.Display;
 
 namespace TasksAllocation.Files
 {
-    class TaskAllocation
+    public class TaskAllocation
     {
         public string CffFilename { get; set; }
         public int Count { get; set; }

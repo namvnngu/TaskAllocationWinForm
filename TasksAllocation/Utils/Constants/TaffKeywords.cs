@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace TasksAllocation.Utils.Constants
 {
-    class TaffKeywords
+    public class TaffKeywords
     {
         public static string FILE_EXTENSION = "taff";
         public static string OPENING_CONFIG_DATA = "CONFIGURATION-DATA";

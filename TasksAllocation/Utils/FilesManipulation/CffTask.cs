@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Validation;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffTask
+    public class CffTask
     {
         public Task TaskInfo { get; set; }
         public bool InsideTask { get; set; }

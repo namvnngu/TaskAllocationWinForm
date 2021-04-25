@@ -9,7 +9,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class RemoteCommunication : Communication
+    public class RemoteCommunication : Communication
     { 
         public RemoteCommunication()
         {

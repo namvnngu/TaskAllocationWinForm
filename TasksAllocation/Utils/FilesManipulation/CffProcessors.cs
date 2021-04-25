@@ -9,7 +9,7 @@ using TasksAllocation.Components;
 
 namespace TasksAllocation.Utils.FilesManipulation
 {
-    class CffProcessors
+    public class CffProcessors
     {
         public PairSection ProcessorsSection { get; set; }
         public List<Processor> Processors { get; set; }

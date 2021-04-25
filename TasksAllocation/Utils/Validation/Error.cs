@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TasksAllocation.Utils.Validation
 {
-    class Error
+    public class Error
     {
         public string Message { get; set; }
         public string ActualValue { get; set; }

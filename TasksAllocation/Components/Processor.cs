@@ -8,7 +8,7 @@ using TasksAllocation.Utils.Constants;
 
 namespace TasksAllocation.Components
 {
-    class Processor
+    public class Processor
     {
         public int ID { set; get; }
         public string Type { get; set; }

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace TasksAllocation.Utils.Display
 {
-    class ValidationSummaryDisplay
+    public class ValidationSummaryDisplay
     {
         const string INVALID = "invalid";
         const string VALID = "valid";
