@@ -5,7 +5,7 @@ using TasksAllocation.Components;
 namespace TaskAllocationUnitTest
 {
     [TestClass]
-    public class EnergyUnitTest
+    public class RAMUnitTest
     {
         const double Accuracy = 0.0001;
 
