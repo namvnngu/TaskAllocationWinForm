@@ -17,7 +17,12 @@ namespace TasksAllocation.Utils.Validation
 
         public Error()
         {
-
+            Message = "";
+            ActualValue = "";
+            ExpectedValue = "";
+            Filename = "";
+            LineNumber = "";
+            ErrorCode = 0;
         }
 
         public Error(string message, string actualValue, string expectedValue)

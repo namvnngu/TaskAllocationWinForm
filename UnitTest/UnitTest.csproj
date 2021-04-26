@@ -54,6 +54,8 @@
     <Compile Include="DownloadUnitTest.cs" />
     <Compile Include="TaffFormatUnitTest.cs" />
     <Compile Include="CffFormatUnitTest.cs" />
+    <Compile Include="TaffErrorDetectionUnitTest.cs" />
+    <Compile Include="CffErrorDetectionUnitTest.cs" />
     <Compile Include="UploadUnitTest.cs" />
   </ItemGroup>
   <ItemGroup>
